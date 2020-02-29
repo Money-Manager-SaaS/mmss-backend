@@ -2,8 +2,8 @@ import request from "request-promise";
 import * as Provider from "./OpenCageDataProvider";
 
 // unit test
-jest.mock("request-promise");
-(request as any).mockImplementation(() => '{"features": []}');
+// jest.mock("request-promise");
+
 
 describe("OpenCageDataProvider", () => {
 
@@ -11,10 +11,10 @@ describe("OpenCageDataProvider", () => {
         expect(true).toEqual(true);
     })
 
-    test("an empty query string", async () => {
+    test("simple query for paris", async () => {
         // (request as any).mockImplementation(() => '{"features": []}');
         const result = await Provider.getPlaces("Paris");
-        expect(result).toEqual({ features: [] });
+        expect(result.features.length >= 1);
     });
 
     // test("an invalid non-json response", async () => {

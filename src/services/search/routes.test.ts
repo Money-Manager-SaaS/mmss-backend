@@ -8,8 +8,8 @@ import routes from "../../services/search/routes";
 
 
 // intergration test
-jest.mock("request-promise");
-(promiseRequest as any).mockImplementation(() => '{"features": []}');
+// jest.mock("request-promise");
+// (promiseRequest as any).mockImplementation(() => '{"features": []}');
 
 describe("routes", () => {
     let router: Router;
