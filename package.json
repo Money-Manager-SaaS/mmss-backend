@@ -1,0 +1,28 @@
+{
+  "name": "mmss-backend",
+  "version": "0.0.1",
+  "description": "Money Manager Cloud back-end, to handle CRUD and Authentication and keep the compatibility to the Money Manager EX",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Money-Manager-SaaS/mmss-backend.git"
+  },
+  "keywords": [
+    "MMSS",
+    "Money",
+    "Manager"
+  ],
+  "author": "MMSS-Admin",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Money-Manager-SaaS/mmss-backend/issues"
+  },
+  "homepage": "https://github.com/Money-Manager-SaaS/mmss-backend#readme"
+}
