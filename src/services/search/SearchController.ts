@@ -8,5 +8,5 @@ export const getPlacesByName = async (q: string) => {
         };
     }
 
-    return await getPlaces(q);
+    return getPlaces(q);
 };
