@@ -1,7 +1,4 @@
 import knex from 'knex';
-import bookshelf from 'bookshelf';
-
-
 
 export const getKnexDB = (fileName: string):any => {
     if (process.env.NODE_ENV || true) {
@@ -24,23 +21,7 @@ export const getKnexDB = (fileName: string):any => {
     }
 };
 
-
-
-export const getBookShelf = (fileName:string) => {
-    return require('bookshelf')(getKnexDB(fileName));
-};
-
-
-
-// getKnexDB('./demo.mmb');
-const bk = getBookShelf('./demo.mmb');
-// console.log(bk);
-
-const Transaction = bk.model('Transaction', {
-    tableName: 'CHECKINGACCOUNT_V1',
-});
-
-
+// for manual testing only
 const main = async () => {
     const client = getKnexDB('./demo.mmb')
     console.log(
@@ -51,4 +32,4 @@ const main = async () => {
 
 }
 
-main();
+// main();
