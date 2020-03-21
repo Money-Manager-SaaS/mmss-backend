@@ -1,7 +1,9 @@
 import path from 'path';
 import { Sequelize } from 'sequelize';
 
-const sampleDB = path.resolve(__dirname, './demo.db');
+const sampleDB =  process.env.DB_PATH ? process.env.DB_PATH : path.resolve(__dirname,  '../../demo.db');
+console.log(sampleDB, process.env.DB_PATH, 'find db path');
+
 const sequelize = new Sequelize(
   {
     dialect: 'sqlite',

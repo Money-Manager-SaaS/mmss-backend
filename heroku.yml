@@ -7,4 +7,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: npm start
+  web: node dist/server.js
