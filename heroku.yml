@@ -6,6 +6,5 @@
 build:
   docker:
     web: Dockerfile
-    forceSync: false
 run:
   web: npm run start
