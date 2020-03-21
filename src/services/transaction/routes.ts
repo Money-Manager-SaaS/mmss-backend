@@ -1,16 +1,12 @@
 import { Request, Response } from "express";
-import { index } from "./controller";
+import { index } from "./provider";
+import * as services from './service';
 
 
 export default [
     {
         path: "/api/v1/transactions",
         method: "get",
-        handler: [
-            async ({ query }: Request, res: Response) => {
-                const result = await index();
-                res.status(200).send(result);
-            }
-        ]
+        handler: [services.index]
     }
 ];

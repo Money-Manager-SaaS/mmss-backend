@@ -1,6 +1,6 @@
 import http from "http";
 import express from "express";
-import { applyMiddleware, applyRoutes } from "./utils";
+import { applyMiddleware, applyRoutes } from "./utils/utils";
 import middleware from "./middleware/index";
 import errorHandlers from "./middleware/errorHandlers";
 import routes from "./services";
