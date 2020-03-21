@@ -16,7 +16,12 @@ export default [
     handler: [
       async ({query}: Request, res: Response) => {
         res.status(200).send({
-          'message': 'thanks to use mmex, got to /api/v1/'
+          message: `please remember data will be deleted after deployment at demo`,
+          endpoints: [
+            '/api/v1/transactions',
+            '/api/v1/accounts',
+            '/api/v1/categories',
+          ]
         });
       }
     ]
