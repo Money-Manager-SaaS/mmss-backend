@@ -1,10 +1,11 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
-import sequelize from '../utils/db';
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../db';
 
 export default class Account extends Model {
   public id!: number;
   public name!: string;
   public amount!: number;
+  public currency!: string;
 }
 
 Account.init({
@@ -19,6 +20,11 @@ Account.init({
   amount: {
     type: DataTypes.DECIMAL,
     allowNull: false,
+  },
+  currency: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'USD',
   },
 }, {
   sequelize,
