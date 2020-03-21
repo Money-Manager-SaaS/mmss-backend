@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import * as provider from './provider';
 
-export const index = async ({ query }: Request, res: Response) => {
-  const result = await provider.index();
+export const getAll = async ({ }: Request, res: Response) => {
+  const result = await provider.getAll();
   res.status(200).send(result);
 };
 
@@ -11,7 +11,12 @@ export const getOne = async ({ params }: Request, res: Response) => {
   res.status(200).send(result);
 };
 
-export const update = async ({ body, params }: Request, res: Response) => {
-  const result = await provider.update(+params?.id, body);
+export const updateOne = async ({ body, params }: Request, res: Response) => {
+  const result = await provider.updateOne(+params?.id, body);
+  res.status(200).send(result);
+};
+
+export const deleteOne = async ({  params }: Request, res: Response) => {
+  const result = await provider.deleteOne(+params?.id);
   res.status(200).send(result);
 };

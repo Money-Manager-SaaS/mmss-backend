@@ -1,19 +1,24 @@
-import path from "path";
 import Transaction from '../../db/models/Transaction';
-import { Op } from 'sequelize';
 
-export const index = async () => {
+
+export const getAll = async () => {
     const trans = await Transaction.findAll();
     return {transactions: trans};
 };
 
-export const getOne = async (pk:number) => {
-    const tran = await Transaction.findByPk(pk);
+export const getOne = async (id: number) => {
+    const tran = await Transaction.findByPk(id);
     return tran;
 };
 
-export const update = async (id: number, transaction: Transaction) => {
-    const t:Transaction | null = await Transaction.findByPk(id);
-    !!t && await t.update(transaction)
+export const updateOne = async (id: number, transaction: Transaction) => {
+    const t: Transaction | null = await Transaction.findByPk(id);
+    !!t && await t.update(transaction);
+    return t;
+};
+
+export const deleteOne = async (id: number) => {
+    const t: Transaction | null = await Transaction.findByPk(id);
+    !!t && await t.destroy();
     return t;
 };
