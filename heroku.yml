@@ -1,0 +1,11 @@
+# https://devcenter.heroku.com/articles/build-docker-images-heroku-yml
+#setup:
+#  addons:
+#    - plan: heroku-postgresql
+#      as: DATABASE
+build:
+  docker:
+    web: Dockerfile
+    forceSync: false
+run:
+  web: npm run start
