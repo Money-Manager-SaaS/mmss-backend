@@ -13,6 +13,11 @@ export default [
         handler: [services.getOne]
     },
     {
+        path: "/api/v1/transactions",
+        method: "post",
+        handler: [services.create]
+    },
+    {
         path: "/api/v1/transactions/:id",
         method: "put",
         handler: [services.updateOne]
