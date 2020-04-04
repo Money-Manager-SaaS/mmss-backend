@@ -3,6 +3,7 @@ import * as provider from './provider';
 
 export const getAll = async ({ }: Request, res: Response) => {
   const result = await provider.getAll();
+  // todo if want to use message, code, do it here at service, not at provider
   res.status(200).send(result);
 };
 
