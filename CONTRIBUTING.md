@@ -6,4 +6,4 @@
 
 - ~~git push heroku~~
 (you might not have permission, because heroku personal might not be OK to collaborate)
-- deploy to master, CD will be run
+- create PR to prod, CD will be run
