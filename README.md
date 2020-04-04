@@ -8,5 +8,11 @@
 
 `node_modules/.bin/sequelizeheroku`
 
+## todo
+- [ ] `create` endpoint for account, category..
+- [ ] build payee
+- [ ] build ledger
+- [ ] set CORS whitelist now it is avalible for all
+
 ## Ref
 - [Contributing](CONTRIBUTING.md)

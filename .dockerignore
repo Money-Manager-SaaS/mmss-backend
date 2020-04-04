@@ -4,3 +4,5 @@ coverage
 .env
 .gitignore
 renovate.json
+README.md
+LICENSE
