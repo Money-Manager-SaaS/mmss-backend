@@ -6,4 +6,7 @@
 
 ## Migration
 
-`node_modules/.bin/sequelize`
+`node_modules/.bin/sequelizeheroku`
+
+## Ref
+- [Contributing](CONTRIBUTING.md)

@@ -1,3 +1,8 @@
 
 
 - [A must read express best practice guide](https://itnext.io/production-ready-node-js-rest-apis-setup-using-typescript-postgresql-and-redis-a9525871407)
+
+## Deployment
+
+- git push heroku 
+(you might not have permission, because heroku personal might not be OK to collaborate)
