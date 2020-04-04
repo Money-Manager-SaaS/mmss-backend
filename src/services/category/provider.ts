@@ -2,7 +2,7 @@ import Category from '../../db/models/Category';
 
 export const getAll = async () => {
     const trans = await Category.findAll();
-    return {transactions: trans};
+    return {categories: trans};
 };
 
 export const getOne = async (id: number) => {

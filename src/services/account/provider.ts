@@ -2,7 +2,7 @@ import Account from '../../db/models/Account';
 
 export const getAll = async () => {
     const trans = await Account.findAll();
-    return {transactions: trans};
+    return {accounts: trans};
 };
 
 export const getOne = async (id: number) => {
