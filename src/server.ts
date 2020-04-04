@@ -1,4 +1,3 @@
-import http from "http";
 import express from "express";
 import { applyMiddleware, applyRoutes } from "./utils/utils";
 import middleware from "./middleware/index";
@@ -13,14 +12,14 @@ process.on("uncaughtException", e => {
     process.exit(1);
 });
 
-const router = express();
+const app = express();
 
-applyMiddleware(middleware, router);
-applyRoutes(routes, router);
-applyMiddleware(errorHandlers, router);
+applyMiddleware(middleware, app);
+applyRoutes(routes, app);
+applyMiddleware(errorHandlers, app);
 
 const { PORT = 3000 } = process.env;
-const server = http.createServer(router);
+const server = app;
 
 server.listen(PORT, () =>
     console.log(`Server is running http://localhost:${PORT}...`)
