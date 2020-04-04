@@ -13,6 +13,7 @@
 - [ ] build payee
 - [ ] build ledger
 - [ ] set CORS whitelist now it is avalible for all
+- [ ] filter
 
 ## Ref
 - [Contributing](CONTRIBUTING.md)
