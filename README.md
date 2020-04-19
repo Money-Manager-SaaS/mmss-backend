@@ -4,12 +4,8 @@
 - Handle CRUD on the Money Manager MMD Sqlite3 db.
 
 
-## Migration
-
-`node_modules/.bin/sequelizeheroku`
-
 ## todo
-- [ ] `create` endpoint for account, category..
+- [x] `create` endpoint for account, category..
 - [ ] build payee
 - [ ] build ledger
 - [ ] set CORS whitelist now it is avalible for all
