@@ -3,13 +3,14 @@
 
 - Handle CRUD on the Money Manager  Sqlite3 db.
 
+
 ## todo
-- [ ] `create` endpoint for account, category..
+- [x] `create` endpoint for account, category..
 - [ ] build payee
 - [ ] build ledger
 - [ ] set CORS whitelist now it is avalible for all
 - [ ] filter
-- [ ] figure out a better way for sequelize migration
+- [ ] figure out a better way for sequelize migration before build the final production
 
 ## Ref
 - [Contributing](CONTRIBUTING.md)
