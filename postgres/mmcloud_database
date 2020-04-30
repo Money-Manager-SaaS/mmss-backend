@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.17
 -- Dumped by pg_dump version 9.6.17
 
--- Started on 2020-04-24 19:01:22
+-- Started on 2020-04-30 20:41:10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,16 +20,16 @@ SET row_security = off;
 
 --
 -- TOC entry 1 (class 3079 OID 12387)
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2190 (class 0 OID 0)
+-- TOC entry 2199 (class 0 OID 0)
 -- Dependencies: 1
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -47,7 +47,8 @@ SET default_with_oids = false;
 CREATE TABLE public.account (
     accountid integer NOT NULL,
     currency character varying NOT NULL,
-    ledgerid integer NOT NULL
+    ledgerid integer NOT NULL,
+    accountname character varying[]
 );
 
 
@@ -75,7 +76,7 @@ ALTER TABLE public.category OWNER TO postgres;
 CREATE TABLE public.ledger (
     ledgerid integer NOT NULL,
     userid integer NOT NULL,
-    legername character varying[] NOT NULL
+    ledgername character varying[] NOT NULL
 );
 
 
@@ -88,7 +89,8 @@ ALTER TABLE public.ledger OWNER TO postgres;
 
 CREATE TABLE public.payee (
     payeeid integer NOT NULL,
-    ledgerid integer NOT NULL
+    ledgerid integer NOT NULL,
+    payeename character varying[]
 );
 
 
@@ -122,7 +124,7 @@ CREATE SEQUENCE public.test_id_seq
 ALTER TABLE public.test_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2191 (class 0 OID 0)
+-- TOC entry 2200 (class 0 OID 0)
 -- Dependencies: 191
 -- Name: test_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -166,7 +168,7 @@ CREATE TABLE public."user" (
 ALTER TABLE public."user" OWNER TO postgres;
 
 --
--- TOC entry 2030 (class 2604 OID 16521)
+-- TOC entry 2031 (class 2604 OID 16521)
 -- Name: test id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -174,17 +176,17 @@ ALTER TABLE ONLY public.test ALTER COLUMN id SET DEFAULT nextval('public.test_id
 
 
 --
--- TOC entry 2179 (class 0 OID 16448)
+-- TOC entry 2188 (class 0 OID 16448)
 -- Dependencies: 189
 -- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.account (accountid, currency, ledgerid) FROM stdin;
+COPY public.account (accountid, currency, ledgerid, accountname) FROM stdin;
 \.
 
 
 --
--- TOC entry 2177 (class 0 OID 16432)
+-- TOC entry 2186 (class 0 OID 16432)
 -- Dependencies: 187
 -- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -194,27 +196,27 @@ COPY public.category (categoryid, ledgerid, categoryname) FROM stdin;
 
 
 --
--- TOC entry 2176 (class 0 OID 16424)
+-- TOC entry 2185 (class 0 OID 16424)
 -- Dependencies: 186
 -- Data for Name: ledger; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.ledger (ledgerid, userid, legername) FROM stdin;
+COPY public.ledger (ledgerid, userid, ledgername) FROM stdin;
 \.
 
 
 --
--- TOC entry 2180 (class 0 OID 16456)
+-- TOC entry 2189 (class 0 OID 16456)
 -- Dependencies: 190
 -- Data for Name: payee; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.payee (payeeid, ledgerid) FROM stdin;
+COPY public.payee (payeeid, ledgerid, payeename) FROM stdin;
 \.
 
 
 --
--- TOC entry 2182 (class 0 OID 16518)
+-- TOC entry 2191 (class 0 OID 16518)
 -- Dependencies: 192
 -- Data for Name: test; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -224,7 +226,7 @@ COPY public.test (id) FROM stdin;
 
 
 --
--- TOC entry 2192 (class 0 OID 0)
+-- TOC entry 2201 (class 0 OID 0)
 -- Dependencies: 191
 -- Name: test_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -233,7 +235,7 @@ SELECT pg_catalog.setval('public.test_id_seq', 1, false);
 
 
 --
--- TOC entry 2178 (class 0 OID 16440)
+-- TOC entry 2187 (class 0 OID 16440)
 -- Dependencies: 188
 -- Data for Name: transaction; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -243,7 +245,7 @@ COPY public.transaction (transactionid, date, account, "to", amount, type, payee
 
 
 --
--- TOC entry 2175 (class 0 OID 16416)
+-- TOC entry 2184 (class 0 OID 16416)
 -- Dependencies: 185
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -253,7 +255,16 @@ COPY public."user" (userid, username, email) FROM stdin;
 
 
 --
--- TOC entry 2047 (class 2606 OID 16455)
+-- TOC entry 2052 (class 2606 OID 16550)
+-- Name: account account_ledgerid_accountname_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT account_ledgerid_accountname_key UNIQUE (ledgerid, accountname);
+
+
+--
+-- TOC entry 2054 (class 2606 OID 16455)
 -- Name: account account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -262,7 +273,16 @@ ALTER TABLE ONLY public.account
 
 
 --
--- TOC entry 2037 (class 2606 OID 16439)
+-- TOC entry 2040 (class 2606 OID 16545)
+-- Name: category category_ledgerid_categoryname_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_ledgerid_categoryname_key UNIQUE (ledgerid, categoryname);
+
+
+--
+-- TOC entry 2042 (class 2606 OID 16439)
 -- Name: category category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -271,7 +291,7 @@ ALTER TABLE ONLY public.category
 
 
 --
--- TOC entry 2035 (class 2606 OID 16428)
+-- TOC entry 2036 (class 2606 OID 16428)
 -- Name: ledger ledger_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -280,7 +300,25 @@ ALTER TABLE ONLY public.ledger
 
 
 --
--- TOC entry 2049 (class 2606 OID 16460)
+-- TOC entry 2038 (class 2606 OID 16548)
+-- Name: ledger ledger_userid_legername_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ledger
+    ADD CONSTRAINT ledger_userid_legername_key UNIQUE (userid, ledgername);
+
+
+--
+-- TOC entry 2056 (class 2606 OID 16555)
+-- Name: payee payee_ledgerid_payeename_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payee
+    ADD CONSTRAINT payee_ledgerid_payeename_key UNIQUE (ledgerid, payeename);
+
+
+--
+-- TOC entry 2058 (class 2606 OID 16460)
 -- Name: payee payee_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -289,7 +327,7 @@ ALTER TABLE ONLY public.payee
 
 
 --
--- TOC entry 2045 (class 2606 OID 16447)
+-- TOC entry 2050 (class 2606 OID 16447)
 -- Name: transaction transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -298,7 +336,7 @@ ALTER TABLE ONLY public.transaction
 
 
 --
--- TOC entry 2032 (class 2606 OID 16423)
+-- TOC entry 2033 (class 2606 OID 16423)
 -- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -307,7 +345,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 2039 (class 1259 OID 16486)
+-- TOC entry 2044 (class 1259 OID 16486)
 -- Name: fki_account_id_fk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -315,7 +353,7 @@ CREATE INDEX fki_account_id_fk ON public.transaction USING btree (account);
 
 
 --
--- TOC entry 2040 (class 1259 OID 16504)
+-- TOC entry 2045 (class 1259 OID 16504)
 -- Name: fki_category_id_fk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -323,7 +361,7 @@ CREATE INDEX fki_category_id_fk ON public.transaction USING btree (categoryid);
 
 
 --
--- TOC entry 2041 (class 1259 OID 16515)
+-- TOC entry 2046 (class 1259 OID 16515)
 -- Name: fki_ledger_id2_fk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -331,7 +369,7 @@ CREATE INDEX fki_ledger_id2_fk ON public.transaction USING btree (ledgerid);
 
 
 --
--- TOC entry 2038 (class 1259 OID 16474)
+-- TOC entry 2043 (class 1259 OID 16474)
 -- Name: fki_ledger_id_fk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -339,7 +377,7 @@ CREATE INDEX fki_ledger_id_fk ON public.category USING btree (ledgerid);
 
 
 --
--- TOC entry 2042 (class 1259 OID 16498)
+-- TOC entry 2047 (class 1259 OID 16498)
 -- Name: fki_payee_id_fk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -347,7 +385,7 @@ CREATE INDEX fki_payee_id_fk ON public.transaction USING btree (payeeid);
 
 
 --
--- TOC entry 2043 (class 1259 OID 16492)
+-- TOC entry 2048 (class 1259 OID 16492)
 -- Name: fki_to_fk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -355,7 +393,7 @@ CREATE INDEX fki_to_fk ON public.transaction USING btree ("to");
 
 
 --
--- TOC entry 2033 (class 1259 OID 16480)
+-- TOC entry 2034 (class 1259 OID 16480)
 -- Name: fki_user_id_fk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -363,7 +401,7 @@ CREATE INDEX fki_user_id_fk ON public.ledger USING btree (userid);
 
 
 --
--- TOC entry 2052 (class 2606 OID 16481)
+-- TOC entry 2061 (class 2606 OID 16481)
 -- Name: transaction account_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -372,7 +410,7 @@ ALTER TABLE ONLY public.transaction
 
 
 --
--- TOC entry 2055 (class 2606 OID 16499)
+-- TOC entry 2064 (class 2606 OID 16499)
 -- Name: transaction category_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -381,7 +419,7 @@ ALTER TABLE ONLY public.transaction
 
 
 --
--- TOC entry 2057 (class 2606 OID 16510)
+-- TOC entry 2066 (class 2606 OID 16510)
 -- Name: transaction ledger_id2_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -390,7 +428,7 @@ ALTER TABLE ONLY public.transaction
 
 
 --
--- TOC entry 2051 (class 2606 OID 16469)
+-- TOC entry 2060 (class 2606 OID 16469)
 -- Name: category ledger_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -399,7 +437,7 @@ ALTER TABLE ONLY public.category
 
 
 --
--- TOC entry 2056 (class 2606 OID 16505)
+-- TOC entry 2065 (class 2606 OID 16505)
 -- Name: transaction ledger_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -408,7 +446,7 @@ ALTER TABLE ONLY public.transaction
 
 
 --
--- TOC entry 2054 (class 2606 OID 16493)
+-- TOC entry 2063 (class 2606 OID 16493)
 -- Name: transaction payee_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -417,7 +455,7 @@ ALTER TABLE ONLY public.transaction
 
 
 --
--- TOC entry 2053 (class 2606 OID 16487)
+-- TOC entry 2062 (class 2606 OID 16487)
 -- Name: transaction to_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -426,7 +464,7 @@ ALTER TABLE ONLY public.transaction
 
 
 --
--- TOC entry 2050 (class 2606 OID 16475)
+-- TOC entry 2059 (class 2606 OID 16475)
 -- Name: ledger user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -434,7 +472,7 @@ ALTER TABLE ONLY public.ledger
     ADD CONSTRAINT user_id_fk FOREIGN KEY (userid) REFERENCES public."user"(userid) NOT VALID;
 
 
--- Completed on 2020-04-24 19:01:22
+-- Completed on 2020-04-30 20:41:11
 
 --
 -- PostgreSQL database dump complete
