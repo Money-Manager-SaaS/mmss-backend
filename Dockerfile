@@ -1,4 +1,4 @@
-FROM node:13.10.1-alpine
+FROM node:13.14.0-alpine
 
 EXPOSE 3000
 ENV DB_PATH /mm/demo.db
