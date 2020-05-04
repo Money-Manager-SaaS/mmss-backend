@@ -1,6 +1,7 @@
 import Account from './models/Account';
 import Transaction from './models/Transaction';
 import Category from './models/Category';
+import User from './models/User'
 
 
 export const init = async () => {
@@ -56,6 +57,19 @@ export const init = async () => {
     accountID: bank.id,
     note: 'an income'
   });
+
+   const tom = await User.create({
+    username: 'tom',
+    email: 'tom@gmail.com',
+    passwordhash: 'dferqerwere'
+  });
+
+   const jack = await User.create({
+    username: 'jack',
+    email: 'jack@gmail.com',
+    passwordhash: 'fdfdfaerere'
+  });
+
   console.log('db seeding done');
 };
 
