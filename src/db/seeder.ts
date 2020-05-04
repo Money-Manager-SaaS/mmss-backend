@@ -1,7 +1,7 @@
 import Account from './models/Account';
 import Transaction from './models/Transaction';
 import Category from './models/Category';
-import User from './models/User'
+import User from './models/User';
 
 
 export const init = async () => {
@@ -9,6 +9,7 @@ export const init = async () => {
   await Account.sync({force: forceSync});
   await Transaction.sync({force: forceSync});
   await Category.sync({force: forceSync});
+  await User.sync({force: forceSync});
 
   const cash = await Account.create({
     name: 'cash',
@@ -58,16 +59,20 @@ export const init = async () => {
     note: 'an income'
   });
 
-   const tom = await User.create({
-    username: 'tom',
-    email: 'tom@gmail.com',
-    passwordhash: 'dferqerwere'
+  const jack = await User.create({
+    username: 'jack',
+    email: 'jack.JJJ@gmail.com',
+    last_login: '2010/08/19',
+    date_login: '2011/09/10',
+    passwordhash: '89djheddkhdee33'
   });
 
-   const jack = await User.create({
-    username: 'jack',
-    email: 'jack@gmail.com',
-    passwordhash: 'fdfdfaerere'
+  const tom = await User.create({
+    username: 'tom',
+    email: 'tom.c@Kmail.com',
+    last_login: '2011/10/19',
+    date_login: '2018/03/18',
+    passwordhash: '90d0dke888dje3j'
   });
 
   console.log('db seeding done');
