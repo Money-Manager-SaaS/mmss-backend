@@ -1,8 +1,20 @@
 import Transaction from '../../db/models/Transaction';
 
-
-export const getAll = async () => {
-    const trans = await Transaction.findAll();
+// 2. squelize. model get the data based on the parameter.
+export const getAll = async (request) => {
+    const trans = await Transaction.findAll(
+        {
+            where: {
+                date: {
+                          [Op.and]: {
+                            [Op.lt]: request.date_to,
+                            [Op.gt]: request.date_from
+                    }
+                 },
+                 payeeID: mapping(request.payee),
+            }
+        }
+    );
     return {transactions: trans};
 };
 

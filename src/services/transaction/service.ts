@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import * as provider from './provider';
 
-export const getAll = async ({ }: Request, res: Response) => {
+export const getAll = async (req: Request, res: Response) => {
+  // 1. request schema??? parse the parameter
+  //req.params.date_from req.params.date_to req.params.payee.
   const result = await provider.getAll();
   // todo if want to use message, code, do it here at service, not at provider
   res.status(200).send(result);
