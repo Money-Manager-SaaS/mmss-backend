@@ -2,6 +2,7 @@ import Account from './models/Account';
 import Transaction from './models/Transaction';
 import Category from './models/Category';
 import User from './models/User';
+import Ledger from './models/Ledger';
 
 
 export const init = async () => {
@@ -10,6 +11,7 @@ export const init = async () => {
   await Transaction.sync({force: forceSync});
   await Category.sync({force: forceSync});
   await User.sync({force: forceSync});
+  await Ledger.sync({force: forceSync});
 
   const cash = await Account.create({
     name: 'cash',
@@ -75,6 +77,11 @@ export const init = async () => {
     passwordhash: '90d0dke888dje3j'
   });
 
+
+  const supermarket = await Ledger.create({
+    userid:7870009,
+    ledgername: 'supermarket',
+  });
   console.log('db seeding done');
 };
 
