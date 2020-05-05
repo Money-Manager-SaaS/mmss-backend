@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
+import User from './User';
 
 export default class Ledger extends Model {
   public id!: number;
@@ -20,8 +21,8 @@ Ledger.init({
   tableName: 'ledgers',
 });
 
-// Ledger.hasOne(User, {
-//   sourceKey: 'Userid',
-//   foreignKey: 'userid',
-//   as: 'userid',
-// });
+Ledger.hasOne(User, {
+  sourceKey: 'userid',
+  foreignKey: 'id',
+  as: 'constraint_userid',
+});
