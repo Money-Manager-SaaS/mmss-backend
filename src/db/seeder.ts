@@ -58,13 +58,15 @@ export const init = async () => {
     accountID: bank.id,
     note: 'an income'
   });
+
+  const supermarket = await Ledger.create({
+    userid:7870009,
+    ledgername: 'supermarket',
+  });
   console.log('db seeding done');
 };
 
-  const supermarket = await Ledger.create({
-    userid:7870009
-    ledgername: 'supermarket',
-  });
+
 
 
 if (typeof require !== 'undefined' && require.main === module) {

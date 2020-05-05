@@ -20,8 +20,8 @@ Ledger.init({
   tableName: 'ledgers',
 });
 
-Ledger.hasOne(User, {
-  sourceKey: 'Userid',
-  foreignKey: 'userid',
-  as: 'userid',
-});
+// Ledger.hasOne(User, {
+//   sourceKey: 'Userid',
+//   foreignKey: 'userid',
+//   as: 'userid',
+// });
