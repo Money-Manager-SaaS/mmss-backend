@@ -2,6 +2,7 @@ import transRoutes from "./transaction/routes"
 import accountRoutes from "./account/routes";
 import categoryRoutes from "./category/routes";
 import userRoutes from "./user/routes";
+import payeeRoutes from "./payee/routes";
 import { Request, Response } from 'express';
 
 
@@ -11,6 +12,7 @@ export default [
   ...accountRoutes,
   ...categoryRoutes,
   ...userRoutes,
+  ...payeeRoutes,
 
   {
     path: "/",
@@ -24,6 +26,7 @@ export default [
             '/api/v1/accounts',
             '/api/v1/categories',
             '/api/v1/users',
+            '/api/v1/payees',
           ]
         });
       }
