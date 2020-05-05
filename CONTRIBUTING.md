@@ -16,6 +16,7 @@
 
 
 # Deployment
+- for safety, create PR to prod branch
 - deployment is automatical, after merging, Continuous Deployment will be run
 
 
