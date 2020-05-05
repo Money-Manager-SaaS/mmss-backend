@@ -22,7 +22,7 @@ Ledger.init({
 });
 
 Ledger.hasOne(User, {
-  sourceKey: 'userid',
-  foreignKey: 'id',
+  sourceKey: 'id',
+  foreignKey: 'userid',
   as: 'constraint_userid',
 });
