@@ -66,16 +66,12 @@ export const init = async () => {
   const jack = await User.create({
     userName: 'jack',
     email: 'jack.JJJ@gmail.com',
-    lastLogin: '2010/08/19',
-    dateJoin: '2011/09/10',
     passwordHash: '89djheddkhdee33'
   });
 
   const tom = await User.create({
     userName: 'tom',
     email: 'tom.c@Kmail.com',
-    lastLogin: '2011/10/19',
-    dateJoin: '2018/03/18',
     passwordHash: '90d0dke888dje3j'
   });
 
@@ -83,6 +79,11 @@ export const init = async () => {
   const supermarket = await Ledger.create({
     userID:tom.id,
     ledgerName: 'supermarket',
+  });
+
+  const smallbusiness = await Ledger.create({
+    userID:tom.id,
+    ledgerName: 'smallbusiness',
   });
 
   const employee = await Payee.create({

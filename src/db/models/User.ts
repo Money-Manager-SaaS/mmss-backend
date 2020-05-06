@@ -1,12 +1,12 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
+import Ledger from './Ledger';
+
 
 export default class User extends Model {
   public id!: number;
   public userName!: string;
   public email!: string;
-  public lastLogin!: Date;
-  public dateJoin!: Date;
   public passwordHash!:string;
 }
 
@@ -24,14 +24,6 @@ User.init({
     type: DataTypes.STRING(256),
     allowNull: true,
   },
-  lastLogin: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
-  dateJoin: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
   passwordHash: {
     type: DataTypes.STRING(256),
     allowNull: false,
@@ -41,3 +33,8 @@ User.init({
   tableName: 'users',
 });
 
+User.hasMany(Ledger, {
+  sourceKey: 'id',
+  foreignKey: 'userID',
+  as: 'fkRefUser',
+});

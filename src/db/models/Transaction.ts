@@ -60,20 +60,20 @@ Transaction.init({
 });
 
 
-Transaction.hasOne(Account, {
-  sourceKey: 'id',
-  foreignKey: 'accountID',
-  as: 'Account',
-});
-
-Transaction.hasOne(Account, {
-  sourceKey: 'id',
-  foreignKey: 'toAccountID',
-  as: 'ToAccount',
-});
-
-Transaction.hasOne(Category,{
-  sourceKey: 'id',
-  foreignKey: 'categoryID',
-  as: 'Category',
-});
+// Transaction.hasOne(Account, {
+//   sourceKey: 'id',
+//   foreignKey: 'accountID',
+//   as: 'Account',
+// });
+//
+// Transaction.hasOne(Account, {
+//   sourceKey: 'id',
+//   foreignKey: 'toAccountID',
+//   as: 'ToAccount',
+// });
+//
+// Transaction.hasOne(Category,{
+//   sourceKey: 'id',
+//   foreignKey: 'categoryID',
+//   as: 'Category',
+// });
