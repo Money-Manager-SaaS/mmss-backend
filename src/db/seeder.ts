@@ -64,19 +64,19 @@ export const init = async () => {
   });
 
   const jack = await User.create({
-    username: 'jack',
+    userName: 'jack',
     email: 'jack.JJJ@gmail.com',
-    last_login: '2010/08/19',
-    date_login: '2011/09/10',
-    passwordhash: '89djheddkhdee33'
+    lastLogin: '2010/08/19',
+    dateJoin: '2011/09/10',
+    passwordHash: '89djheddkhdee33'
   });
 
   const tom = await User.create({
-    username: 'tom',
+    userName: 'tom',
     email: 'tom.c@Kmail.com',
     lastLogin: '2011/10/19',
-    dateLogin: '2018/03/18',
-    passwordhash: '90d0dke888dje3j'
+    dateJoin: '2018/03/18',
+    passwordHash: '90d0dke888dje3j'
   });
 
 

@@ -5,7 +5,7 @@ export default class User extends Model {
   public id!: number;
   public userName!: string;
   public email!: string;
-  public lastlogin!: Date;
+  public lastLogin!: Date;
   public dateJoin!: Date;
   public passwordHash!:string;
 }
