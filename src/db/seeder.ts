@@ -74,14 +74,14 @@ export const init = async () => {
   const tom = await User.create({
     username: 'tom',
     email: 'tom.c@Kmail.com',
-    last_login: '2011/10/19',
-    date_login: '2018/03/18',
+    lastLogin: '2011/10/19',
+    dateLogin: '2018/03/18',
     passwordhash: '90d0dke888dje3j'
   });
 
 
   const supermarket = await Ledger.create({
-    userid:7870009,
+    userid:tom.id,
     ledgername: 'supermarket',
   });
 

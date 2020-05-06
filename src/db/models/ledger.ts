@@ -4,7 +4,7 @@ import User from './User';
 
 export default class Ledger extends Model {
   public id!: number;
-  public userid!: number;
+  public userID!: number;
 }
 
 Ledger.init({
@@ -13,7 +13,7 @@ Ledger.init({
     autoIncrement: true,
     primaryKey: true,
   },
-  userid: {
+  userID: {
     type: DataTypes.INTEGER.UNSIGNED,
   },
 }, {
@@ -23,6 +23,6 @@ Ledger.init({
 
 Ledger.hasOne(User, {
   sourceKey: 'id',
-  foreignKey: 'userid',
+  foreignKey: 'userID',
   as: 'constraint_userid',
 });
