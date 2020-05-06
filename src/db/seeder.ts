@@ -81,8 +81,8 @@ export const init = async () => {
 
 
   const supermarket = await Ledger.create({
-    userid:tom.id,
-    ledgername: 'supermarket',
+    userID:tom.id,
+    ledgerName: 'supermarket',
   });
 
   const employee = await Payee.create({

@@ -5,6 +5,7 @@ import User from './User';
 export default class Ledger extends Model {
   public id!: number;
   public userID!: number;
+  public ledgerName!: string;
 }
 
 Ledger.init({
@@ -16,6 +17,10 @@ Ledger.init({
   userID: {
     type: DataTypes.INTEGER.UNSIGNED,
   },
+  ledgerName: {
+    type: DataTypes.STRING(256),
+    allowNull: false,
+  }
 }, {
   sequelize,
   tableName: 'ledgers',

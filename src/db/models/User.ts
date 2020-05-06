@@ -3,11 +3,11 @@ import sequelize from '../db';
 
 export default class User extends Model {
   public id!: number;
-  public username!: string;
+  public userName!: string;
   public email!: string;
-  public last_login!: Date;
-  public date_login!: Date;
-  public passwordhash!:string;
+  public lastlogin!: Date;
+  public dateJoin!: Date;
+  public passwordHash!:string;
 }
 
 User.init({
@@ -16,7 +16,7 @@ User.init({
     autoIncrement: true,
     primaryKey: true,
   },
-  username: {
+  userName: {
     type: DataTypes.STRING(256),
     allowNull: false,
   },
@@ -24,15 +24,15 @@ User.init({
     type: DataTypes.STRING(256),
     allowNull: true,
   },
-  last_login: {
+  lastLogin: {
     type: DataTypes.DATE,
     allowNull: true,
   },
-  date_login: {
+  dateJoin: {
     type: DataTypes.DATE,
     allowNull: true,
   },
-  passwordhash: {
+  passwordHash: {
     type: DataTypes.STRING(256),
     allowNull: false,
   },
