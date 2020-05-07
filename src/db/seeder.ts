@@ -38,31 +38,6 @@ export const init = async () => {
       name: 'Transport'
     }
   );
-/*
-  const withdraw = await Transaction.create({
-    transferType: -1,
-    amount: 10,
-    accountID: cash.id,
-    categoryID: food.id,
-    note: 'a spending on food'
-  });
-
-
-  const transfer = await Transaction.create({
-    transferType: 0,
-    amount: 10,
-    accountID: bank.id,
-    toAccountID: cash.id,
-    note: 'transfer from bank to cash'
-  });
-
-  const income = await Transaction.create({
-    transferType: 1,
-    amount: 100,
-    accountID: bank.id,
-    note: 'an income'
-  });
-  */
 
   const jack = await User.create({
     userName: 'jack',
@@ -89,6 +64,34 @@ export const init = async () => {
 
   const employee = await Payee.create({
     name: 'xiao zhang',
+  });
+
+const withdraw = await Transaction.create({
+    transferType: -1,
+    amount: 10,
+    accountID: cash.id,
+    categoryID: food.id,
+    payeeID: employee.id,
+    ledgerID: smallbusiness.id,
+    note: 'a spending on food'
+  });
+
+
+  const transfer = await Transaction.create({
+    transferType: 0,
+    amount: 10,
+    accountID: bank.id,
+    toAccountID: cash.id,
+    ledgerID: smallbusiness.id,
+    note: 'transfer from bank to cash'
+  });
+
+  const income = await Transaction.create({
+    transferType: 1,
+    amount: 100,
+    accountID: bank.id,
+    ledgerID: supermarket.id,
+    note: 'an income'
   });
 
   console.log('db seeding done');

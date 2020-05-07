@@ -37,3 +37,9 @@ Account.hasMany(Transaction,{
    foreignKey: 'accountID',
    as: 'fkRefAccount',
 });
+
+Account.hasMany(Transaction,{
+   sourceKey: 'id',
+   foreignKey: 'toAccountID',
+   as: 'fkRefToAccount',
+});

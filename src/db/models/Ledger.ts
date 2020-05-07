@@ -2,6 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import User from './User';
 import Category from './Category';
+import Transaction from './Transaction';
 
 export default class Ledger extends Model {
   public id!: number;
@@ -36,5 +37,11 @@ Ledger.init({
 Ledger.hasMany(Category, {
   sourceKey: 'id',
   foreignKey: 'ledgerID',
-  as: 'fkRefLedger',
+  as: 'fkRefLedgerForCategory',
+});
+
+Ledger.hasMany(Transaction, {
+  sourceKey: 'id',
+  foreignKey: 'ledgerID',
+  as: 'fkRefLedgerForTransaction',
 });

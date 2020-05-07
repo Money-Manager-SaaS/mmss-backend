@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
+import Transaction from './Transaction';
 
 export default class Payee extends Model {
   public id!: number;
@@ -18,4 +19,10 @@ Payee.init({
 }, {
   sequelize,
   tableName: 'payees',
+});
+
+Payee.hasMany(Transaction, {
+  sourceKey: 'id',
+  foreignKey: 'payeeID',
+  as: 'fkRefPayee',
 });
