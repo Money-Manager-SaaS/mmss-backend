@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import User from './User';
+import Category from './Category';
 
 export default class Ledger extends Model {
   public id!: number;
@@ -31,3 +32,9 @@ Ledger.init({
 //   foreignKey: 'id',
 //   as: 'constraint_userid',
 // });
+
+Ledger.hasMany(Category, {
+  sourceKey: 'id',
+  foreignKey: 'ledgerID',
+  as: 'fkRefLedger',
+});
