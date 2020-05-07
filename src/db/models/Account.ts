@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
+import Transaction from './Transaction';
 
 export default class Account extends Model {
   public id!: number;
@@ -29,4 +30,10 @@ Account.init({
 }, {
   sequelize,
   tableName: 'accounts',
+});
+
+Account.hasMany(Transaction,{
+   sourceKey: 'id',
+   foreignKey: 'accountID',
+   as: 'fkRefAccount',
 });
