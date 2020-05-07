@@ -1,5 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
+import Transaction from './Transaction';
+
 
 export default class Category extends Model {
   public id!: number;
@@ -23,4 +25,10 @@ Category.init({
 }, {
   sequelize,
   tableName: 'categories',
+});
+
+Category.hasMany(Transaction,{
+   sourceKey: 'id',
+   foreignKey: 'categoryID',
+   as: 'fkRefCategory',
 });

@@ -38,7 +38,7 @@ export const init = async () => {
       name: 'Transport'
     }
   );
-
+/*
   const withdraw = await Transaction.create({
     transferType: -1,
     amount: 10,
@@ -62,6 +62,7 @@ export const init = async () => {
     accountID: bank.id,
     note: 'an income'
   });
+  */
 
   const jack = await User.create({
     userName: 'jack',
