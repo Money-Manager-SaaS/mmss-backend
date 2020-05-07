@@ -1,7 +1,7 @@
 import Account from '../../db/models/Ledger';
 
 export const getAll = async () => {
-    const trans = await Ledgers.findAll();
+    const trans = await Ledger.findAll();
     return {ledgers: trans};
 };
 
