@@ -13,12 +13,12 @@ export const getOne = async (id: number) => {
 
 export const create = async (data: any) => {
     // todo: + hash func
-    passwordhash = data?.password;
+    /*passwordHash = data?.password;*/
     const user = User.create({
           username: data?.username,
           email: data?.email,
           last_login: data?.last_login,
-          passwordhash: passwordhash,
+          passwordHash: data?.passwordHash,
       }
     );
     return user;

@@ -1,4 +1,4 @@
-import Account from '../../db/models/Ledger';
+import Ledger from '../../db/models/Ledger';
 
 export const getAll = async () => {
     const trans = await Ledger.findAll();
@@ -10,9 +10,9 @@ export const getOne = async (id: number) => {
     return tran;
 };
 
-export const updateOne = async (id: number, category: ledger) => {
+export const updateOne = async (id: number, ledger: Ledger) => {
     const t: Ledger | null = await Ledger.findByPk(id);
-    !!t && await t.update(category);
+    !!t && await t.update(ledger);
     return t;
 };
 
