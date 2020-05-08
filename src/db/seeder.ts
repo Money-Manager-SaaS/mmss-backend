@@ -15,29 +15,9 @@ export const init = async () => {
   await Ledger.sync({force: forceSync});
   await Payee.sync({force: forceSync});
 
-  const cash = await Account.create({
-    name: 'cash',
-    amount: '1000',
-    currency: 'NZD',
-  });
 
-  const bank = await Account.create({
-    name: 'debit',
-    amount: '10000',
-    currency: 'NZD',
-  });
 
-  const food = await Category.create(
-    {
-      name: 'Food'
-    }
-  );
 
-  const transport = await Category.create(
-    {
-      name: 'Transport'
-    }
-  );
 
   const jack = await User.create({
     userName: 'jack',
@@ -62,8 +42,37 @@ export const init = async () => {
     ledgerName: 'smallbusiness',
   });
 
+ const food = await Category.create(
+    {
+      name: 'Food',
+      ledgerID: supermarket.id,
+    }
+  );
+
+  const transport = await Category.create(
+    {
+      name: 'Transport',
+      ledgerID: smallbusiness.id,
+    }
+  );
+
+const cash = await Account.create({
+    name: 'cash',
+    amount: '1000',
+    ledgerID: supermarket.id,
+    currency: 'NZD',
+  });
+
+  const bank = await Account.create({
+    name: 'debit',
+    amount: '10000',
+    ledgerID: smallbusiness.id,
+    currency: 'NZD',
+  });
+
   const employee = await Payee.create({
     name: 'xiao zhang',
+    ledgerID: smallbusiness.id
   });
 
 const withdraw = await Transaction.create({
@@ -83,6 +92,7 @@ const withdraw = await Transaction.create({
     accountID: bank.id,
     toAccountID: cash.id,
     ledgerID: smallbusiness.id,
+    categoryID: transport.id,
     note: 'transfer from bank to cash'
   });
 
@@ -91,6 +101,8 @@ const withdraw = await Transaction.create({
     amount: 100,
     accountID: bank.id,
     ledgerID: supermarket.id,
+    categoryID: transport.id,
+    payeeID: employee.id,
     note: 'an income'
   });
 
