@@ -23,6 +23,12 @@ Category.init({
     allowNull: true,
   },
 }, {
+    indexes: [
+    // Create a unique index on email
+    {
+      unique: true,
+      fields: ['ledgerID', 'name']
+    },],
   sequelize,
   tableName: 'categories',
 });

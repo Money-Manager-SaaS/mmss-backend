@@ -26,6 +26,12 @@ Ledger.init({
     allowNull: false,
   }
 }, {
+    indexes: [
+    // Create a unique index on email
+    {
+      unique: true,
+      fields: ['userID', 'ledgerName']
+    },],
   sequelize,
   tableName: 'ledgers',
 });

@@ -27,7 +27,15 @@ Account.init({
     allowNull: false,
     defaultValue: 'USD',
   },
-}, {
+},
+{
+    indexes: [
+    // Create a unique index on email
+    {
+      unique: true,
+      fields: ['ledgerID', 'name']
+    },],
+
   sequelize,
   tableName: 'accounts',
 });
