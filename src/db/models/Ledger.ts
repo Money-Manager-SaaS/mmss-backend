@@ -3,6 +3,8 @@ import sequelize from '../db';
 import User from './User';
 import Category from './Category';
 import Transaction from './Transaction';
+import Account from './Account';
+import Payee from './Payee';
 
 export default class Ledger extends Model {
   public id!: number;
@@ -44,4 +46,16 @@ Ledger.hasMany(Transaction, {
   sourceKey: 'id',
   foreignKey: 'ledgerID',
   as: 'fkRefLedgerForTransaction',
+});
+
+Ledger.hasMany(Account,{
+   sourceKey: 'id',
+   foreignKey: 'ledgerID',
+   as: 'fkRefAccount',
+});
+
+Ledger.hasMany(Payee,{
+   sourceKey: 'id',
+   foreignKey: 'ledgerID',
+   as: 'fkRefPayee',
 });
