@@ -3,6 +3,7 @@ import accountRoutes from "./account/routes";
 import categoryRoutes from "./category/routes";
 import userRoutes from "./user/routes";
 import payeeRoutes from "./payee/routes";
+import ledgerRoutes from "./ledger/routes";
 import { Request, Response } from 'express';
 
 
@@ -13,6 +14,7 @@ export default [
   ...categoryRoutes,
   ...userRoutes,
   ...payeeRoutes,
+  ...ledgerRoutes,
 
   {
     path: "/",
