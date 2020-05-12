@@ -10,6 +10,17 @@ export const getOne = async (id: number) => {
     return tran;
 };
 
+export const create = async (data: any) => {
+    const account = Account.create({
+          amount: data?.amount,
+          ledgerID: data?.ledgerID,
+          currency: data?.currency,
+          name: data?.name,
+      }
+    );
+    return account;
+};
+
 export const updateOne = async (id: number, category: Account) => {
     const t: Account | null = await Account.findByPk(id);
     !!t && await t.update(category);
