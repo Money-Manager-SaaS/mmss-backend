@@ -11,6 +11,11 @@ export const getOne = async ({ params }: Request, res: Response) => {
   res.status(200).send(result);
 };
 
+export const create = async ({ body, params }: Request, res: Response) => {
+  const result = await provider.create(body);
+  res.status(200).send(result);
+};
+
 export const updateOne = async ({ body, params }: Request, res: Response) => {
   const result = await provider.updateOne(+params?.id, body);
   res.status(200).send(result);

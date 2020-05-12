@@ -18,6 +18,11 @@ export default [
         handler: [services.updateOne]
     },
     {
+        path: "/api/v1/payees",
+        method: "post",
+        handler: [services.create]
+    },
+    {
         path: "/api/v1/payees/:id",
         method: "delete",
         handler: [services.deleteOne]
