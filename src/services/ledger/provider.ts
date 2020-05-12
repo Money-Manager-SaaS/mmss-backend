@@ -11,18 +11,12 @@ export const getOne = async (id: number) => {
 };
 
 export const create = async (data: any) => {
-    const tran = Ledger.create({
-          transferType: +data?.transferType,
-          amount: data?.amount,
-          accountID: data?.accountID,
-          toAccountID: data?.toAccountID,
-          note: data?.note,
-          date: data?.date,
-          categoryID: data?.categoryID,
-          payeeID: data?.payeeID,
+    const ledger = Ledger.create({
+          ledgerName: data?.ledgerName,
+          userID: data?.userID,
       }
     );
-    return tran;
+    return ledger;
 };
 
 export const updateOne = async (id: number, ledger: Ledger) => {
