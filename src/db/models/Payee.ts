@@ -2,14 +2,12 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Transaction from './Transaction';
 
-
-export default class Category extends Model {
+export default class Payee extends Model {
   public id!: number;
   public name!: string;
-  public description!: string;
 }
 
-Category.init({
+Payee.init({
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
@@ -17,10 +15,6 @@ Category.init({
   },
   name: {
     type: DataTypes.STRING(128),
-  },
-  description: {
-    type: DataTypes.STRING(256),
-    allowNull: true,
   },
 }, {
     indexes: [
@@ -30,11 +24,11 @@ Category.init({
       fields: ['ledgerID', 'name']
     },],
   sequelize,
-  tableName: 'categories',
+  tableName: 'payees',
 });
 
-Category.hasMany(Transaction,{
-   sourceKey: 'id',
-   foreignKey: 'categoryID',
-   as: 'fkRefCategory',
+Payee.hasMany(Transaction, {
+  sourceKey: 'id',
+  foreignKey: 'payeeID',
+  as: 'fkRefPayee',
 });
