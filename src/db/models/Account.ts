@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
+import Transaction from './Transaction';
 
 export default class Account extends Model {
   public id!: number;
@@ -26,7 +27,27 @@ Account.init({
     allowNull: false,
     defaultValue: 'USD',
   },
-}, {
+},
+{
+    indexes: [
+    // Create a unique index on email
+    {
+      unique: true,
+      fields: ['ledgerID', 'name']
+    },],
+
   sequelize,
   tableName: 'accounts',
+});
+
+Account.hasMany(Transaction,{
+   sourceKey: 'id',
+   foreignKey: 'accountID',
+   as: 'fkRefAccount',
+});
+
+Account.hasMany(Transaction,{
+   sourceKey: 'id',
+   foreignKey: 'toAccountID',
+   as: 'fkRefToAccount',
 });
