@@ -15,9 +15,8 @@ export const create = async (data: any) => {
     // todo: + hash func
     /*passwordHash = data?.password;*/
     const user = User.create({
-          username: data?.username,
+          userName: data?.userName,
           email: data?.email,
-          last_login: data?.last_login,
           passwordHash: data?.passwordHash,
       }
     );
