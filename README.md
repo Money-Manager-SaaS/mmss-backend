@@ -8,8 +8,10 @@
 
 ## todo
 - [x] `create` endpoint for account, category..
-- [ ] build payee
-- [ ] build ledger
+- [x] build payee
+- [x] build ledger
+- [ ] use psql
+- [ ] jwt/auth
 - [ ] set CORS whitelist now it is avalible for all
 - [ ] filter
 - [ ] figure out a better way for sequelize migration before build the final production
