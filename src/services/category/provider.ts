@@ -10,6 +10,16 @@ export const getOne = async (id: number) => {
     return tran;
 };
 
+export const create = async (data: any) => {
+    const category = Category.create({
+          description: data?.description,
+          ledgerID: data?.ledgerID,
+          name: data?.name,
+      }
+    );
+    return category;
+};
+
 export const updateOne = async (id: number, category: Category) => {
     const t: Category | null = await Category.findByPk(id);
     !!t && await t.update(category);

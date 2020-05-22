@@ -10,6 +10,15 @@ export const getOne = async (id: number) => {
     return tran;
 };
 
+export const create = async (data: any) => {
+    const payee = Payee.create({
+          name: data?.name,
+          ledgerID: data?.ledgerID,
+      }
+    );
+    return payee;
+};
+
 export const updateOne = async (id: number, category: Payee) => {
     const t: Payee | null = await Payee.findByPk(id);
     !!t && await t.update(category);

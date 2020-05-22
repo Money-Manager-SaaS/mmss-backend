@@ -12,6 +12,11 @@ export default [
         method: "get",
         handler: [services.getOne]
     },
+        {
+        path: "/api/v1/accounts",
+        method: "post",
+        handler: [services.create]
+    },
     {
         path: "/api/v1/accounts/:id",
         method: "put",
