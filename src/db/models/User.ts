@@ -5,36 +5,62 @@ import Ledger from './Ledger';
 
 export default class User extends Model {
   public id!: number;
-  public userName!: string;
   public email!: string;
-  public passwordHash!:string;
+  public password!: string;
+  public userName?: string;
+  public firsName?: string;
+  public lastName?: string;
+  public about?: string;
+  public active!: boolean;
+  public last_login?: Date;
 }
 
 User.init({
   id: {
-    type: DataTypes.INTEGER.UNSIGNED, // you can omit the `new` but this is discouraged
+    type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true,
   },
-  userName: {
-    type: DataTypes.STRING(256),
+  email: {
+    type: DataTypes.STRING(128),
+    allowNull: false,
+    validate: {
+      isEmail: true,
+    }
+  },
+  password: {
+    type: DataTypes.STRING(128),
     allowNull: false,
   },
-  email: {
-    type: DataTypes.STRING(256),
+  userName: {
+    type: DataTypes.STRING(64),
     allowNull: true,
   },
-  passwordHash: {
-    type: DataTypes.STRING(256),
-    allowNull: false,
+  firstName: {
+    type: DataTypes.STRING(64),
+    allowNull: true,
   },
+  lastName: {
+    type: DataTypes.STRING(64),
+    allowNull: true,
+  },
+  about: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    defaultValue: '',
+  },
+  active: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
+  last_login: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  }
 }, {
   sequelize,
   tableName: 'users',
 });
 
-User.hasMany(Ledger, {
-  sourceKey: 'id',
-  foreignKey: 'userID',
-  as: 'fkRefUser',
-});
+
