@@ -2,6 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Account from './Account';
 import Category from './Category';
+import Payee from './Payee';
 
 export default class Transaction extends Model {
   public id!: number;
@@ -9,6 +10,10 @@ export default class Transaction extends Model {
   public amount!: number;
   public note?: string;
   public date?: Date;
+  public accountID!: number;
+  public toAccountID?: number;
+  public categoryID?: number;
+  public payeeID?: number;
 }
 
 Transaction.init({
@@ -19,7 +24,7 @@ Transaction.init({
   },
   transferType: {
     type: DataTypes.INTEGER,
-    defaultValue: -1,
+    defaultValue: -1, // -1 is spending money
   },
   amount: {
     type: DataTypes.DECIMAL,
@@ -33,26 +38,48 @@ Transaction.init({
     type: DataTypes.DATE,
     allowNull: true
   },
+  accountID: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+  },
+  toAccountID: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: true,
+  },
+  categoryID: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: true,
+  },
+  payeeID: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: true,
+  },
 }, {
   sequelize,
   tableName: 'transactions',
 });
 
 
-// Transaction.hasOne(Account, {
-//   sourceKey: 'id',
-//   foreignKey: 'accountID',
-//   as: 'Account',
-// });
-//
-// Transaction.hasOne(Account, {
-//   sourceKey: 'id',
-//   foreignKey: 'toAccountID',
-//   as: 'ToAccount',
-// });
-//
-// Transaction.hasOne(Category,{
-//   sourceKey: 'id',
-//   foreignKey: 'categoryID',
-//   as: 'Category',
-// });
+Transaction.hasOne(Account, {
+  sourceKey: 'id',
+  foreignKey: 'accountID',
+  as: 'Account',
+});
+
+Transaction.hasOne(Account, {
+  sourceKey: 'id',
+  foreignKey: 'toAccountID',
+  as: 'ToAccount',
+});
+
+Transaction.hasOne(Category,{
+  sourceKey: 'id',
+  foreignKey: 'categoryID',
+  as: 'Category',
+});
+
+Transaction.hasOne(Payee,{
+  sourceKey: 'id',
+  foreignKey: 'payeeID',
+  as: 'Category',
+});
