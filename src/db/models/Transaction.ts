@@ -81,5 +81,5 @@ Transaction.hasOne(Category,{
 Transaction.hasOne(Payee,{
   sourceKey: 'id',
   foreignKey: 'payeeID',
-  as: 'Category',
+  as: 'Payee',
 });

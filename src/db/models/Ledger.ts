@@ -1,15 +1,12 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import User from './User';
-import Category from './Category';
-import Transaction from './Transaction';
-import Account from './Account';
-import Payee from './Payee';
 
 export default class Ledger extends Model {
   public id!: number;
   public userID!: number;
-  public ledgerName!: string;
+  public name!: string;
+  public description?: string;
 }
 
 Ledger.init({
@@ -20,48 +17,28 @@ Ledger.init({
   },
   userID: {
     type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: true,
   },
-  ledgerName: {
+  name: {
     type: DataTypes.STRING(256),
     allowNull: false,
-  }
+  },
+  description: {
+    type: DataTypes.STRING(256),
+    allowNull: true,
+  },
 }, {
-    indexes: [
-    // Create a unique index on email
+  indexes: [
     {
-      unique: true,
-      fields: ['userID', 'ledgerName']
-    },],
+      fields: ['userID', 'name']
+    }
+  ],
   sequelize,
   tableName: 'ledgers',
 });
 
-// Ledger.hasOne(User, {
-//   sourceKey: 'userID',
-//   foreignKey: 'id',
-//   as: 'constraint_userid',
-// });
-
-Ledger.hasMany(Category, {
+Ledger.hasOne(User, {
   sourceKey: 'id',
-  foreignKey: 'ledgerID',
-  as: 'fkRefLedgerForCategory',
-});
-
-Ledger.hasMany(Transaction, {
-  sourceKey: 'id',
-  foreignKey: 'ledgerID',
-  as: 'fkRefLedgerForTransaction',
-});
-
-Ledger.hasMany(Account,{
-   sourceKey: 'id',
-   foreignKey: 'ledgerID',
-   as: 'fkRefAccount',
-});
-
-Ledger.hasMany(Payee,{
-   sourceKey: 'id',
-   foreignKey: 'ledgerID',
-   as: 'fkRefPayee',
+  foreignKey: 'userID',
+  as: 'User',
 });
