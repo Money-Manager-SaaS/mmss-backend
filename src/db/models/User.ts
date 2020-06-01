@@ -63,4 +63,9 @@ User.init({
   tableName: 'users',
 });
 
-
+User.hasMany(Ledger, {
+  as: 'Ledgers',
+  sourceKey: 'id',
+  foreignKey: 'userID',
+  constraints: false,
+});
