@@ -30,6 +30,7 @@ Category.init({
 }, {
   indexes: [
     {
+      unique: true,
       fields: ['ledgerID', 'name']
     },
   ],

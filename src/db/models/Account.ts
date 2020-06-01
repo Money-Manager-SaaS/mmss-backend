@@ -41,8 +41,9 @@ Account.init({
   {
     indexes: [
       {
+        unique: true,
         fields: ['ledgerID', 'name']
-      }
+      },
     ],
     sequelize,
     tableName: 'accounts',

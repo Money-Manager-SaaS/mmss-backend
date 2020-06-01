@@ -30,6 +30,7 @@ Ledger.init({
 }, {
   indexes: [
     {
+      unique: true,
       fields: ['userID', 'name']
     }
   ],

@@ -29,8 +29,9 @@ Payee.init({
 }, {
   indexes: [
     {
+      unique: true,
       fields: ['ledgerID', 'name']
-    }
+    },
   ],
   sequelize,
   tableName: 'payees',
