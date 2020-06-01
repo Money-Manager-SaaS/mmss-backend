@@ -7,7 +7,7 @@
     "dev": "tsc-watch --onSuccess \"ts-node src/server.ts\"",
     "start": "npx pm2 start pm2.yaml",
     "start:heroku": "npm run postinstall && node dist/server.js",
-    "seed": "ts-node src/db/seeding/seeder.ts",
+    "seed": "ts-node src/db/seeding/index.ts",
     "postinstall": "npx tsc",
     "test": "jest"
   },
