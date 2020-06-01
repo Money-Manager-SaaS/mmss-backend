@@ -1,10 +1,12 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
-import Transaction from './Transaction';
+import Ledger from './Ledger';
 
 export default class Payee extends Model {
   public id!: number;
   public name!: string;
+  public description?: string;
+  public ledgerID!: number;
 }
 
 Payee.init({
@@ -16,19 +18,27 @@ Payee.init({
   name: {
     type: DataTypes.STRING(128),
   },
+  description: {
+    type: DataTypes.STRING(256),
+    allowNull: true,
+  },
+  ledgerID: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+  },
 }, {
-    indexes: [
-    // Create a unique index on email
+  indexes: [
     {
       unique: true,
       fields: ['ledgerID', 'name']
-    },],
+    },
+  ],
   sequelize,
   tableName: 'payees',
 });
 
-Payee.hasMany(Transaction, {
+Payee.hasOne(Ledger, {
   sourceKey: 'id',
-  foreignKey: 'payeeID',
-  as: 'fkRefPayee',
+  foreignKey: 'ledgerID',
+  as: 'Ledger',
 });
