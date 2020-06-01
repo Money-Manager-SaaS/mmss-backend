@@ -6,6 +6,7 @@ import Category from '../models/Category';
 import Payee from '../models/Payee';
 import Transaction from '../models/Transaction';
 
+// faker is not good at random, maybe have problem when amount be really huge
 export const userSeeder = async (userCount: number) => {
   const forceSync = !!process.env.forceSync;
   await User.sync({force: forceSync});
@@ -97,7 +98,7 @@ export const transactionSeeder = async (
   return Promise.all([...Array(num).keys()].map(
     async (): Promise<Transaction> => {
       const transferType = [-1, 0, 1][Math.floor(Math.random() * 3)];
-      let toAccountID = undefined;
+      let toAccountID;
 
       if (transferType === 0) {
         toAccountID = acct.id === accounts.length - 1 ? 0 : acct.id + 1;
