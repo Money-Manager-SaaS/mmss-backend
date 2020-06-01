@@ -1,6 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Ledger from './Ledger';
+import Account from './Account';
+import Transaction from './Transaction';
+import Category from './Category';
 
 export default class Payee extends Model {
   public id!: number;
@@ -37,8 +40,9 @@ Payee.init({
   tableName: 'payees',
 });
 
-Payee.hasOne(Ledger, {
+Payee.hasMany(Transaction, {
   sourceKey: 'id',
-  foreignKey: 'ledgerID',
-  as: 'Ledger',
+  foreignKey: 'payeeID',
+  as: 'Transactions',
+  constraints: false,
 });
