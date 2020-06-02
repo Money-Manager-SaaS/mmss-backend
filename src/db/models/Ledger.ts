@@ -1,6 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import User from './User';
+import Category from './Category';
+import Account from './Account';
+import Payee from './Payee';
 
 export default class Ledger extends Model {
   public id!: number;
@@ -38,8 +41,23 @@ Ledger.init({
   tableName: 'ledgers',
 });
 
-Ledger.hasOne(User, {
+Ledger.hasMany(Category, {
+  as: 'Categories',
   sourceKey: 'id',
-  foreignKey: 'userID',
-  as: 'User',
+  foreignKey: 'ledgerID',
+  constraints: false,
+});
+
+Ledger.hasMany(Account, {
+  as: 'Accounts',
+  sourceKey: 'id',
+  foreignKey: 'ledgerID',
+  constraints: false,
+});
+
+Ledger.hasMany(Payee, {
+  as: 'Payees',
+  sourceKey: 'id',
+  foreignKey: 'ledgerID',
+  constraints: false,
 });

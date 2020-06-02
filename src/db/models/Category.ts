@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Ledger from './Ledger';
+import Account from './Account';
+import Transaction from './Transaction';
 
 
 export default class Category extends Model {
@@ -38,8 +40,9 @@ Category.init({
   tableName: 'categories',
 });
 
-Category.hasOne(Ledger, {
+Category.hasMany(Transaction, {
   sourceKey: 'id',
-  foreignKey: 'ledgerID',
-  as: 'Ledger',
+  foreignKey: 'categoryID',
+  as: 'Transactions',
+  constraints: false,
 });

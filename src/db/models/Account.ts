@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Ledger from './Ledger';
+import Transaction from './Transaction';
+import Category from './Category';
 
 export default class Account extends Model {
   public id!: number;
@@ -49,8 +51,17 @@ Account.init({
     tableName: 'accounts',
   });
 
-Account.hasOne(Ledger, {
+Account.hasMany(Transaction, {
   sourceKey: 'id',
-  foreignKey: 'ledgerID',
-  as: 'Ledger',
+  foreignKey: 'accountID',
+  as: 'Transactions',
+  constraints: false,
+});
+
+
+Account.hasMany(Transaction, {
+  sourceKey: 'id',
+  foreignKey: 'toAccountID',
+  as: 'TransferTransactions',
+  constraints: false,
 });

@@ -13,7 +13,7 @@ RUN npm ci
 ADD . .
 RUN chmod 777 /mm/demo.db
 
-RUN npm run seed && npm run postinstall
+RUN npm run postinstall
 
 CMD ["node", "dist/server.js"]
 
