@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Ledger from './Ledger';
-
+import crypto from 'crypto'
 
 export default class User extends Model {
   public id!: number;
@@ -13,6 +13,29 @@ export default class User extends Model {
   public about?: string;
   public active!: boolean;
   public last_login?: Date;
+
+  authenticate = (plainText: string) => {
+    return this.encryptPassword(plainText) === this.password;
+  }
+
+  encryptPassword = (password: string) => {
+    if(password=='')
+    {
+        return '';
+    }
+    try {
+      return crypto
+        .createHmac('sha1', "this.salt")
+        .update(password)
+        .digest('hex')
+    } catch (err) {
+      return ''
+    }
+  };
+/*
+  const makeSalt = () => {
+    return Math.round((new Date().valueOf() * Math.random())) + '';
+  }*/
 }
 
 User.init({
