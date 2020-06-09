@@ -8,12 +8,12 @@ export default [
         handler: [services.getAll]
     },
     {
-        path: "/api/v1/users/:id",
-        method: "get",
+        path: "/api/v1/users/signin",
+        method: "post",
         handler: [services.getOne]
     },
     {
-        path: "/api/v1/users",
+        path: "/api/v1/users/signup",
         method: "post",
         handler: [services.create]
     },
