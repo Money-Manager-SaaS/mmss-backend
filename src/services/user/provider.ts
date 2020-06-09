@@ -1,11 +1,31 @@
 import User from '../../db/models/User';
 import jwt from 'jsonwebtoken'
 import expressJwt from 'express-jwt'
+import crypto from 'crypto'
 
 const requiredSignIn = expressJwt({
     secret: "abcdefg",
     userProperty: 'auth',
   })
+
+
+const encryptPassword = (password: string) => {
+    if(password=='')
+    {
+        return '';
+    }
+    try {
+      return crypto.createHmac('sha1', "this.salt").update(password).digest('hex');
+    } catch (err) {
+      return '';
+    }
+  }
+
+const validate =  (password: string) => {
+    if (password && password.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+  }
 
 export const getAll = async () => {
     const all_users = await User.findAll();
@@ -33,13 +53,11 @@ export const signIn = async (userName: string, password: string) => {
     return [token, user!.id, user!.email] ;
 };
 
-export const create = async (data: any) => {
-    // todo: + hash func
-    /*passwordHash = data?.password;*/
+export const signUp = async (data: any) => {
     const user = User.create({
           userName: data?.userName,
           email: data?.email,
-          passwordHash: data?.passwordHash,
+          password: encryptPassword(data?.password),
       }
     );
     return user;

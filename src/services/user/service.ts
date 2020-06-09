@@ -29,7 +29,7 @@ export const getOne = async ({ params, body }: Request, res: Response) => {
 };
 
 export const create = async ({ body, params }: Request, res: Response) => {
-  const result = await provider.create(body);
+  const result = await provider.signUp(body);
   res.status(200).send(result);
 };
 
