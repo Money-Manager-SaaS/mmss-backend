@@ -9,7 +9,7 @@ const requiredSignIn = expressJwt({
   })
 
 
-const encryptPassword = (password: string) => {
+export const encryptPassword = (password: string) => {
     if(password=='')
     {
         return '';
@@ -21,7 +21,7 @@ const encryptPassword = (password: string) => {
     }
   }
 
-const validate =  (password: string) => {
+export const validate = (password: string) => {
     if (password && password.length < 6) {
       return 'Password must be at least 6 characters';
     }
