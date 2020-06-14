@@ -3,19 +3,24 @@ import * as services from './service';
 
 export default [
     {
+        path: "/api/users/signin",
+        method: "post",
+        handler: [services.getOne]
+    },
+    {
+        path: "/api/users/signup",
+        method: "post",
+        handler: [services.create]
+    },
+    {
         path: "/api/v1/users",
         method: "get",
         handler: [services.getAll]
     },
     {
-        path: "/api/v1/users/signin",
-        method: "post",
+        path: "/api/v1/users/:id",
+        method: "get",
         handler: [services.getOne]
-    },
-    {
-        path: "/api/v1/users/signup",
-        method: "post",
-        handler: [services.create]
     },
     {
         path: "/api/v1/users/:id",
