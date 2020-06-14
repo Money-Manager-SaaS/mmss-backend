@@ -7,7 +7,7 @@ export const getAll = async ({ }: Request, res: Response) => {
   res.status(200).send(result);
 };
 
-export const getOne = async ({ params, body }: Request, res: Response) => {
+export const signIn = async ({ params, body }: Request, res: Response) => {
   const [token, id, email] = await provider.signIn(body?.username, body?.password);
 
       // Optional if we choose to set the token to a cookie in the response
