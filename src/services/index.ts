@@ -30,6 +30,7 @@ export default [
             '/api/v1/users',
             '/api/v1/payees',
             '/api/v1/ledgers',
+            '/api/users',
           ]
         });
       }
