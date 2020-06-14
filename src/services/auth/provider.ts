@@ -8,6 +8,9 @@ const requiredSignIn = expressJwt({
     userProperty: 'auth',
   })
 
+const authenticate = (plainText: string, password: string) => {
+    return encryptPassword(plainText) === password;
+  }
 
 export const encryptPassword = (password: string) => {
     if(password=='')
@@ -15,11 +18,14 @@ export const encryptPassword = (password: string) => {
         return '';
     }
     try {
-      return crypto.createHmac('sha1', "this.salt").update(password).digest('hex');
+      return crypto
+        .createHmac('sha1', "this.salt")
+        .update(password)
+        .digest('hex')
     } catch (err) {
-      return '';
+      return ''
     }
-  }
+  };
 
 export const validate = (password: string) => {
     if (password && password.length < 6) {
@@ -27,16 +33,16 @@ export const validate = (password: string) => {
     }
   }
 
-export const signIn = async (userName: string, password: string) => {
+export const signIn = async (userName2: string, plaintext: string) => {
     const user = await User.findOne({
         where: {
-            userName: userName,
+            userName: userName2,
         },
     });
 
     // To verify the password from the request body using
     // the authenticate method in the model UserSchema
-    if ( user!.authenticate(password) == null) {
+    if ( authenticate(plaintext, user!.password) == null) {
         return 'Email and Password do not match';
     }
   

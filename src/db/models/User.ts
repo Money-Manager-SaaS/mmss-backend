@@ -14,24 +14,6 @@ export default class User extends Model {
   public active!: boolean;
   public last_login?: Date;
 
-  authenticate = (plainText: string) => {
-    return this.encryptPassword(plainText) === this.password;
-  }
-
-  encryptPassword = (password: string) => {
-    if(password=='')
-    {
-        return '';
-    }
-    try {
-      return crypto
-        .createHmac('sha1', "this.salt")
-        .update(password)
-        .digest('hex')
-    } catch (err) {
-      return ''
-    }
-  };
 /*
   const makeSalt = () => {
     return Math.round((new Date().valueOf() * Math.random())) + '';
