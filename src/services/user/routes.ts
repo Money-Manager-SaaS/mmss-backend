@@ -3,16 +3,6 @@ import * as services from './service';
 
 export default [
     {
-        path: "/api/users/signin",
-        method: "post",
-        handler: [services.signIn]
-    },
-    {
-        path: "/api/users/signup",
-        method: "post",
-        handler: [services.create]
-    },
-    {
         path: "/api/v1/users",
         method: "get",
         handler: [services.getAll]
