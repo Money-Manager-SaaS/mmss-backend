@@ -74,3 +74,8 @@ export const deleteOne = async (id: number) => {
     !!u && await u.destroy();
     return u;
 };
+
+export const getOne = async (id: number) => {
+    const user = await User.findByPk(id);
+    return user;
+};

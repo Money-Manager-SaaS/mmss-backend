@@ -5,7 +5,7 @@ export default [
     {
         path: "/api/users/signin",
         method: "post",
-        handler: [services.getOne]
+        handler: [services.signIn]
     },
     {
         path: "/api/users/signup",
