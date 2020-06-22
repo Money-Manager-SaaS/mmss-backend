@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Ledger from './Ledger';
-import crypto from 'crypto'
+import crypto from 'crypto';
 
 export default class User extends Model {
   public id!: number;
@@ -14,59 +14,63 @@ export default class User extends Model {
   public active!: boolean;
   public last_login?: Date;
 
-/*
+  /*
   const makeSalt = () => {
     return Math.round((new Date().valueOf() * Math.random())) + '';
   }*/
 }
 
-User.init({
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    email: {
+      type: DataTypes.STRING(128),
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
+    },
+    password: {
+      type: DataTypes.STRING(128),
+      allowNull: false,
+    },
+    userName: {
+      type: DataTypes.STRING(64),
+      allowNull: true,
+    },
+    firstName: {
+      type: DataTypes.STRING(64),
+      allowNull: true,
+    },
+    lastName: {
+      type: DataTypes.STRING(64),
+      allowNull: true,
+    },
+    about: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      defaultValue: '',
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
+    last_login: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
-  email: {
-    type: DataTypes.STRING(128),
-    allowNull: false,
-    validate: {
-      isEmail: true,
-    }
-  },
-  password: {
-    type: DataTypes.STRING(128),
-    allowNull: false,
-  },
-  userName: {
-    type: DataTypes.STRING(64),
-    allowNull: true,
-  },
-  firstName: {
-    type: DataTypes.STRING(64),
-    allowNull: true,
-  },
-  lastName: {
-    type: DataTypes.STRING(64),
-    allowNull: true,
-  },
-  about: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    defaultValue: '',
-  },
-  active: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-  },
-  last_login: {
-    type: DataTypes.DATE,
-    allowNull: true,
+  {
+    sequelize,
+    tableName: 'users',
   }
-}, {
-  sequelize,
-  tableName: 'users',
-});
+);
 
 User.hasMany(Ledger, {
   as: 'Ledgers',
