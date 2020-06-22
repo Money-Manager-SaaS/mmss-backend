@@ -12,7 +12,7 @@ class App {
         this.middlewares(appInit.middleWares);
         this.routes(appInit.controllers);
         this.assets();
-        this.template()
+        this.template();
     }
 
     public listen() {

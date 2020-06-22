@@ -2,6 +2,7 @@ import express from "express";
 import { applyMiddleware, applyRoutes } from "./utils/utils";
 import middleware from "./middleware/index";
 import errorHandlers from "./middleware/errorHandlers";
+import checkAuth from "./middleware/auth";
 import routes from "./services";
 
 process.on("uncaughtException", e => {
@@ -17,6 +18,7 @@ const app = express();
 applyMiddleware(middleware, app);
 applyRoutes(routes, app);
 applyMiddleware(errorHandlers, app);
+applyMiddleware(checkAuth, app);
 
 const { PORT = 3000 } = process.env;
 const server = app;
