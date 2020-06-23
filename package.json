@@ -50,7 +50,7 @@
     "@types/supertest": "^2.0.8",
     "@types/swagger-ui-express": "^4.1.1",
     "@types/validator": "12.0.1",
-    "jest": "26.0.1",
+    "jest": "26.1.0",
     "kind-of": "6.0.3",
     "ts-jest": "26.1.0",
     "tsc-watch": "4.1.0"
