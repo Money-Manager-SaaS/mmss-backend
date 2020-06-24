@@ -28,7 +28,7 @@
     "pug": "^2.0.4",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
-    "sequelize": "^5.21.5",
+    "sequelize": "^6.0.0",
     "sqlite3": "^4.1.1",
     "supertest": "^4.0.2",
     "swagger-ui-express": "^4.1.3",
