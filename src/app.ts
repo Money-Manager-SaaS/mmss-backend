@@ -1,6 +1,7 @@
 import express from 'express'
 import { Application } from 'express'
 
+// todo delete this class, we seems not using it
 class App {
     public app: Application;
     public port: number;
@@ -43,4 +44,4 @@ class App {
     }
 }
 
-export default App
+// export default App
