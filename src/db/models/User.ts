@@ -12,7 +12,7 @@ export default class User extends Model {
   public lastName?: string;
   public about?: string;
   public active!: boolean;
-  public last_login?: Date;
+  public lastLogin?: Date;
 }
 
 User.init({
@@ -54,7 +54,7 @@ User.init({
     allowNull: false,
     defaultValue: true,
   },
-  last_login: {
+  lastLogin: {
     type: DataTypes.DATE,
     allowNull: true,
   }
