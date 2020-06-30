@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Ledger from './Ledger';
-
+import bcrypt from 'bcrypt';
 
 export default class User extends Model {
   public id!: number;
@@ -13,6 +13,21 @@ export default class User extends Model {
   public about?: string;
   public active!: boolean;
   public lastLogin?: Date;
+
+  public checkPassword (passwordInPlaintText: string): boolean {
+    return bcrypt.compareSync(
+      passwordInPlaintText,
+      this.password
+    );
+  }
+
+  public static encryptPassword (passwordInPlaintText: string): string {
+    const saltRounds = 3;
+    return bcrypt.hashSync(
+      passwordInPlaintText,
+      saltRounds
+    );
+  }
 }
 
 User.init({
@@ -69,3 +84,10 @@ User.hasMany(Ledger, {
   foreignKey: 'userID',
   constraints: false,
 });
+
+User.beforeCreate(
+  (user) => {
+    user.password = User.encryptPassword(user.password);
+    user.save();
+  }
+);
