@@ -1,12 +1,6 @@
 import User from '../../db/models/User';
-import jwt from 'jsonwebtoken';
-import expressJwt from 'express-jwt';
 import crypto from 'crypto';
-
-const requiredSignIn = expressJwt({
-  secret: 'abcdefg',
-  userProperty: 'auth',
-});
+import signToken from '../../utils/jwt';
 
 const authenticate = (plainText: string, password: string) => {
   return encryptPassword(plainText) === password;
@@ -44,14 +38,9 @@ export const signIn = async (email: string, password: string) => {
   //对比完密码后，应该找到用户的其他资料，比如ledge，accounts，categories，payees，返回给用户
   //并且signup也需要类似操作。
   // Generate jwt sign using a secret key and user id
-  const token = jwt.sign(
-    {
-      _id: user!.id,
-    },
-    'abcdefg'
-  );
+  const token = signToken(email);
 
-  return [token, user!.id, user!.email];
+  return [token, user!.email];
 };
 
 export const signUp = async (data: any) => {

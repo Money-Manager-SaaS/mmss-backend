@@ -12,12 +12,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/cookie-parser": "^1.4.2",
     "@types/express-jwt": "0.0.42",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mock-req-res": "^1.1.2",
+    "@types/passport-jwt": "^3.0.3",
     "@types/sinon": "^9.0.4",
     "acorn": "7.1.1",
     "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^5.0.0-alpha.7",
