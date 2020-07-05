@@ -9,7 +9,11 @@
       "start:heroku": "npm run postinstall && node dist/server.js",
       "seed": "ts-node src/db/seeding/index.ts",
       "postinstall": "npx tsc",
-      "test": "jest"
+      "test": "jest",
+      "db:migration": " ts-node ./node_modules/typeorm/cli.js  migration:generate",
+      "db:gen-migration": "npm run db:migration -- -n auto",
+      "db:migrate": " ts-node ./node_modules/typeorm/cli.js  migration:run",
+      "db:revert": " ts-node ./node_modules/typeorm/cli.js  migration:revert"
    },
    "dependencies": {
       "acorn": "7.1.1",

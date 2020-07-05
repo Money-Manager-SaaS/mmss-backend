@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../db';
 import Ledger from './Ledger';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 export default class User extends Model {
   public id!: number;
