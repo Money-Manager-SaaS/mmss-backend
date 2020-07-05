@@ -10,6 +10,10 @@
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
+      "sourceMap": true,
+      "allowSyntheticDefaultImports": true,
+//      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "downlevelIteration": true
    }
 }

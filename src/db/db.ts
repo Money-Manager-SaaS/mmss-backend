@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import { Sequelize } from 'sequelize';
 
 const sampleDB =  process.env.DB_PATH ? process.env.DB_PATH : path.resolve(__dirname,  '../../demo.db');
