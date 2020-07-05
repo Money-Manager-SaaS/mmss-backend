@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BaseEntity, DeleteDateColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
+
 
 @Entity()
 export class User extends BaseEntity {
@@ -90,4 +91,10 @@ export class User extends BaseEntity {
     this.password = User.encryptPassword(this.password);
     this.updateLastLogin();
   }
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }
+
+
+// export const UserRepo = getOrmManager().getRepository(User);
