@@ -46,7 +46,7 @@ export const signUp = async (userBody?: any): Promise<User> => {
 export const signIn = async (email: string, password: string): Promise<User> => {
   const UserRepo = getOrmManager().getRepository(User);
   const user = await UserRepo.findOne({email: email});
-  if (user.checkPassword(password)) {
+  if (user && user.checkPassword(password)) {
     return user;
   } else {
     return null;
