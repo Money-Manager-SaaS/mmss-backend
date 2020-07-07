@@ -6,3 +6,4 @@ coverage
 renovate.json
 README.md
 LICENSE
+/test.sqlite

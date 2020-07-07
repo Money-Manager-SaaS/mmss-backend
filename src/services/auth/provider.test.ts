@@ -40,6 +40,16 @@ describe(' test auth provider', () => {
     expect(byID.active).toEqual(true);
   });
 
+  it('get a jwt token and verify', async ()=>{
+    const token = provider.signJWT(user.id, user.email);
+    expect(!!token).toEqual(true);
+    const result = await provider.verifyJWT(token);
+    expect(result.sub).toEqual(user.id);
+    expect(result.email).toEqual(user.email);
+    expect(result.iat).toBeLessThan(new Date().getTime());
+    expect(result.exp).toBeGreaterThan(new Date().getTime());
+  });
+
   it('disable it and enable it', async () => {
     const byID = await provider.disableOne(user.id);
     expect(byID.active).toEqual(false);

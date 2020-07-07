@@ -1,12 +1,10 @@
 import * as express from 'express';
-const router = express.Router();
 import * as services from './service';
-import * as parser from 'body-parser';
+import { handleBodyRequestParsing } from '../../middleware/common';
 
-// middleware here
+const router = express.Router();
 
-router.use(parser.urlencoded({extended: true}));
-router.use(parser.json());
+handleBodyRequestParsing(router);
 
 router.post('/signin', services.singIn);
 router.post('/signup', services.singUp);
