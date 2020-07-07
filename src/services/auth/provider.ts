@@ -35,7 +35,7 @@ export const deleteOne = async (id: number, softDelete = true): Promise<void> =>
 };
 
 
-// todo not use any here
+
 export const signUp = async (userBody?: any): Promise<User> => {
   const UserRepo = getOrmManager().getRepository(User);
   const user = (await UserRepo.create(userBody));

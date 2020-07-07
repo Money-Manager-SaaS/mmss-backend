@@ -26,7 +26,6 @@ describe(' test auth provider', () => {
 
     user = (await provider.signUp(user1Data));
 
-    console.log(user, 'the user');
     expect(user.password !== user1Data.password).toEqual(true);
     expect(user.checkPassword(user1Data.password)).toEqual(true);
   });

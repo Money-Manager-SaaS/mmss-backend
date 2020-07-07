@@ -6,7 +6,13 @@ export const singIn = async ({body}: Request, res: Response) => {
   const result = await provider.signIn(body?.email, body?.password);
   if (result) {
     result.password = undefined;
-    res.status(200).send(result);
+    const token = await provider.signJWT(result.id, result.email);
+    const body = {
+      token,
+      //todo remove user, it is not required
+      user: result,
+    };
+    res.status(200).json(body);
   } else {
     res.status(401).end();
   }

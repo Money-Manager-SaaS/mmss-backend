@@ -15,17 +15,8 @@ const app = express();
 app.use('/auth', theRouter);
 
 // a helper function to make a POST request.
-export function post(url, body): Test{
+export function post(url, body): Test {
   const httpRequest = supertest(app).post(url);
-  httpRequest.send(body);
-  httpRequest.set('Accept', 'application/json');
-  return httpRequest;
-}
-
-
-// a helper function to make a POST request.
-export function deleteUser(url, body): Test{
-  const httpRequest = supertest(app).delete(url);
   httpRequest.send(body);
   httpRequest.set('Accept', 'application/json');
   return httpRequest;
@@ -33,6 +24,7 @@ export function deleteUser(url, body): Test{
 
 describe("routes", () => {
   let user;
+  let token;
   afterAll(async () => {
     await getOrmManager().query(
       `DELETE FROM USER WHERE id = '${user.id}'; `
@@ -54,10 +46,32 @@ describe("routes", () => {
   it('sign in the user', async () => {
     const resp = await supertest(app).post('/auth/signin').send(user1Data);
     expect(resp.status).toEqual(200);
+    expect(resp.body.user.email).toEqual(user1Data.email);
+    expect(!resp.body.user.password);
+    expect(resp.body.token);
+    token = resp.body.token;
   });
 
   it('sign in the user with wrong password', async () => {
     const resp = await supertest(app).post('/auth/signin').send(Object.assign({}, user1Data, {password: '1'}));
     expect(resp.status).toEqual(401);
+  });
+
+  it('a ping, should always be true', async () => {
+    const resp = await supertest(app).get('/auth/ping');
+    expect(resp.status).toEqual(200);
+    expect(resp.body).toEqual('echo');
+  });
+
+
+  it('ping hidden endpoint without correct token', async () => {
+    const resp = await supertest(app).get('/auth/hidden').set({'Authorization': '123'});
+    expect(resp.status).toEqual(401);
+  });
+
+  it('ping hidden endpoint with correct token', async () => {
+    const resp = await supertest(app).get('/auth/hidden').set({'Authorization': token, aa: 'aa'});
+    expect(resp.status).toEqual(200);
+    expect(resp.body).toEqual(user.id);
   });
 });
