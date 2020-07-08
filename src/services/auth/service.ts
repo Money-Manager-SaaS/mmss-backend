@@ -1,15 +1,19 @@
 import { Request, Response } from 'express';
 import * as provider from './provider';
+import { verifyRefreshToken } from './provider';
 
 
 export const singIn = async ({body}: Request, res: Response) => {
   const result = await provider.signIn(body?.email, body?.password);
   if (result) {
     result.password = undefined;
-    const token = await provider.signJWT(result.id, result.email);
+    const token = await provider.signAccessToken(result.id, result.email);
+    const refreshToken = await provider.signRefreshToken(result.id, result.email);
     const body = {
+      accessToken: token,
+      refreshToken: refreshToken,
+      //todo remove the two below, they are not required
       token,
-      //todo remove user, it is not required
       user: result,
     };
     res.status(200).json(body);
@@ -38,6 +42,30 @@ export const deleteUser = async ({params}: Request, res: Response) => {
   res.status(400).end();
 };
 
+
+export const refreshToken = async (req: Request, res: Response) => {
+  const refreshToken = req.body?.refreshToken;
+
+  if (refreshToken) {
+    const token = refreshToken as string;
+    try {
+      const payload = await verifyRefreshToken(token);
+      if (payload) {
+        const token = await provider.signAccessToken(payload.sub, payload.email);
+        const body = {
+          accessToken: token
+        };
+        res.status(200).json(body);
+      }
+    } catch (e) {
+      res.sendStatus(401);
+    }
+  } else {
+    res.sendStatus(401);
+  }
+};
+
 export const resetPassword = async ({params}: Request, res: Response) => {
   // haha todo add a reset password endpoint
+  // email sender
 };

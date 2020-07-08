@@ -39,14 +39,26 @@ describe(' test auth provider', () => {
     expect(byID.active).toEqual(true);
   });
 
-  it('get a jwt token and verify', async ()=>{
-    const token = provider.signJWT(user.id, user.email);
+  it('get acess jwt token and verify', async ()=>{
+    const token = provider.signAccessToken(user.id, user.email);
     expect(!!token).toEqual(true);
-    const result = await provider.verifyJWT(token);
+    const result = await provider.verifyAccessToken(token);
     expect(result.sub).toEqual(user.id);
     expect(result.email).toEqual(user.email);
-    expect(result.iat).toBeLessThan(new Date().getTime());
+    expect(result.iat).toBeLessThanOrEqual(new Date().getTime());
     expect(result.exp).toBeGreaterThan(new Date().getTime());
+    expect(result.exp).toBeLessThanOrEqual(new Date().getTime()+60 * 60);
+  });
+
+  it('get refresh jwt token and verify', async ()=>{
+    const token = provider.signRefreshToken(user.id, user.email);
+    expect(!!token).toEqual(true);
+    const result = await provider.verifyRefreshToken(token);
+    expect(result.sub).toEqual(user.id);
+    expect(result.email).toEqual(user.email);
+    expect(result.iat).toBeLessThanOrEqual(new Date().getTime());
+    expect(result.exp).toBeGreaterThan(new Date().getTime());
+    expect(result.exp).toBeLessThanOrEqual(new Date().getTime()+60 * 60 * 24 * 14);
   });
 
   it('disable it and enable it', async () => {

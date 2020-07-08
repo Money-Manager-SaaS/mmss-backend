@@ -63,31 +63,69 @@ export interface IJWTPayload {
 }
 
 /**
+ * ref https://stackoverflow.com/questions/26739167/jwt-json-web-token-automatic-prolongation-of-expiration/54378344#54378344
+ */
+export enum TokenType {
+  Access='Access',
+  RefreshToken='RefreshToken',
+}
+
+/**
  * ref https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/
  */
-export const signJWT = (userID: number, email: string): string => {
+const signJWT = (userID: number, email?:string, tokenType = TokenType.Access, minutes: number = 60): string => {
   const currentTimeStamp = new Date().getTime();
+  const secret = tokenType === TokenType.Access ? process.env.JWT_SECRET : process.env.JWT_REFRESH_SECRET;
   return jwt.sign(
     {
       sub: userID,
       userID: userID,
       email: email,
       iat: currentTimeStamp,
-      exp: currentTimeStamp +  60 * 60 * 24,
+      exp: currentTimeStamp + 60 * minutes,
     },
-    process.env.JWT_SECRET,
+    secret,
     {
       algorithm: 'HS256'
     }
   );
 };
 
-export const verifyJWT = async (token: string): Promise<IJWTPayload> => {
+/**
+ * can be got through verify refresh token or password
+ * @param userID
+ * @param email
+ */
+export const signAccessToken = (userID: number, email?:string) => {
+  return signJWT(userID, email, TokenType.Access, 60);
+};
+
+/**
+ * can only get signed through password login
+ * @param userID
+ * @param email
+ */
+export const signRefreshToken = (userID: number, email?:string) => {
+  return signJWT(userID, email, TokenType.RefreshToken, 60 * 24 * 14);
+};
+
+
+const verifyJWT = async (token: string, tokenType = TokenType.Access): Promise<IJWTPayload> => {
+  const secret = tokenType === TokenType.Access ? process.env.JWT_SECRET : process.env.JWT_REFRESH_SECRET;
   const payload: IJWTPayload = await jwt.verify(
     token,
-    process.env.JWT_SECRET,
+    secret,
     {
       algorithms: ['HS256']
     }) as unknown as IJWTPayload;
   return payload;
+};
+
+export const verifyAccessToken = (token: string): Promise<IJWTPayload> => {
+  return verifyJWT(token, TokenType.Access);
+};
+
+
+export const verifyRefreshToken = (token: string): Promise<IJWTPayload> => {
+  return verifyJWT(token, TokenType.RefreshToken);
 };

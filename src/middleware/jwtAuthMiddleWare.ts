@@ -1,4 +1,4 @@
-import { verifyJWT } from '../services/auth/provider';
+import { verifyAccessToken } from '../services/auth/provider';
 
 /**
  *  the authorization header is required in request
@@ -11,7 +11,7 @@ export const authenticateJWT = async (req, res, next) => {
   if (authHeader) {
     const token = authHeader;
     try {
-      const payload = await verifyJWT(token);
+      const payload = await verifyAccessToken(token);
       req.userID = payload.userID;
       req.email = payload.email;
       next();

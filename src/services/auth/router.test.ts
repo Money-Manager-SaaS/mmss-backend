@@ -25,6 +25,7 @@ export function post(url, body): Test {
 describe("routes", () => {
   let user;
   let token;
+  let refreshToken;
   afterAll(async () => {
     await getOrmManager().query(
       `DELETE FROM USER WHERE id = '${user.id}'; `
@@ -48,8 +49,10 @@ describe("routes", () => {
     expect(resp.status).toEqual(200);
     expect(resp.body.user.email).toEqual(user1Data.email);
     expect(!resp.body.user.password);
-    expect(resp.body.token);
-    token = resp.body.token;
+    expect(resp.body.accessToken);
+    expect(resp.body.refreshToken);
+    token = resp.body.accessToken;
+    refreshToken = resp.body.refreshToken;
   });
 
   it('sign in the user with wrong password', async () => {
@@ -57,14 +60,7 @@ describe("routes", () => {
     expect(resp.status).toEqual(401);
   });
 
-  it('a ping, should always be true', async () => {
-    const resp = await supertest(app).get('/auth/ping');
-    expect(resp.status).toEqual(200);
-    expect(resp.body).toEqual('echo');
-  });
-
-
-  it('ping hidden endpoint without correct token', async () => {
+  it('ping hidden endpoint with wrong token', async () => {
     const resp = await supertest(app).get('/auth/hidden').set({'Authorization': '123'});
     expect(resp.status).toEqual(401);
   });
@@ -73,5 +69,22 @@ describe("routes", () => {
     const resp = await supertest(app).get('/auth/hidden').set({'Authorization': token, aa: 'aa'});
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual(user.id);
+  });
+
+
+  it('refresh access token with refresh token', async () => {
+    const resp = await supertest(app).post('/auth/refresh').send({refreshToken});
+    expect(resp.status).toEqual(200);
+    expect(resp.body.accessToken)
+  });
+
+  it('refresh access token with access token', async () => {
+    const resp = await supertest(app).post('/auth/refresh').send({refreshToken: token});
+    expect(resp.status).toEqual(401);
+  });
+
+  it('refresh access token with wrong token', async () => {
+    const resp = await supertest(app).post('/auth/refresh').send({refreshToken: '123'});
+    expect(resp.status).toEqual(401);
   });
 });
