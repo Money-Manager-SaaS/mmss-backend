@@ -1,5 +1,5 @@
-import { User } from "../../entity/User";
-import { getOrmManager } from '../../db/ormManager';
+import { User } from "../entity/User";
+import { getOrmManager } from '../db/ormManager';
 import * as jwt from 'jsonwebtoken';
 
 
