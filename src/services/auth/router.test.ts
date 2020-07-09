@@ -3,7 +3,7 @@ import * as supertest from 'supertest';
 import * as express from "express";
 import { Router } from 'express';
 import { Test } from 'supertest';
-import { getOrmManager } from '../db/ormManager';
+import { getOrmManager } from '../../db/ormManager';
 
 const user1Data = {
   userName: 'un1',

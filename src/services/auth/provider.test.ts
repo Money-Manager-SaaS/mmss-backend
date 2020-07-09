@@ -1,5 +1,5 @@
 import * as provider from './provider';
-import { getOrmManager } from '../db/ormManager';
+import { getOrmManager } from '../../db/ormManager';
 
 const user1Data = {
   userName: 'un1',

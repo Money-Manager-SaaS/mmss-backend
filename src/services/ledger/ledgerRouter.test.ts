@@ -3,7 +3,7 @@ import * as supertest from 'supertest';
 import * as express from "express";
 import { getOrmManager } from '../../db/ormManager';
 import { User } from '../../entity/User';
-import { signAccessToken } from '../../auth/provider';
+import { signAccessToken } from '../auth/provider';
 
 const app = express();
 app.use('/', theRouter);

@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as services from './service';
-import { handleBodyRequestParsing } from '../middleware/common';
-import { authenticateJWT } from '../middleware/jwtAuthMiddleWare';
+import { handleBodyRequestParsing } from '../../middleware/common';
+import { authenticateJWT } from '../../middleware/jwtAuthMiddleWare';
 
 const router = express.Router();
 

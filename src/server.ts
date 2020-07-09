@@ -3,7 +3,7 @@ import { applyMiddleware } from "./utils/utils";
 import coreMiddleware from "./middleware/index";
 import errorHandlers from "./middleware/errorHandlers";
 import crudRouter from "./services/index";
-import authRouter from "./auth/router";
+import authRouter from "./services/auth/router";
 import { createConnection } from 'typeorm';
 import "reflect-metadata";
 import pingRouter from './services/ping/ping';

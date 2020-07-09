@@ -1,4 +1,4 @@
-import { verifyAccessToken } from '../auth/provider';
+import { verifyAccessToken } from '../services/auth/provider';
 
 /**
  *  the authorization header is required in request
