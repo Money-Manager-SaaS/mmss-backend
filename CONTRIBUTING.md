@@ -1,56 +1,37 @@
-# Development
-- [A must read express best practice guide](https://itnext.io/production-ready-node-js-rest-apis-setup-using-typescript-postgresql-and-redis-a9525871407)
-- [sequelize doc](https://sequelize.org/v5/)
+# Contributing Guide
+Please read through this guide before contributing. 
+
+We all agree,
+- No software is bug free
+- No great software can be built by one person
+
+
+## Start to develop
 
 - based on master, create new feature branch
-- create pull request from your feature branch to master
 
+### Getting Started
 
+- `npm ci` for dependencies
 
 ## Migration CMD
-- migrate your local sqlite db, `npm run seed`
-  - this will automatically run during deployment
 
 
-## stacks
-- express
-- sequelize for orm
+## PR Guide
 
-
-# play around endpoints
-
-### transaction
-- `curl -X GET http://localhost:3000/api/v1/transactions/`
-- `curl -X GET http://localhost:3000/api/v1/transactions/1`
-
-### account
-- `curl -X GET http://localhost:3000/api/v1/accounts/`
-- `curl -X GET http://localhost:3000/api/v1/accounts/1`
-
-### categories
-- `curl -X GET http://localhost:3000/api/v1/categories/`
-- `curl -X GET http://localhost:3000/api/v1/categories/1`
-
-### users
-- `curl -X GET http://localhost:3000/api/v1/users/`
-- `curl -X GET http://localhost:3000/api/v1/users/1`
-
-### payees
-- `curl -X GET http://localhost:3000/api/v1/payees/`
-- `curl -X GET http://localhost:3000/api/v1/payees/1`
-
-### ledgers
-- `curl -X GET http://localhost:3000/api/v1/ledgers/`
-- `curl -X GET http://localhost:3000/api/v1/ledgers/1`
+> PR is not for debugging, make sure the feature can be run locally, 
 
 
 
 
 
 
-# Deployment
+## Deployment
 - for safety, create PR to prod branch
 - deployment is automatical, after merging, Continuous Deployment will be run
 
 
-
+# Ref
+- [A must read express best practice guide](https://itnext.io/production-ready-node-js-rest-apis-setup-using-typescript-postgresql-and-redis-a9525871407)
+- [~~sequelize doc~~](https://sequelize.org/v5/)
+- typeorm
