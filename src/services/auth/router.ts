@@ -13,7 +13,6 @@ router.post('/signup', services.singUp);
 router.delete('/delete', services.deleteUser);
 router.post('/refresh', services.refreshToken);
 
-// todo remove this and the relative test
 router.get('/hidden', authenticateJWT, async (req,res)=>{
   //@ts-ignore
   res.status(200).json(req.userID);
