@@ -47,7 +47,7 @@
     "@types/validator": "12.0.1",
     "jest": "26.0.1",
     "kind-of": "6.0.3",
-    "ts-jest": "26.1.0",
+    "ts-jest": "26.1.1",
     "tsc-watch": "4.1.0"
   },
   "repository": {
