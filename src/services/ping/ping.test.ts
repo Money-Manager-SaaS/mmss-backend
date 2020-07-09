@@ -4,7 +4,7 @@ import * as express from "express";
 
 
 const app = express();
-app.use('/', theRouter);
+app.use('/ping', theRouter);
 
 describe("routes", () => {
   it('a ping, should always be true', async () => {
