@@ -12,6 +12,9 @@ export const authenticateJWT = async (req, res, next) => {
     const token = authHeader;
     try {
       const payload = await verifyAccessToken(token);
+      if (payload.exp <= new Date().getTime()) {
+        res.sendStatus(401);
+      }
       req.userID = payload.userID;
       req.email = payload.email;
       next();

@@ -75,6 +75,7 @@ export enum TokenType {
  */
 const signJWT = (userID: number, email?:string, tokenType = TokenType.Access, minutes: number = 60): string => {
   const currentTimeStamp = new Date().getTime();
+  // todo not use secret but use public and secret key here
   const secret = tokenType === TokenType.Access ? process.env.JWT_SECRET : process.env.JWT_REFRESH_SECRET;
   return jwt.sign(
     {
