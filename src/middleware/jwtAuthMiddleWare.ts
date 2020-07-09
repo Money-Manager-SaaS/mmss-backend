@@ -1,4 +1,4 @@
-import { verifyAccessToken } from '../services/auth/provider';
+import { verifyAccessToken } from '../auth/provider';
 
 /**
  *  the authorization header is required in request
@@ -7,6 +7,11 @@ import { verifyAccessToken } from '../services/auth/provider';
  * @param next
  */
 export const authenticateJWT = async (req, res, next) => {
+  if (process.env.BYPATH_ACCESS_TOKEN && process.env.NODE_ENV === 'development' && !process.env.JEST_TESTING) {
+    // for local development only
+    next()
+  }
+
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader;
