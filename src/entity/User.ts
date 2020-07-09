@@ -1,12 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BaseEntity, DeleteDateColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm";
 import * as bcrypt from 'bcrypt';
+import { BaseClass } from './BaseClass';
+import { Ledger } from './Ledger';
 
+export enum UserRoleType {
+  Admin="admin",
+  Manager="manager",
+  Basic="basic",
+}
 
+export interface IProfile {
+  age: number,
+  hobby: string,
+  address: string,
+  country: string,
+  website: string,
+}
+
+@Index(['email'], {unique: true})
+@Index(['userName'], {unique: true})
 @Entity()
-export class User extends BaseEntity {
-
-  @PrimaryGeneratedColumn()
-  id: number;
+export class User extends BaseClass {
 
   @Column({
     length: 128,
@@ -19,12 +33,21 @@ export class User extends BaseEntity {
   })
   password: string;
 
+  /**
+   * leave for the future
+   */
+  @Column({
+    enum: UserRoleType,
+    default: UserRoleType.Basic
+  })
+  role: string;
+
   @Column({
     length: 64,
-    nullable: true,
+    nullable: false,
     unique: true
   })
-  userName?: string;
+  userName: string;
 
   @Column({
     type: 'boolean',
@@ -37,17 +60,14 @@ export class User extends BaseEntity {
   })
   lastLogin: Date;
 
-  @Column({
-    type: 'text',
-    nullable: true,
-  })
-  about?: string;
+  @OneToMany(type => Ledger, ledger => ledger.user)
+  ledgers: Ledger[];
 
-  @Column({
-    type: 'int',
-    nullable: true,
-  })
-  age?: number;
+  /**
+   * not used, leave for the future
+   */
+  @Column("simple-json", {nullable: true})
+  profile?: IProfile;
 
   @Column({
     length: 64,
@@ -61,12 +81,20 @@ export class User extends BaseEntity {
   })
   lastName?: string;
 
+  public static encryptPassword(passwordInPlaintText: string): string {
+    const saltRounds = 3;
+    return bcrypt.hashSync(
+      passwordInPlaintText,
+      saltRounds
+    );
+  }
+
   updateLastLogin() {
     // set last login
     this.lastLogin = new Date();
   }
 
-  public checkPassword (passwordInPlaintText: string): boolean {
+  public checkPassword(passwordInPlaintText: string): boolean {
     const isValid = bcrypt.compareSync(
       passwordInPlaintText,
       this.password
@@ -77,24 +105,10 @@ export class User extends BaseEntity {
     return isValid;
   }
 
-  public static encryptPassword (passwordInPlaintText: string): string {
-    const saltRounds = 3;
-    return bcrypt.hashSync(
-      passwordInPlaintText,
-      saltRounds
-    );
-  }
-
   @BeforeInsert()
   setPasswordHash() {
     // get password hash
     this.password = User.encryptPassword(this.password);
     this.updateLastLogin();
   }
-
-  @DeleteDateColumn()
-  deletedAt?: Date;
 }
-
-
-// export const UserRepo = getOrmManager().getRepository(User);
