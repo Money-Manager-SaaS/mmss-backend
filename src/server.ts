@@ -29,9 +29,12 @@ createConnection().then(connection => {
   // cors and compression middleware
   applyMiddleware(coreMiddleware, app);
 
+  const version = process.env.npm_package_version.split('.')[0];
+  console.log('running api version', parseInt(version));
+
   app.use('/auth', authRouter);
   app.use('/ping', pingRouter);
-  app.use(`/api/${process.env.npm_package_version}`, crudRouter);
+  app.use(`/api/v${parseInt(version)}`, crudRouter);
 
   applyMiddleware(errorHandlers, app);
   const {PORT = 3000} = process.env;

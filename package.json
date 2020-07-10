@@ -1,6 +1,6 @@
 {
   "name": "mmss-backend",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Money Manager Cloud back-end, to handle CRUD and Authentication and keep the compatibility to the Money Manager EX",
   "main": "src/server.ts",
   "scripts": {
