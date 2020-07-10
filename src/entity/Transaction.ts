@@ -1,8 +1,9 @@
-import { BeforeInsert, Column, Entity, Index, ManyToOne } from "typeorm";
+import { BeforeInsert, Column, Entity, Index, ManyToOne, Repository } from "typeorm";
 import { BaseClass } from './BaseClass';
 import { Account } from './Account';
 import { Category } from './Category';
 import { Payee } from './Payee';
+import { getOrmManager } from '../db/ormManager';
 
 export enum TransferType {
   Transfer = 0, // money transfer
@@ -77,5 +78,9 @@ export class Transaction extends BaseClass {
         this.toAmount = this.amount;
       }
     }
+  }
+
+  public static getRepo():Repository<Transaction> {
+    return getOrmManager().getRepository(Transaction);
   }
 }

@@ -10,29 +10,33 @@ export interface ICurrency {
   symbol?: string;
 }
 
-@Index(['name'], {unique: true})
-@Index(['ledger'])
+
 @Unique(['name', 'ledger', 'deletedAt'])
 @Entity()
 export class Account extends BaseClass {
+  @Index({unique: true})
   @Column({
     length: 256,
     nullable: false,
   })
   name: string;
 
+  @ManyToOne(
+    type => Ledger,
+    ledger => ledger.categories, {
+      onDelete: 'NO ACTION',
+    })
+  ledger: Ledger;
+
+  @Index()
+  @Column({ type: 'int', nullable: true })
+  ledgerId?: number;
+
   @Column()
   amount: number;
 
   @Column("simple-json", {nullable: true})
   currency?: ICurrency;
-
-  @ManyToOne(
-    type => Ledger,
-    ledger => ledger.accounts, {
-      onDelete: 'NO ACTION',
-    })
-  ledger: Ledger;
 
   @OneToMany(type => Transaction, transaction => transaction.account)
   transactions: Transaction[];
