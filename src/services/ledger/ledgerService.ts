@@ -1,39 +1,57 @@
 import { Request, Response } from 'express';
 import { Ledger } from '../../entity/Ledger';
 
-/**
- * should be used only for admin/manager
- * @param params
- * @param res
- */
-export const getAll = async ({params}: Request, res: Response) => {
-  const ledgerRepo = Ledger.getRepo();
-  const ledgers = await ledgerRepo.find();
-  if (ledgers?.length) {
-    res.status(200).send(ledgers);
+
+const getFindOption = (userID) => (
+  {
+    relations: ['user'],
+    where: {
+      user: {
+        id: userID
+      }
+    }
   }
-  res.status(204).send([]);
-};
+);
 
-
-export const getOne = async ({params}: Request, res: Response) => {
+export const getAll = async (req: any, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger = await ledgerRepo.findOne(+params?.ledgerID);
-    if (!ledger) {
-      res.status(204).send({});
+    const ledgers = await ledgerRepo.find(
+      getFindOption(req.user.id)
+    );
+    if (ledgers?.length) {
+      res.status(200).send(ledgers);
+    } else {
+      res.status(204).send([]);
     }
-    res.status(200).send(ledger);
   } catch (e) {
     console.error(e);
     res.status(500).end();
   }
 };
 
-export const createOne = async ({body}: Request, res: Response) => {
+
+export const getOne = async (req: any, res: Response) => {
+  const ledgerRepo = Ledger.getRepo();
+  const ledgerID = req.params?.ledgerID;
+  try {
+    const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
+    if (ledger && ledger.user.id === req.user.id) {
+      res.status(200).send(ledger);
+    } else {
+      res.status(204).send({});
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
+  }
+};
+
+export const createOne = async (req, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger = await ledgerRepo.create(body);
+    const ledger = await ledgerRepo.create(req.body) as unknown as Ledger;
+    ledger.user = req.user;
     await ledgerRepo.save(ledger);
     res.status(200).send(ledger);
   } catch (e) {
@@ -42,13 +60,13 @@ export const createOne = async ({body}: Request, res: Response) => {
   }
 };
 
-export const updateOne = async ({body, params}: Request, res: Response) => {
-  const ledgerID = params?.ledgerID;
+export const updateOne = async (req, res: Response) => {
+  const ledgerID = req.params?.ledgerID;
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger = await ledgerRepo.findOne(ledgerID);
-    if (ledger) {
-      await ledgerRepo.update(ledger.id, body);
+    const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
+    if (ledger && ledger.user.id === req.user.id) {
+      await ledgerRepo.update(ledger.id, req.body);
       res.status(200).end();
     }
     res.status(400).end();
@@ -58,11 +76,12 @@ export const updateOne = async ({body, params}: Request, res: Response) => {
   }
 };
 
-export const deleteOne = async ({body}: Request, res: Response) => {
+export const deleteOne = async (req, res: Response) => {
+  const ledgerID = req.params?.ledgerID;
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger = await ledgerRepo.findOne(body.id);
-    if (ledger) {
+    const ledger =  await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
+    if (ledger && ledger.user.id === req.user.id) {
       await ledgerRepo.softDelete(ledger.id);
       res.status(200).json({});
     } else {

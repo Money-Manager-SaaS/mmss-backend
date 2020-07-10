@@ -11,7 +11,7 @@ app.use('/', theRouter);
 const ledgerData = {
   name: 'test-ledger',
   description: 'haha optional',
-  userID: undefined,
+  userID: null,
 };
 
 
@@ -43,7 +43,9 @@ describe("routes", () => {
       );
     expect(resp.status).toEqual(200);
     expect(resp.body.name).toEqual(ledgerData.name);
+    expect(resp.body.user.userName).toEqual(user.userName);
     ledger = resp.body;
+    console.log(ledger, 'ledger in resp body');
   });
 
   it('get one', async () => {
@@ -52,6 +54,14 @@ describe("routes", () => {
       );
     expect(resp.status).toEqual(200);
     expect(resp.body.name).toEqual(ledgerData.name);
+  });
+
+  it('get all should be one', async () => {
+    const resp = await supertest(app).get('/')
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    expect(resp.body.length).toEqual(1);
   });
 
   it('shout not get not existed one', async () => {

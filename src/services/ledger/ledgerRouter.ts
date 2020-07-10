@@ -9,6 +9,7 @@ handleBodyRequestParsing(router);
 router.use(authenticateJWT);
 
 router.post('/', services.createOne);
+router.get('/', services.getAll);
 router.put('/:ledgerID', services.updateOne);
 router.get('/:ledgerID', services.getOne);
 router.delete('/:ledgerID', services.deleteOne);

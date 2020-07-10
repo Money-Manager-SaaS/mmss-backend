@@ -3,6 +3,7 @@
    "database": "database.sqlite",
    "synchronize": true,
    "logging": false,
+   "cache": true,
    "entities": [
       "src/entity/**/*.ts"
    ],

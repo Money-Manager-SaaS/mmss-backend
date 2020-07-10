@@ -25,7 +25,8 @@ export const authenticateJWT = async (req, res, next) => {
         if (payload.exp <= new Date().getTime()) {
           res.sendStatus(401);
         }
-        const user = (await User.getRepo().findOne(payload.userID))[0];
+        const user:User = await User.getRepo().findOne(payload.userID);
+        delete user.password;
         req.user = user;
         req.userID = payload.userID;
         req.email = payload.email;
