@@ -4,19 +4,19 @@ import * as jwt from 'jsonwebtoken';
 
 
 export const getOne = async (id: number): Promise<User> => {
-  const UserRepo = getOrmManager().getRepository(User);
+  const UserRepo = User.getRepo();
   const user = await UserRepo.findOne(id);
   return user as User;
 };
 
 export const getOneByEmail = async (email: string): Promise<User> => {
-  const UserRepo = getOrmManager().getRepository(User);
+  const UserRepo = User.getRepo();
   const user = await UserRepo.findOne({email: email});
   return user as User;
 };
 
 export const disableOne = async (id: number): Promise<User> => {
-  const UserRepo = getOrmManager().getRepository(User);
+  const UserRepo = User.getRepo();
   const user = await UserRepo.findOne(id);
   user.active = false;
   const updatedUser = await UserRepo.save(user);
@@ -25,7 +25,7 @@ export const disableOne = async (id: number): Promise<User> => {
 
 
 export const deleteOne = async (id: number, softDelete = true): Promise<void> => {
-  const UserRepo = getOrmManager().getRepository(User);
+  const UserRepo = User.getRepo();
   const user = await UserRepo.findOne(id);
   if (softDelete) {
     await UserRepo.softDelete(user.id);
@@ -37,7 +37,7 @@ export const deleteOne = async (id: number, softDelete = true): Promise<void> =>
 
 
 export const signUp = async (userBody?: any): Promise<User> => {
-  const UserRepo = getOrmManager().getRepository(User);
+  const UserRepo = User.getRepo();
   const user = (await UserRepo.create(userBody));
   const users = await UserRepo.save(user);
   return users as unknown as User;
@@ -45,7 +45,7 @@ export const signUp = async (userBody?: any): Promise<User> => {
 
 
 export const signIn = async (email: string, password: string): Promise<User> => {
-  const UserRepo = getOrmManager().getRepository(User);
+  const UserRepo = User.getRepo();
   const user = await UserRepo.findOne({email: email});
   if (user && user.checkPassword(password)) {
     return user;
