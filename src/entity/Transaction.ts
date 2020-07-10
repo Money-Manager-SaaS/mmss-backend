@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, ManyToOne } from "typeorm";
+import { BeforeInsert, Column, Entity, Index, ManyToOne } from "typeorm";
 import { BaseClass } from './BaseClass';
 import { Account } from './Account';
 import { Category } from './Category';
@@ -10,6 +10,10 @@ export enum TransferType {
   Deposit = 1, //money in
 }
 
+@Index(['account'])
+@Index(['toAccount'])
+@Index(['category'])
+@Index(['payee'])
 @Entity()
 export class Transaction extends BaseClass {
 

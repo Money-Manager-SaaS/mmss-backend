@@ -1,7 +1,8 @@
-import { BeforeInsert, Column, Entity, Index, ManyToOne, OneToMany, Unique } from "typeorm";
+import { BeforeInsert, Column, Entity, Index, ManyToOne, OneToMany, Repository, Unique } from "typeorm";
 import { BaseClass } from './BaseClass';
 import { Ledger } from './Ledger';
 import { Transaction } from './Transaction';
+import { getOrmManager } from '../db/ormManager';
 
 export interface ICurrency {
   name: string;
@@ -10,6 +11,7 @@ export interface ICurrency {
 }
 
 @Index(['name'], {unique: true})
+@Index(['ledger'])
 @Unique(['name', 'ledger', 'deletedAt'])
 @Entity()
 export class Account extends BaseClass {
@@ -48,5 +50,9 @@ export class Account extends BaseClass {
         symbol: '$'
       };
     }
+  }
+
+  public static getRepo():Repository<Account> {
+    return getOrmManager().getRepository(Account);
   }
 }

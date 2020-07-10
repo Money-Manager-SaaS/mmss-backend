@@ -4,6 +4,7 @@ import { Ledger } from './Ledger';
 import { Transaction } from './Transaction';
 
 @Index(['name'], {unique: true})
+@Index(['ledger'])
 @Unique(['name', 'ledger', 'deletedAt'])
 @Entity()
 export class Category extends BaseClass {
