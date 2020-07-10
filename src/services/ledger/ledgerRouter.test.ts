@@ -45,7 +45,6 @@ describe("routes", () => {
     expect(resp.body.name).toEqual(ledgerData.name);
     expect(resp.body.user.userName).toEqual(user.userName);
     ledger = resp.body;
-    console.log(ledger, 'ledger in resp body');
   });
 
   it('get one', async () => {
@@ -72,8 +71,10 @@ describe("routes", () => {
   });
 
   it('update one', async () => {
+    const tmpLedger = {...ledgerData};
+    delete tmpLedger.userID;
     updatedLedgerData = {
-      ...ledger,
+      ...tmpLedger,
       name: 'test-ledger-1',
     };
     const resp = await supertest(app).put('/' + ledger.id)
@@ -81,6 +82,14 @@ describe("routes", () => {
       .set({'Authorization': token}
       );
     expect(resp.status).toEqual(200);
+  });
+
+  it('get updated one', async () => {
+    const resp = await supertest(app).get('/' + ledger.id)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    expect(resp.body.name).toEqual(updatedLedgerData.name);
   });
 
   it('should not update not existed one', async () => {
@@ -93,14 +102,6 @@ describe("routes", () => {
       .set({'Authorization': token}
       );
     expect(resp.status).toEqual(400);
-  });
-
-  it('get updated one', async () => {
-    const resp = await supertest(app).get('/' + ledger.id)
-      .set({'Authorization': token}
-      );
-    expect(resp.status).toEqual(200);
-    expect(resp.body.name).toEqual(updatedLedgerData.name);
   });
 
   it('delete the one', async () => {

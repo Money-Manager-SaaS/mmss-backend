@@ -1,14 +1,11 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { Ledger } from '../../entity/Ledger';
 
 
 const getFindOption = (userID) => (
   {
-    relations: ['user'],
     where: {
-      user: {
-        id: userID
-      }
+      userId: userID
     }
   }
 );
@@ -36,7 +33,7 @@ export const getOne = async (req: any, res: Response) => {
   const ledgerID = req.params?.ledgerID;
   try {
     const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
-    if (ledger && ledger.user.id === req.user.id) {
+    if (ledger && ledger.userId === req.user.id) {
       res.status(200).send(ledger);
     } else {
       res.status(204).send({});
@@ -65,9 +62,11 @@ export const updateOne = async (req, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   try {
     const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
-    if (ledger && ledger.user.id === req.user.id) {
-      await ledgerRepo.update(ledger.id, req.body);
-      res.status(200).end();
+    if (ledger && ledger.userId === req.user.id) {
+      console.log(req.body, ledger, 'body before update');
+      const r = await ledgerRepo.update(ledger.id, req.body);
+      console.log(r, ledger, 'result of update');
+      res.status(200).send(r);
     }
     res.status(400).end();
   } catch (e) {
@@ -81,7 +80,7 @@ export const deleteOne = async (req, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   try {
     const ledger =  await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
-    if (ledger && ledger.user.id === req.user.id) {
+    if (ledger && ledger.userId === req.user.id) {
       await ledgerRepo.softDelete(ledger.id);
       res.status(200).json({});
     } else {

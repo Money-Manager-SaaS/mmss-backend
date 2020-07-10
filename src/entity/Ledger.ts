@@ -24,6 +24,9 @@ export class Ledger extends BaseClass {
     })
   user: User;
 
+  @Column({ type: 'int', nullable: true })
+  userId?: number;
+
   @OneToMany(type => Account, account => account.ledger)
   accounts: Account[];
 
