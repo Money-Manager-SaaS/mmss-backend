@@ -1,5 +1,6 @@
 import { verifyAccessToken } from '../services/auth/provider';
 import { User } from '../entity/User';
+import logger from '../logger';
 
 /**
  *  the authorization header is required in request
@@ -10,7 +11,7 @@ import { User } from '../entity/User';
 export const authenticateJWT = async (req, res, next) => {
   if (process.env.BYPATH_ACCESS_TOKEN === 'true' && process.env.NODE_ENV === 'development' && process.env.JEST_TESTING !== 'true') {
     // for local development only
-    console.log('bypassing the access token');
+    logger.info('bypassing the access token');
     const user = (await User.getRepo().find())[0];
     req.user = user;
     req.userID = user.id;

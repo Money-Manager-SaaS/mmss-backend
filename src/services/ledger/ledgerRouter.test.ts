@@ -4,6 +4,7 @@ import * as express from "express";
 import { getOrmManager } from '../../db/ormManager';
 import { User } from '../../entity/User';
 import { signAccessToken } from '../auth/provider';
+import logger from '../../logger';
 
 const app = express();
 app.use('/', theRouter);
@@ -26,7 +27,7 @@ describe("routes", () => {
     const users = await UserRepo.find();
     user = users[0];
     token = signAccessToken(users[0].id, user.email);
-    console.log('get an access token and a user');
+    logger.info('get an access token and a user');
     ledgerData.userID = user.id;
   });
 
@@ -34,6 +35,14 @@ describe("routes", () => {
     await getOrmManager().query(
       `DELETE FROM LEDGER; `
     );
+  });
+
+  it('get all before create, should be empty', async () => {
+    const resp = await supertest(app).get('/')
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(204);
+    expect(!resp.body?.length);
   });
 
   it('create one', async () => {
