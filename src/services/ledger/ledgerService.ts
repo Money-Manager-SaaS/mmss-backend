@@ -50,6 +50,7 @@ export const createOne = async (req, res: Response) => {
     const ledger = await ledgerRepo.create(req.body) as unknown as Ledger;
     ledger.user = req.user;
     await ledgerRepo.save(ledger);
+    delete ledger.user.password;
     res.status(200).send(ledger);
   } catch (e) {
     console.error(e);
@@ -63,9 +64,7 @@ export const updateOne = async (req, res: Response) => {
   try {
     const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
     if (ledger && ledger.userId === req.user.id) {
-      console.log(req.body, ledger, 'body before update');
       const r = await ledgerRepo.update(ledger.id, req.body);
-      console.log(r, ledger, 'result of update');
       res.status(200).send(r);
     }
     res.status(400).end();
