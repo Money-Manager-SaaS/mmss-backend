@@ -1,16 +1,17 @@
 import { Column, Entity, Index, ManyToOne, OneToMany, Unique } from "typeorm";
-import { BaseClass } from './BaseClass';
-import { Ledger } from './Ledger';
+import { BaseClass, CategoryBaseClass } from './BaseClass';
 import { Transaction } from './Transaction';
+import { Ledger } from './Ledger';
 
-@Index(['name'], {unique: true})
 @Index(['ledger'])
 @Unique(['name', 'ledger', 'deletedAt'])
 @Entity()
 export class Category extends BaseClass {
+
   @Column({
     length: 256,
     nullable: false,
+    unique: true,
   })
   name: string;
 
@@ -20,6 +21,9 @@ export class Category extends BaseClass {
       onDelete: 'NO ACTION',
     })
   ledger: Ledger;
+
+  @Column({ type: 'int', nullable: true })
+  ledgerId?: number;
 
   @OneToMany(type => Transaction, transaction => transaction.category)
   transactions: Transaction[];

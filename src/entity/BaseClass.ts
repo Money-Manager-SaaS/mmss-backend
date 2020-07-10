@@ -3,10 +3,11 @@ import {
   Column,
   BaseEntity,
   DeleteDateColumn,
-  CreateDateColumn, UpdateDateColumn, VersionColumn, Generated, Index
+  CreateDateColumn, UpdateDateColumn, VersionColumn, Generated, Index, ManyToOne, OneToMany, Unique, Entity
 } from "typeorm";
+import { Ledger } from './Ledger';
 
-export abstract class BaseClass extends BaseEntity{
+export abstract class BaseClass extends BaseEntity {
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -40,4 +41,24 @@ export abstract class BaseClass extends BaseEntity{
 
   @VersionColumn()
   version?: number;
+}
+
+
+export abstract class CategoryBaseClass extends BaseClass {
+  @Column({
+    length: 256,
+    nullable: false,
+    unique: true,
+  })
+  name: string;
+
+  @ManyToOne(
+    type => Ledger,
+    ledger => ledger.categories, {
+      onDelete: 'NO ACTION',
+    })
+  ledger: Ledger;
+
+  @Column({ type: 'int', nullable: true })
+  ledgerId?: number;
 }
