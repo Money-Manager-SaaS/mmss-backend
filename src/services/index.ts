@@ -4,6 +4,6 @@ import ledgerRouter from './ledger/ledgerRouter';
 const router = express.Router();
 // middlewares are used on each router seperately
 
-router.use('/ledger', ledgerRouter)
+router.use('/ledgers', ledgerRouter)
 
 export default router;
