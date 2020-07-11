@@ -9,7 +9,7 @@
     "start:heroku": "cross-env BYPATH_ACCESS_TOKEN=false npm run postinstall && node dist/server.js",
     "seed": "ts-node src/db/seeding/index.ts",
     "postinstall": "npx tsc",
-    "test": "cross-env JEST_TESTING=true jest --testTimeout=10000 --runInBand",
+    "test": "cross-env JEST_TESTING=true LOG_LEVEL=debug jest --testTimeout=10000 --runInBand",
     "test:db:migrate": "cross-env JEST_TESTING=true ts-node ./node_modules/typeorm/cli.js  migration:run",
     "db:migration": " ts-node ./node_modules/typeorm/cli.js  migration:generate",
     "db:gen-migration": "npm run db:migration -- -n auto",

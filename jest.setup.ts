@@ -10,16 +10,16 @@ const user2Data = {
 };
 
 beforeAll(async () => {
-  logger.debug('before all');
+  logger.info('before all');
   await prepareConnection();
-  logger.debug('get test connection done');
+  logger.info('get test connection done');
 
   const UserRepo = User.getRepo();
   const user = (await UserRepo.create(user2Data));
   await UserRepo.save(user);
 
 
-  logger.debug(user2Data.userName, 'test user and ledger created');
+  logger.info(user2Data.userName, 'test user and ledger created');
 });
 
 afterAll(async () => {
@@ -28,9 +28,9 @@ afterAll(async () => {
     DELETE FROM USER WHERE email = '${user2Data.email}'; 
     `
   );
-  logger.debug('test data deleted');
+  logger.info('test data deleted');
 
   const defaultConnection = getConnection();
   await defaultConnection.close();
-  logger.debug('close connections done');
+  logger.info('close connections done');
 });

@@ -7,7 +7,7 @@ if (process.env.JEST_TESTING === 'true') {
     type: "sqlite",
     database: "test.sqlite",
     synchronize: false,
-    logging: ['error', 'query', 'schema'],
+    logging: false,
   });
 }
 
