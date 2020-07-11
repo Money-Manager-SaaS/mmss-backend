@@ -33,7 +33,7 @@
     "pug": "3.0.0",
     "reflect-metadata": "0.1.13",
     "request": "2.88.2",
-    "sequelize": "5.22.3",
+    "sequelize": "6.3.3",
     "sqlite3": "5.0.0",
     "swagger-ui-express": "4.1.4",
     "typeorm": "0.2.25"
