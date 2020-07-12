@@ -7,6 +7,7 @@ import { Payee } from './Payee';
 import { getOrmManager } from '../db/ormManager';
 
 @Index(['name'], {unique: true})
+@Index(['user'])
 @Unique(['name', 'user', 'deletedAt'])
 @Entity()
 export class Ledger extends BaseClass {
@@ -22,6 +23,9 @@ export class Ledger extends BaseClass {
       onDelete: 'NO ACTION',
     })
   user: User;
+
+  @Column({ type: 'int', nullable: true })
+  userId?: number;
 
   @OneToMany(type => Account, account => account.ledger)
   accounts: Account[];

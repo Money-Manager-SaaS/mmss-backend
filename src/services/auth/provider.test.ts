@@ -1,5 +1,6 @@
 import * as provider from './provider';
 import { getOrmManager } from '../../db/ormManager';
+import logger from '../../logger';
 
 const user1Data = {
   userName: 'un1',
@@ -21,7 +22,7 @@ describe(' test auth provider', () => {
         await provider.deleteOne(user.id, false)
       }
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
 
     user = (await provider.signUp(user1Data));

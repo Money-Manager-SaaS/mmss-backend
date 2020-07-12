@@ -1,7 +1,8 @@
-import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm";
+import { BeforeInsert, Column, Entity, Index, OneToMany, Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { BaseClass } from './BaseClass';
 import { Ledger } from './Ledger';
+import { getOrmManager } from '../db/ormManager';
 
 export enum UserRoleType {
   Admin="admin",
@@ -110,5 +111,9 @@ export class User extends BaseClass {
     // get password hash
     this.password = User.encryptPassword(this.password);
     this.updateLastLogin();
+  }
+
+  public static getRepo():Repository<User> {
+    return getOrmManager().getRepository(User);
   }
 }

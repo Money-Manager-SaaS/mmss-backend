@@ -1,8 +1,9 @@
-import { BeforeInsert, Column, Entity, ManyToOne } from "typeorm";
+import { BeforeInsert, Column, Entity, Index, ManyToOne, Repository } from "typeorm";
 import { BaseClass } from './BaseClass';
 import { Account } from './Account';
 import { Category } from './Category';
 import { Payee } from './Payee';
+import { getOrmManager } from '../db/ormManager';
 
 export enum TransferType {
   Transfer = 0, // money transfer
@@ -10,6 +11,10 @@ export enum TransferType {
   Deposit = 1, //money in
 }
 
+@Index(['account'])
+@Index(['toAccount'])
+@Index(['category'])
+@Index(['payee'])
 @Entity()
 export class Transaction extends BaseClass {
 
@@ -36,6 +41,9 @@ export class Transaction extends BaseClass {
       nullable: false,
     })
   account: Account;
+  @Index()
+  @Column({ type: 'int', nullable: true })
+  accountId?: number;
 
   @ManyToOne(
     type => Account,
@@ -44,6 +52,9 @@ export class Transaction extends BaseClass {
       nullable: true,
     })
   toAccount: Account;
+  @Index()
+  @Column({ type: 'int', nullable: true })
+  toAccountId?: number;
 
   @ManyToOne(
     type => Category,
@@ -52,6 +63,9 @@ export class Transaction extends BaseClass {
       nullable: true,
     })
   category: Category;
+  @Index()
+  @Column({ type: 'int', nullable: true })
+  categoryId?: number;
 
   @ManyToOne(
     type => Payee,
@@ -60,6 +74,8 @@ export class Transaction extends BaseClass {
       nullable: true,
     })
   payee: Payee;
+  @Column({ type: 'int', nullable: true })
+  payeeId?: number;
 
   @BeforeInsert()
   beforeInsert() {
@@ -73,5 +89,9 @@ export class Transaction extends BaseClass {
         this.toAmount = this.amount;
       }
     }
+  }
+
+  public static getRepo():Repository<Transaction> {
+    return getOrmManager().getRepository(Transaction);
   }
 }

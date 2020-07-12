@@ -6,7 +6,7 @@ if (process.env.JEST_TESTING === 'true') {
   Object.assign(ormconfig, {
     type: "sqlite",
     database: "test.sqlite",
-    synchronize: true,
+    synchronize: false,
     logging: false,
   });
 }

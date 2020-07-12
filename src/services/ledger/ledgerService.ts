@@ -1,40 +1,56 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { Ledger } from '../../entity/Ledger';
 
-/**
- * should be used only for admin/manager
- * @param params
- * @param res
- */
-export const getAll = async ({params}: Request, res: Response) => {
-  const ledgerRepo = Ledger.getRepo();
-  const ledgers = await ledgerRepo.find();
-  if (ledgers?.length) {
-    res.status(200).send(ledgers);
+
+const getFindOption = (userID) => (
+  {
+    where: {
+      userId: userID
+    }
   }
-  res.status(204).send([]);
+);
+
+export const getAll = async (req: any, res: Response) => {
+  const ledgerRepo = Ledger.getRepo();
+  try {
+    const ledgers = await ledgerRepo.find(
+      getFindOption(req.user.id)
+    );
+    if (ledgers?.length) {
+      res.status(200).send(ledgers);
+    } else {
+      res.status(204).send([]);
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
+  }
 };
 
 
-export const getOne = async ({params}: Request, res: Response) => {
+export const getOne = async (req: any, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
+  const ledgerID = req.params?.ledgerID;
   try {
-    const ledger = await ledgerRepo.findOne(+params?.ledgerID);
-    if (!ledger) {
+    const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
+    if (ledger && ledger.userId === req.user.id) {
+      res.status(200).send(ledger);
+    } else {
       res.status(204).send({});
     }
-    res.status(200).send(ledger);
   } catch (e) {
     console.error(e);
     res.status(500).end();
   }
 };
 
-export const createOne = async ({body}: Request, res: Response) => {
+export const createOne = async (req, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger = await ledgerRepo.create(body);
+    const ledger = await ledgerRepo.create(req.body) as unknown as Ledger;
+    ledger.user = req.user;
     await ledgerRepo.save(ledger);
+    delete ledger.user.password;
     res.status(200).send(ledger);
   } catch (e) {
     console.error(e);
@@ -42,14 +58,14 @@ export const createOne = async ({body}: Request, res: Response) => {
   }
 };
 
-export const updateOne = async ({body, params}: Request, res: Response) => {
-  const ledgerID = params?.ledgerID;
+export const updateOne = async (req, res: Response) => {
+  const ledgerID = req.params?.ledgerID;
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger = await ledgerRepo.findOne(ledgerID);
-    if (ledger) {
-      await ledgerRepo.update(ledger.id, body);
-      res.status(200).end();
+    const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
+    if (ledger && ledger.userId === req.user.id) {
+      const r = await ledgerRepo.update(ledger.id, req.body);
+      res.status(200).send(r);
     }
     res.status(400).end();
   } catch (e) {
@@ -58,11 +74,12 @@ export const updateOne = async ({body, params}: Request, res: Response) => {
   }
 };
 
-export const deleteOne = async ({body}: Request, res: Response) => {
+export const deleteOne = async (req, res: Response) => {
+  const ledgerID = req.params?.ledgerID;
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger = await ledgerRepo.findOne(body.id);
-    if (ledger) {
+    const ledger =  await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
+    if (ledger && ledger.userId === req.user.id) {
       await ledgerRepo.softDelete(ledger.id);
       res.status(200).json({});
     } else {

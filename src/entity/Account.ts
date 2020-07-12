@@ -1,7 +1,8 @@
-import { BeforeInsert, Column, Entity, Index, ManyToOne, OneToMany, Unique } from "typeorm";
+import { BeforeInsert, Column, Entity, Index, ManyToOne, OneToMany, Repository, Unique } from "typeorm";
 import { BaseClass } from './BaseClass';
 import { Ledger } from './Ledger';
 import { Transaction } from './Transaction';
+import { getOrmManager } from '../db/ormManager';
 
 export interface ICurrency {
   name: string;
@@ -9,28 +10,33 @@ export interface ICurrency {
   symbol?: string;
 }
 
-@Index(['name'], {unique: true})
+
 @Unique(['name', 'ledger', 'deletedAt'])
 @Entity()
 export class Account extends BaseClass {
+  @Index({unique: true})
   @Column({
     length: 256,
     nullable: false,
   })
   name: string;
 
+  @ManyToOne(
+    type => Ledger,
+    ledger => ledger.categories, {
+      onDelete: 'NO ACTION',
+    })
+  ledger: Ledger;
+
+  @Index()
+  @Column({ type: 'int', nullable: true })
+  ledgerId?: number;
+
   @Column()
   amount: number;
 
   @Column("simple-json", {nullable: true})
   currency?: ICurrency;
-
-  @ManyToOne(
-    type => Ledger,
-    ledger => ledger.accounts, {
-      onDelete: 'NO ACTION',
-    })
-  ledger: Ledger;
 
   @OneToMany(type => Transaction, transaction => transaction.account)
   transactions: Transaction[];
@@ -48,5 +54,9 @@ export class Account extends BaseClass {
         symbol: '$'
       };
     }
+  }
+
+  public static getRepo():Repository<Account> {
+    return getOrmManager().getRepository(Account);
   }
 }
