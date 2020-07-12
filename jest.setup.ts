@@ -33,13 +33,6 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await getOrmManager().query(
-    `
-    DELETE FROM USER WHERE email = '${user2Data.email}'; 
-    `
-  );
-  logger.info('test data deleted');
-
   const defaultConnection = getConnection();
   await defaultConnection.close();
   logger.info('close connections done');

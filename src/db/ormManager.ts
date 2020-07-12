@@ -1,6 +1,10 @@
 import { createConnection, getManager } from 'typeorm';
 import * as ormConfig from '../../ormconfig';
 
+export const getDBPath = () => {
+  return ormConfig.database;
+}
+
 export const getOrmManager = () => {
   return getManager();
 };
