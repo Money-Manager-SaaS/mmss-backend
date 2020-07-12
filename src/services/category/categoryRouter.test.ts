@@ -1,4 +1,4 @@
-import theRouter from './accountRouter';
+import theRouter from './categoryRouter';
 import * as supertest from 'supertest';
 import * as express from "express";
 import { getOrmManager } from '../../db/ormManager';
@@ -11,19 +11,17 @@ const app = express();
 app.use('/', theRouter);
 
 const entityData = {
-  name: 'test-account',
+  name: 'test-category',
   description: 'haha optional',
-  amount: 100,
   ledgerID: null,
 };
 
-
 const ledger2Data = {
-  name: 'ledger2haha2',
+  name: 'ledger2category',
   userId: null,
 };
 
-describe("account routes", () => {
+describe("category routes", () => {
   let token;
   let user;
   let ledger;
@@ -44,7 +42,7 @@ describe("account routes", () => {
 
   afterAll(async () => {
     await getOrmManager().query(
-      `DELETE FROM ACCOUNT where id = '${entity.id}'; `
+      `DELETE FROM CATEGORY where id = '${entity.id}'; `
     );
 
     await getOrmManager().query(
@@ -110,44 +108,44 @@ describe("account routes", () => {
   });
 
   it('get updated one', async () => {
-      const resp = await supertest(app).get(`/${ledger.id}/${entity.id}`)
-        .set({'Authorization': token}
-        );
-      expect(resp.status).toEqual(200);
-      expect(resp.body.name).toEqual(updatedEntityData.name);
-    });
+    const resp = await supertest(app).get(`/${ledger.id}/${entity.id}`)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    expect(resp.body.name).toEqual(updatedEntityData.name);
+  });
 
-    it('should not update not existed one', async () => {
-      updatedEntityData = {
-        ...entity,
-        name: 'test-entity-1',
-      };
-      const resp = await supertest(app).put(`/${ledger.id}/${entity.id+1}`)
-        .send(updatedEntityData)
-        .set({'Authorization': token}
-        );
-      expect(resp.status).toEqual(400);
-    });
+  it('should not update not existed one', async () => {
+    updatedEntityData = {
+      ...entity,
+      name: 'test-entity-1',
+    };
+    const resp = await supertest(app).put(`/${ledger.id}/${entity.id+1}`)
+      .send(updatedEntityData)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(400);
+  });
 
-    it('delete the one', async () => {
-      const resp = await supertest(app).delete(`/${ledger.id}/${entity.id}`)
-        .set({'Authorization': token}
-        );
-      expect(resp.status).toEqual(200);
-    });
+  it('delete the one', async () => {
+    const resp = await supertest(app).delete(`/${ledger.id}/${entity.id}`)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+  });
 
-    it('should not delete un-exited one', async () => {
-      const resp = await supertest(app).delete(`/${ledger.id}/${entity.id+1}`)
-        .set({'Authorization': token}
-        );
-      expect(resp.status).toEqual(400);
-    });
+  it('should not delete un-exited one', async () => {
+    const resp = await supertest(app).delete(`/${ledger.id}/${entity.id+1}`)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(400);
+  });
 
-    it('should not get after delete', async () => {
-      const resp = await supertest(app).get(`/${ledger.id}/${entity.id}`)
-        .set({'Authorization': token}
-        );
-      expect(resp.status).toEqual(204);
-    });
+  it('should not get after delete', async () => {
+    const resp = await supertest(app).get(`/${ledger.id}/${entity.id}`)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(204);
+  });
 
 });

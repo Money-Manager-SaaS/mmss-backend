@@ -8,3 +8,4 @@ temp/
 /test.sqlite
 /database.sqlite
 /database.backup.sqlite
+/test.sqlite.backup

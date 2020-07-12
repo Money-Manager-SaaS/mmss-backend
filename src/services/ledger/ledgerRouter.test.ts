@@ -16,7 +16,7 @@ const ledgerData = {
 };
 
 
-describe("routes", () => {
+describe("ledger routes", () => {
   let token;
   let user;
   let ledger;
