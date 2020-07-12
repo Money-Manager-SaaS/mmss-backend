@@ -41,6 +41,9 @@ export class Transaction extends BaseClass {
       nullable: false,
     })
   account: Account;
+  @Index()
+  @Column({ type: 'int', nullable: true })
+  accountId?: number;
 
   @ManyToOne(
     type => Account,
@@ -49,6 +52,9 @@ export class Transaction extends BaseClass {
       nullable: true,
     })
   toAccount: Account;
+  @Index()
+  @Column({ type: 'int', nullable: true })
+  toAccountId?: number;
 
   @ManyToOne(
     type => Category,
@@ -57,6 +63,9 @@ export class Transaction extends BaseClass {
       nullable: true,
     })
   category: Category;
+  @Index()
+  @Column({ type: 'int', nullable: true })
+  categoryId?: number;
 
   @ManyToOne(
     type => Payee,
@@ -65,6 +74,8 @@ export class Transaction extends BaseClass {
       nullable: true,
     })
   payee: Payee;
+  @Column({ type: 'int', nullable: true })
+  payeeId?: number;
 
   @BeforeInsert()
   beforeInsert() {

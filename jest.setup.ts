@@ -1,7 +1,8 @@
-import { createConnection, getConnection, getConnectionOptions } from 'typeorm';
+import { getConnection } from 'typeorm';
 import { User } from './src/entity/User';
-import { getOrmManager, prepareConnection } from './src/db/ormManager';
+import { getDBPath, getOrmManager, prepareConnection } from './src/db/ormManager';
 import logger from './src/logger';
+import * as fs from 'fs';
 
 const user2Data = {
   userName: 'un2',
@@ -9,7 +10,16 @@ const user2Data = {
   email: 'un2@email.com',
 };
 
+
 beforeAll(async () => {
+  await fs.copyFile(
+    'test.sqlite.backup', getDBPath(),
+    (e) => {
+      logger.error(e);
+    }
+  )
+
+
   logger.info('before all');
   await prepareConnection();
   logger.info('get test connection done');
@@ -33,4 +43,10 @@ afterAll(async () => {
   const defaultConnection = getConnection();
   await defaultConnection.close();
   logger.info('close connections done');
+  await fs.unlink(
+    getDBPath(),
+    (e) => {
+      logger.error(e);
+    }
+  );
 });
