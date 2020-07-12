@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { Account as Entity } from '../../entity/Account';
+import logger from '../../logger';
 
 
 const getFindOption = (ledgerId) => (
@@ -32,7 +33,10 @@ export const getOne = async (req: any, res: Response) => {
   const entityRepo = Entity.getRepo();
   const ledgerID = req.ledgerID;
   try {
-    const item = await entityRepo.findOne(ledgerID, getFindOption(ledgerID));
+    const entityID = req.params.entityID;
+    logger.debug('get an entity ' + entityID);
+    const item = await entityRepo.findOne(entityID, getFindOption(ledgerID));
+    logger.debug(item);
     if (item) {
       res.status(200).send(item);
     } else {
@@ -58,11 +62,15 @@ export const createOne = async (req, res: Response) => {
 };
 
 export const updateOne = async (req, res: Response) => {
-  const ledgerID = req.params?.ledgerID;
+  const ledgerID = req.ledgerID;
   const entityRepo = Entity.getRepo();
   try {
-    const item = await entityRepo.findOne(ledgerID, getFindOption(ledgerID));
+    const entityID = req.params.entityID;
+    logger.debug('update an entity ' + entityID);
+    const item = await entityRepo.findOne(entityID, getFindOption(ledgerID));
+    logger.debug(item);
     if (item) {
+      delete req.body.ledgerID;
       const r = await entityRepo.update(item.id, req.body);
       res.status(200).send(r);
     }
@@ -74,10 +82,13 @@ export const updateOne = async (req, res: Response) => {
 };
 
 export const deleteOne = async (req, res: Response) => {
-  const ledgerID = req.params?.ledgerID;
+  const ledgerID = req.ledgerID;
   const entityRepo = Entity.getRepo();
   try {
-    const item = await entityRepo.findOne(ledgerID, getFindOption(req.ledgerID));
+    const entityID = req.params.entityID;
+    logger.debug('delete an entity ' + entityID);
+    const item = await entityRepo.findOne(entityID, getFindOption(ledgerID));
+    logger.debug(item);
     if (item) {
       await entityRepo.softDelete(item.id);
       res.status(200).json({});
