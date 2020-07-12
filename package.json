@@ -10,10 +10,10 @@
     "seed": "ts-node src/db/seeding/index.ts",
     "postinstall": "npx tsc",
     "test": "cross-env JEST_TESTING=true jest --testTimeout=10000 --runInBand",
-    "test:db:migrate": "cross-env JEST_TESTING=true ts-node ./node_modules/typeorm/cli.js  migration:run",
+    "test:db:migrate": "cross-env JEST_TESTING=true npm run db:migrate",
     "db:migration": " ts-node ./node_modules/typeorm/cli.js  migration:generate",
     "db:gen-migration": "npm run db:migration -- -n auto",
-    "db:migrate": " ts-node ./node_modules/typeorm/cli.js  migration:run",
+    "db:migrate": "ts-node ./node_modules/typeorm/cli.js  migration:run",
     "db:revert": " ts-node ./node_modules/typeorm/cli.js  migration:revert"
   },
   "dependencies": {
