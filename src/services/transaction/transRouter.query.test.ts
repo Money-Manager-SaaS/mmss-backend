@@ -22,13 +22,13 @@ const entityData = {
 };
 
 const ledger2Data = {
-  name: 'ledger2transaction',
+  name: 'ledger2transaction2',
   description: 'desp',
   userId: null,
 };
 
 const accountData = {
-  name: 'account2',
+  name: 'account3',
   description: 'haha',
   amount: 11,
 }
@@ -41,7 +41,6 @@ describe("transactions routes", () => {
   let ledger;
   let account;
   let entity;
-  let updatedEntityData;
 
   beforeAll(async () => {
     // create user
@@ -65,15 +64,6 @@ describe("transactions routes", () => {
     logger.debug(account);
   });
 
-  it('get all before create, should be empty', async () => {
-    const resp = await supertest(app).get('/' + ledger.id)
-      .set({'Authorization': token}
-      );
-    expect(resp.status).toEqual(204);
-    expect(!resp.body?.data?.length);
-    expect(!resp.body?.count);
-  });
-
   it('create one', async () => {
     entityData.accountID = account.id;
     const resp = await supertest(app).post('/' + ledger.id)
@@ -88,84 +78,38 @@ describe("transactions routes", () => {
     logger.debug('entity created');
     logger.debug(entity);
   });
-
-  it('get one', async () => {
-    const resp = await supertest(app).get(`/${ledger.id}/${entity.id}`)
-      .set({'Authorization': token}
-      );
-    expect(resp.status).toEqual(200);
-    expect(resp.body.amount).toEqual(entity.amount);
-    expect(+resp.body.accountId).toEqual(+account.id);
-  });
-
-  it('get all should be one now', async () => {
-    const resp = await supertest(app).get(`/${ledger.id}`)
+  //
+  it('get all with query parameters', async () => {
+    const resp = await supertest(app).get(`/${ledger.id}?limit=2&accountID=${account.id}&lt=1000`)
       .set({'Authorization': token}
       );
     expect(resp.status).toEqual(200);
     expect(resp.body.count).toEqual(1);
-    expect(resp.body.data?.length).toEqual(1);
-    expect(resp.body.data[0].id).toEqual(entity.id);
   });
 
-  it('shout not get not existed one', async () => {
-    const resp = await supertest(app).get(`/${ledger.id}/${entity.id + 100}`)
+  it('get all with wrong skip and limit', async () => {
+    const resp = await supertest(app).get(`/${ledger.id}?limit=2&skip=1`)
       .set({'Authorization': token}
       );
+    logger.debug(resp.body);
     expect(resp.status).toEqual(204);
+    // expect(resp.body.count).toEqual(0);
   });
 
-  it('update one', async () => {
-    const tmpEntity = {...entityData};
-    updatedEntityData = {
-      ...tmpEntity,
-      amount: 12,
-    };
-    const resp = await supertest(app).put(`/${ledger.id}/${entity.id}`)
-      .send(updatedEntityData)
+  it('get all with amount lt', async () => {
+    const resp = await supertest(app).get(`/${ledger.id}?lt=1000`)
       .set({'Authorization': token}
       );
+    logger.debug(resp.body);
     expect(resp.status).toEqual(200);
+    expect(resp.body.count).toEqual(1);
   });
 
-  it('get updated one', async () => {
-    const resp = await supertest(app).get(`/${ledger.id}/${entity.id}`)
+  it('get all with amount gt', async () => {
+    const resp = await supertest(app).get(`/${ledger.id}?gt=1000`)
       .set({'Authorization': token}
       );
-    expect(resp.status).toEqual(200);
-    expect(resp.body.amount).toEqual(updatedEntityData.amount);
-  });
-
-  it('should not update not existed one', async () => {
-    updatedEntityData = {
-      ...entity,
-      name: 'test-entity-1',
-    };
-    const resp = await supertest(app).put(`/${ledger.id}/${entity.id+1}`)
-      .send(updatedEntityData)
-      .set({'Authorization': token}
-      );
-    expect(resp.status).toEqual(400);
-  });
-
-  it('delete the one', async () => {
-    const resp = await supertest(app).delete(`/${ledger.id}/${entity.id}`)
-      .set({'Authorization': token}
-      );
-    expect(resp.status).toEqual(200);
-  });
-
-  it('should not delete un-exited one', async () => {
-    const resp = await supertest(app).delete(`/${ledger.id}/${entity.id+1}`)
-      .set({'Authorization': token}
-      );
-    expect(resp.status).toEqual(400);
-  });
-
-  it('should not get after delete', async () => {
-    const resp = await supertest(app).get(`/${ledger.id}/${entity.id}`)
-      .set({'Authorization': token}
-      );
+    logger.debug(resp.body);
     expect(resp.status).toEqual(204);
   });
 

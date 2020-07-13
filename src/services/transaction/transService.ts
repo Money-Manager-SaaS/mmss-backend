@@ -1,62 +1,33 @@
 import { Response } from 'express';
 import { Transaction as Entity } from '../../entity/Transaction';
 import logger from '../../logger';
-import { In } from 'typeorm';
-import { Account } from '../../entity/Account';
-
-const getFindOption = (body: any, accounts: Account[]) => {
-  const {accountID, toAccountID, categoryID, payeeID} = body;
-  // limit to the ledger's accounts
-  logger.debug('the accounts in req');
-  logger.debug(accounts);
-
-  const conditions = {
-    accountId: In(accounts.map(acc=>acc.id))
-  };
-
-  if (!accountID && !toAccountID && !categoryID && !payeeID) {
-    return null;
-  }
-
-  if (accountID) {
-    Object.assign(
-      conditions,
-      {accountId: accountID},
-    )
-  }
-  if (toAccountID) {
-    Object.assign(
-      conditions,
-      {toAccountId: toAccountID},
-    )
-  }
-  if (categoryID) {
-    Object.assign(
-      conditions,
-      {categoryId: categoryID},
-    )
-  }
-  if (payeeID) {
-    Object.assign(
-      conditions,
-      {payeeId: payeeID},
-    )
-  }
-  return {
-    where: conditions
-  }
-};
+import { DEFAULT_LIMIT, getFindOption, getQueryOptions } from './utils';
 
 export const getAll = async (req: any, res: Response) => {
   const entityRepo = Entity.getRepo();
   try {
-    const items = await entityRepo.find(
-      getFindOption(req.body, req.accounts)
+    let option = getFindOption(req.body, req.accounts);
+    if (req?.query) {
+      option = getQueryOptions(req.query, option);
+    }
+    logger.debug('# to get all req transactions option');
+    logger.debug(option);
+
+    const [items, count] = await entityRepo.findAndCount(
+      option
     );
-    if (items?.length) {
-      res.status(200).send(items);
+    if (items?.length && count>0) {
+      res.status(200).send({
+        data: items,
+        count: count,
+      });
     } else {
-      res.status(204).send([]);
+      logger.debug('cannot find transactions');
+      logger.debug(items);
+      res.status(204).send({
+        data: [],
+        count: 0,
+      });
     }
   } catch (e) {
     console.error(e);
