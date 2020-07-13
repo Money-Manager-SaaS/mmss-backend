@@ -1,8 +1,15 @@
 import { Response } from 'express';
 import { Transaction as Entity } from '../../entity/Transaction';
 import logger from '../../logger';
-import { DEFAULT_LIMIT, getFindOption, getQueryOptions } from './utils';
+import { getFindOption, getQueryOptions } from './utils';
 
+/**
+ * there is some limitation here
+ * lt gt
+ * dateStart dateEnd cannot be used together as query parameter
+ * @param req
+ * @param res
+ */
 export const getAll = async (req: any, res: Response) => {
   const entityRepo = Entity.getRepo();
   try {

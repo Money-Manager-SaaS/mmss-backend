@@ -34,7 +34,7 @@ const accountData = {
 }
 
 
-describe("transactions routes", () => {
+describe("transactions routes basic query parameters", () => {
   let token;
   let user;
   let transactions = [];
