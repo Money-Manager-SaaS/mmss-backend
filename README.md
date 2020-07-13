@@ -16,3 +16,6 @@ Contributing is welcome, including
 
 Before any contributing, please read through the  [Contributing Guide](CONTRIBUTING.md) firstly.
 
+
+![code coverage](https://codecov.io/gh/Money-Manager-SaaS/mmss-backend/commit/e22a8702155acdfe739298831b2bb7e391eedcc3/graphs/tree.svg)
+
