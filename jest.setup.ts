@@ -12,14 +12,14 @@ const user2Data = {
 
 
 beforeAll(async () => {
-  await fs.copyFile(
-    'test.sqlite.backup', getDBPath(),
-    (e) => {
-      logger.error(e);
-    }
-  )
-
-
+  if (process.env.NODE_ENV !== 'CI') {
+    await fs.copyFile(
+      'test.sqlite.backup', getDBPath(),
+      (e) => {
+        !!e && logger.error(e);
+      }
+    )
+  }
   logger.info('before all');
   await prepareConnection();
   logger.info('get test connection done');
@@ -36,10 +36,12 @@ afterAll(async () => {
   const defaultConnection = getConnection();
   await defaultConnection.close();
   logger.info('close connections done');
-  await fs.unlink(
-    getDBPath(),
-    (e) => {
-      logger.error(e);
-    }
-  );
+  if (process.env.NODE_ENV !== 'CI') {
+    await fs.unlink(
+      getDBPath(),
+      (e) => {
+        !!e && logger.error(e);
+      }
+    );
+  }
 });
