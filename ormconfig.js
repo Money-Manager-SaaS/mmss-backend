@@ -11,11 +11,4 @@ if (process.env.JEST_TESTING === 'true') {
   });
 }
 
-if (process.env.NODE_ENV === 'CI') {
-  // for CI only, not use locally or in production
-  Object.assign(ormconfig, {
-    database: "test.sqlite.backup",
-  });
-}
-
 module.exports = ormconfig;
