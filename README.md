@@ -4,8 +4,15 @@
 [![codecov](https://codecov.io/gh/Money-Manager-SaaS/mmss-backend/branch/master/graph/badge.svg)](https://codecov.io/gh/Money-Manager-SaaS/mmss-backend)
 
 
+This is an express api for [the front-end app](https://github.com/Money-Manager-SaaS/mmss-frontend), we are trying building 
+a money manager SaaS for users.
 
 
+Contributing is welcome, including
+- code review
+- issues
+- bug hunting
+- document update
 
-## Ref
-- [Contributing](CONTRIBUTING.md)
+Before any contributing, please read through the  [Contributing Guide](CONTRIBUTING.md) firstly.
+
