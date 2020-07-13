@@ -33,3 +33,4 @@ jobs:
           LOG_LEVEL: info
           JWT_SECRET: jwt_secret
           JWT_REFRESH_SECRET: jwt_refresh_secret
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
