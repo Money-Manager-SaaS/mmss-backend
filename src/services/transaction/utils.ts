@@ -8,9 +8,9 @@ export const getFindOption = (body: any, ledgerAccounts: Account[]) => {
   logger.debug('the ledger accounts in req');
   logger.debug(ledgerAccounts);
 
-  const conditions = {
+  const conditions = [{
     accountId: In(ledgerAccounts.map(acc=>acc.id))
-  };
+  }];
 
   return {
     where: conditions,
@@ -37,29 +37,33 @@ export const getQueryOptions = (query:any, option:any) => {
       }
     );
   }
+
+  const whereConditions = option.where;
+  const theFirstWhereCondition = whereConditions[0];
+
   if (query.accountID) {
-    Object.assign(option.where,
+    Object.assign(theFirstWhereCondition,
       {
         accountId: query.accountID
       }
     )
   }
   if (query.toAccountID) {
-    Object.assign(option.where,
+    Object.assign(theFirstWhereCondition,
       {
         toAccountId: query.toAccountID
       }
     )
   }
   if (query.categoryID) {
-    Object.assign(option.where,
+    Object.assign(theFirstWhereCondition,
       {
         categoryId: query.categoryID
       }
     )
   }
   if (query.payeeID) {
-    Object.assign(option.where,
+    Object.assign(theFirstWhereCondition,
       {
         payeeId: query.payeeID
       }
@@ -67,28 +71,24 @@ export const getQueryOptions = (query:any, option:any) => {
   }
   if (query.gt) {
     logger.debug('found query gt ')
-    Object.assign(option.where,
+    Object.assign(theFirstWhereCondition,
       {
         amount: MoreThanOrEqual(query.gt)
       }
     )
     logger.debug(option);
-    logger.debug(option.where);
+    logger.debug(theFirstWhereCondition);
   }
   if (query.lt) {
     const whereCondition = {
       amount: LessThanOrEqual(query.lt)
     };
-    if ('amount' in option.where) {
-      option.where.push(whereCondition);
-    } else {
-      Object.assign(option.where,
-        whereCondition
-      )
-    }
+    Object.assign(theFirstWhereCondition,
+      whereCondition
+    )
   }
   if (query.dateStart) {
-    Object.assign(option.where,
+    Object.assign(theFirstWhereCondition,
       {
         date: MoreThanOrEqual(query.dateStart)
       }
@@ -98,20 +98,19 @@ export const getQueryOptions = (query:any, option:any) => {
     const whereCondition = {
       date: LessThanOrEqual(query.dateEnd)
     };
-    if ('date' in option.where) {
-      option.where.push(whereCondition);
-    } else {
-      Object.assign(option.where,
-        whereCondition
-      )
-    }
+    Object.assign(theFirstWhereCondition,
+      whereCondition
+    )
   }
   if (query.description) {
-    Object.assign(option.where,
+    Object.assign(theFirstWhereCondition,
       {
         description: Like(`%${query.description}%`)
       }
     )
   }
+
+  whereConditions[0]=theFirstWhereCondition;
+  option.where=whereConditions;
   return option;
 }
