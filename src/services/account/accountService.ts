@@ -53,6 +53,8 @@ export const createOne = async (req, res: Response) => {
   try {
     const item = await entityRepo.create(req.body) as unknown as Entity;
     item.ledgerId = req.ledgerID;
+    logger.debug('account created is ');
+    logger.debug(item);
     await entityRepo.save(item);
     res.status(200).send(item);
   } catch (e) {

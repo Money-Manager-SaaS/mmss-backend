@@ -18,12 +18,16 @@ export const getAll = async (req: any, res: Response) => {
       option = getQueryOptions(req.query, option);
     }
     logger.debug('# to get all req transactions option');
+    // logger.debug(req.accounts);
+    logger.debug(req.query);
     logger.debug(option);
 
     const [items, count] = await entityRepo.findAndCount(
       option
     );
+    logger.debug([count, req.toAccount, req.account, req.category, req.payee]);
     if (items?.length && count>0) {
+      // logger.debug(items);
       res.status(200).send({
         data: items,
         count: count,
@@ -66,7 +70,16 @@ export const createOne = async (req, res: Response) => {
   const entityRepo = Entity.getRepo();
   try {
     const item = await entityRepo.create(req.body) as unknown as Entity;
-    item.accountId = req.account.id;
+    item.account = req.account;
+    if (req?.category) {
+      item.category = req.category;
+    }
+    if (req?.toAccount) {
+      item.toAccount = req.toAccount;
+    }
+    if (req?.payee) {
+      item.payee = req.payee;
+    }
     await entityRepo.save(item);
     res.status(200).send(item);
   } catch (e) {
