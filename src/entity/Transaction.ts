@@ -11,10 +11,7 @@ export enum TransferType {
   Deposit = 1, //money in
 }
 
-@Index(['account'])
-@Index(['toAccount'])
-@Index(['category'])
-@Index(['payee'])
+
 @Entity()
 export class Transaction extends BaseClass {
 
@@ -27,6 +24,7 @@ export class Transaction extends BaseClass {
   @Column()
   amount: number;
 
+  @Index()
   @Column()
   date?: Date;
 

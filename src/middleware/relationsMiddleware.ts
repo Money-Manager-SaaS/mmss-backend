@@ -16,10 +16,11 @@ export const prepareLedger = async (req, res, next) => {
     logger.debug( req.user.id)
     if (!ledger || ledger.userId !== req.user.id) {
       res.status(403).send('forbidden for this ledger');
+    } else {
+      req.ledgerID = ledgerID;
+      req.ledger = ledger;
+      next();
     }
-    req.ledgerID = ledgerID;
-    req.ledger = ledger;
-    next();
   } catch (e) {
     logger.error(e);
     res.status(400).send('ledger id is required');
@@ -37,6 +38,9 @@ export const prepareTransactionRelations = async (req, res, next) => {
   const toAccountID = req?.body?.toAccountID;
   const categoryID = req?.body?.categoryID;
   const payeeID = req?.body?.payeeID;
+
+  logger.debug('body of request');
+  logger.debug(req.body);
 
   const hasPermission = (entity: Account | Category | Payee, ledger, userID) => {
     return (
@@ -73,7 +77,7 @@ export const prepareTransactionRelations = async (req, res, next) => {
       if (!hasPermission(entity, ledger, req.user.id)) {
         res.status(403).send('you do not have permission ');
       }
-      req.account = entity;
+      req.toAccount = entity;
       delete req.body.toAccountID;
     }
     if (payeeID) {
@@ -95,6 +99,8 @@ export const prepareTransactionRelations = async (req, res, next) => {
 export const prepareAccounts = async (req, res, next) => {
   const ledger = req.ledger;
   try {
+    console.log('prepare accounts');
+    logger.debug(ledger);
     const accounts = await Account.find({
       ledgerId: ledger.id
     });

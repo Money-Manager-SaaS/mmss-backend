@@ -35,10 +35,10 @@ afterAll(async () => {
   await defaultConnection.close();
   logger.info('close connections done');
 
-  await fs.unlink(
-    getDBPath(),
-    (e) => {
-      !!e && logger.error(e);
-    }
-  );
+  // await fs.unlink(
+  //   getDBPath(),
+  //   (e) => {
+  //     !!e && logger.error(e);
+  //   }
+  // );
 });

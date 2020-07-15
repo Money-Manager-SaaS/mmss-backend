@@ -4,10 +4,8 @@ import { In, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 
 export const DEFAULT_LIMIT = 500
 
-export const getFindOption = (body: any, ledgerAccounts: Account[]) => {
-  logger.debug('the ledger accounts in req');
-  logger.debug(ledgerAccounts);
-
+export const getFindOption = (ledgerAccounts: Account[]) => {
+  logger.debug('the ledger accounts in req count ' + ledgerAccounts.length);
   const conditions = [{
     accountId: In(ledgerAccounts.map(acc=>acc.id))
   }];
@@ -20,7 +18,10 @@ export const getFindOption = (body: any, ledgerAccounts: Account[]) => {
 
 export const getQueryOptions = (query:any, option:any) => {
   Object.assign(option, {
-    take: DEFAULT_LIMIT
+    take: DEFAULT_LIMIT,
+    order: {
+      date: 'DESC',
+    }
   });
 
   if (query.limit) {
@@ -36,6 +37,12 @@ export const getQueryOptions = (query:any, option:any) => {
         skip: query.skip
       }
     );
+  }
+  if (query.order as 'DESC'|'ASC'|undefined) {
+    // todo validate this query.order
+    option.order = {
+      date: query.order
+    }
   }
 
   const whereConditions = option.where;
@@ -106,6 +113,13 @@ export const getQueryOptions = (query:any, option:any) => {
     Object.assign(theFirstWhereCondition,
       {
         description: Like(`%${query.description}%`)
+      }
+    )
+  }
+  if (query.transferType) {
+    Object.assign(theFirstWhereCondition,
+      {
+        transferType: query.transferType,
       }
     )
   }
