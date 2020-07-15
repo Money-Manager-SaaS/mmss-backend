@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { Transaction as Entity } from '../../entity/Transaction';
 import logger from '../../logger';
 import { getFindOption, getQueryOptions } from './utils';
+import * as transProvider from './transProvider';
 
 /**
  * there is some limitation here
@@ -11,21 +12,8 @@ import { getFindOption, getQueryOptions } from './utils';
  * @param res
  */
 export const getAll = async (req: any, res: Response) => {
-  const entityRepo = Entity.getRepo();
   try {
-    let option = getFindOption(req.body, req.accounts);
-    if (req?.query) {
-      option = getQueryOptions(req.query, option);
-    }
-    logger.debug('# to get all req transactions option');
-    // logger.debug(req.accounts);
-    logger.debug(req.query);
-    logger.debug(option);
-
-    // do not use find and count, not work with skip and limit
-    const items = await entityRepo.find(
-      option
-    );
+    const items = await transProvider.getAll(req.query, req.accounts);
     const count = items.length;
     logger.debug([count, req.toAccount, req.account, req.category, req.payee]);
     if (items?.length && count>0) {
@@ -55,7 +43,7 @@ export const getOne = async (req: any, res: Response) => {
   try {
     const entityID = req.params.entityID;
     logger.debug('get an entity ' + entityID);
-    const item = await entityRepo.findOne(entityID, getFindOption(ledgerID, req.accounts));
+    const item = await entityRepo.findOne(entityID, getFindOption( req.accounts));
     logger.debug(item);
     if (item) {
       res.status(200).send(item);
@@ -96,7 +84,7 @@ export const updateOne = async (req, res: Response) => {
   try {
     const entityID = req.params.entityID;
     logger.debug('update an entity ' + entityID);
-    const item = await entityRepo.findOne(entityID, getFindOption(ledgerID, req.accounts));
+    const item = await entityRepo.findOne(entityID, getFindOption( req.accounts));
     logger.debug(item);
     if (item) {
       const {
@@ -135,7 +123,7 @@ export const deleteOne = async (req, res: Response) => {
   try {
     const entityID = req.params.entityID;
     logger.debug('delete an entity ' + entityID);
-    const item = await entityRepo.findOne(entityID, getFindOption(ledgerID, req.accounts));
+    const item = await entityRepo.findOne(entityID, getFindOption( req.accounts));
     logger.debug(item);
     if (item) {
       await entityRepo.softDelete(item.id);

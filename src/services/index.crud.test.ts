@@ -306,5 +306,28 @@ describe("transactions routes basic query parameters", () => {
   });
 
 
+  it('get init for ledger 1', async () => {
+    const ledger = ledgers[0];
+    const resp = await supertest(app).get('/init/' + ledger.id)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    expect(resp.body.data.ledger.accounts.length).toEqual(4);
+    expect(resp.body.data.ledger.categories.length).toEqual(4);
+    expect(resp.body.data.ledger.payees.length).toEqual(4);
+    expect(resp.body.count).toEqual(12);
+    expect(resp.body.data.transactions.length).toEqual(12);
+  });
+
+  it('get one ledger', async () => {
+    const ledger = ledgers[0];
+    const resp = await supertest(app).get('/ledgers/' + ledger.id)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    expect(resp.body.accounts.length).toEqual(4);
+    expect(resp.body.categories.length).toEqual(4);
+    expect(resp.body.payees.length).toEqual(4);
+  });
 
 });

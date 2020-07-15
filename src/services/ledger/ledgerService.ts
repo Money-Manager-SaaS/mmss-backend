@@ -1,14 +1,6 @@
 import { Response } from 'express';
 import { Ledger } from '../../entity/Ledger';
-
-
-const getFindOption = (userID) => (
-  {
-    where: {
-      userId: userID
-    }
-  }
-);
+import { getFindOption } from './ledgerUtils';
 
 export const getAll = async (req: any, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
@@ -32,7 +24,11 @@ export const getOne = async (req: any, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   const ledgerID = req.params?.ledgerID;
   try {
-    const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
+    const ledger = await ledgerRepo.findOne(ledgerID,
+      Object.assign({}, getFindOption(req.user.id), {
+        relations: ["accounts", "categories", "payees"],
+      })
+    );
     if (ledger && ledger.userId === req.user.id) {
       res.status(200).send(ledger);
     } else {

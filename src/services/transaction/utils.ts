@@ -4,7 +4,7 @@ import { In, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 
 export const DEFAULT_LIMIT = 500
 
-export const getFindOption = (body: any, ledgerAccounts: Account[]) => {
+export const getFindOption = (ledgerAccounts: Account[]) => {
   logger.debug('the ledger accounts in req count ' + ledgerAccounts.length);
   const conditions = [{
     accountId: In(ledgerAccounts.map(acc=>acc.id))
