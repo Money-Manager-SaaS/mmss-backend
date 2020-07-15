@@ -4,22 +4,36 @@ Please read through this guide before contributing.
 We all agree,
 - No software is bug free
 - No great software can be built by one person
+- Tests do help improve code quality and software stability
+
+# PR Rules
+- **Always create a separated branch** when you want to build something new,
+- **PR is not for debugging**, before PR created, make sure the app can be run well locally
+- **At least make sure testing pass** `npm run test`
+
+---
 
 
 ## Start to develop
-
-- based on master, create new feature branch
+For local development, sqlite is used for development and testing purpose, 
+it is very lightweight and easy for setting up.
 
 ### Getting Started
+- `npm ci`
+- `npm run dev` for starting the api locally
 
-- `npm ci` for dependencies
+### About Migration
+-  `npm run db:migrate` for migrate db, more migration info below
+
+
+## Testing
+- `npm test` please make sure test pass before PR
+- you might need `npm test:db:migrate` for migrating your test db
+
 
 ## Migration CMD
-
-
-## PR Guide
-
-> PR is not for debugging, make sure the feature can be run locally, 
+1. Typeorm support [generating migration automaticall](https://github.com/typeorm/typeorm/blob/master/docs/migrations.md#creating-a-new-migration), by simply run `npm db:gen-migration`
+2. After migration file created at `src/migrations`, you can run `npm run db:migrate`
 
 
 
