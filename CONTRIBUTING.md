@@ -1,5 +1,7 @@
 # Contributing Guide
 Please read through this guide before contributing. 
+This guide is more for Junior Developers or Non-Developers, Ignore it if you already have
+this practice guide in your blood or experted in express/typescript.
 
 We all agree,
 - No software is bug free
@@ -27,6 +29,8 @@ it is very lightweight and easy for setting up.
 
 
 ## Testing
+supertest is used to mock the api requests, and jest is used as the test framework.
+
 - `npm test` please make sure test pass before PR
 - you might need `npm test:db:migrate` for migrating your test db
 
