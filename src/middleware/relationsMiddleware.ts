@@ -16,10 +16,11 @@ export const prepareLedger = async (req, res, next) => {
     logger.debug( req.user.id)
     if (!ledger || ledger.userId !== req.user.id) {
       res.status(403).send('forbidden for this ledger');
+    } else {
+      req.ledgerID = ledgerID;
+      req.ledger = ledger;
+      next();
     }
-    req.ledgerID = ledgerID;
-    req.ledger = ledger;
-    next();
   } catch (e) {
     logger.error(e);
     res.status(400).send('ledger id is required');

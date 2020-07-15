@@ -324,7 +324,7 @@ describe("transactions routes basic query parameters", () => {
 
   it('get init for ledger 102 (not exist)', async () => {
     const ledger = ledgers[1];
-    const resp = await supertest(app).get('/init/' + ledger.id+100)
+    const resp = await supertest(app).get('/init/' + ledger.id+10090456890645809)
       .set({'Authorization': token}
       );
     expect(resp.status !== 200);
