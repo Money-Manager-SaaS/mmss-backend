@@ -22,9 +22,11 @@ export const getAll = async (req: any, res: Response) => {
     logger.debug(req.query);
     logger.debug(option);
 
-    const [items, count] = await entityRepo.findAndCount(
+    // do not use find and count, not work with skip and limit
+    const items = await entityRepo.find(
       option
     );
+    const count = items.length;
     logger.debug([count, req.toAccount, req.account, req.category, req.payee]);
     if (items?.length && count>0) {
       // logger.debug(items);

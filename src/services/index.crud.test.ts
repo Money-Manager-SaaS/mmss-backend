@@ -285,25 +285,25 @@ describe("transactions routes basic query parameters", () => {
   });
 
 
-  // it('get all limit 8', async () => {
-  //   const ledger = ledgers[0];
-  //   const resp = await supertest(app).get('/transactions/' + ledger.id +`?limit=8`)
-  //     .set({'Authorization': token}
-  //     );
-  //   expect(resp.status).toEqual(200);
-  //   expect(resp.body.count).toEqual(8);
-  //   expect(resp.body.data?.length).toEqual(8);
-  // });
-  //
-  // it('get all skip 4', async () => {
-  //   const ledger = ledgers[0];
-  //   const resp = await supertest(app).get('/transactions/' + ledger.id +`?skip=4`)
-  //     .set({'Authorization': token}
-  //     );
-  //   expect(resp.status).toEqual(200);
-  //   expect(resp.body.count).toEqual(8);
-  //   expect(resp.body.data?.length).toEqual(8);
-  // });
+  it('get all limit 8', async () => {
+    const ledger = ledgers[0];
+    const resp = await supertest(app).get('/transactions/' + ledger.id +`?limit=8`)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    expect(resp.body.count).toEqual(8);
+    expect(resp.body.data?.length).toEqual(8);
+  });
+
+  it('get all skip 4', async () => {
+    const ledger = ledgers[0];
+    const resp = await supertest(app).get('/transactions/' + ledger.id +`?skip=4`)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    expect(resp.body.count).toEqual(8);
+    expect(resp.body.data?.length).toEqual(8);
+  });
 
 
 

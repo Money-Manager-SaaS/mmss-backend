@@ -9,7 +9,7 @@ import logger from '../logger';
  * @param next
  */
 export const authenticateJWT = async (req, res, next) => {
-  if (process.env.BYPATH_ACCESS_TOKEN === 'true' && process.env.NODE_ENV === 'development' && process.env.JEST_TESTING !== 'true') {
+  if (process.env.BYPATH_ACCESS_TOKEN === 'true' && process.env.NODE_ENV === 'development') {
     // for local development only
     logger.info('bypassing the access token');
     const user = (await User.getRepo().find())[0];
