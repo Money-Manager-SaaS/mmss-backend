@@ -9,28 +9,6 @@ import * as faker from 'faker';
 const app = express();
 app.use('/', theRouter);
 
-const entityData = {
-  description: 'haha optional',
-  amount: 10,
-  toAmount: null,
-  accountID: undefined,
-  toAccountID: undefined,
-  categoryID: undefined,
-  payeeID: undefined,
-};
-
-const ledger2Data = {
-  name: 'ledger2transaction2',
-  description: 'desp',
-  userId: null,
-};
-
-const accountData = {
-  name: 'account3',
-  description: 'haha',
-  amount: 11,
-}
-
 const ledgers = [];
 const accounts = [];
 const categories = [];
@@ -53,10 +31,10 @@ describe("transactions routes basic query parameters", () => {
 
   it('create 2 ledgers ', async () => {
     for (let i = 0; i < 2; i++) {
-      const name = faker.random.words(2);
+      const name = faker.random.words(2) + faker.random.number();
       const data = {
         name,
-        description: faker.random.words(5),
+        description: faker.random.words(4) + faker.random.number(),
       };
       const resp = await supertest(app).post('/ledgers')
         .send(data)
@@ -72,10 +50,10 @@ describe("transactions routes basic query parameters", () => {
   it('create 4 accounts to ledger1', async () => {
     const ledger = ledgers[0];
     for (let i = 0; i < 4; i++) {
-      const name = faker.random.words(2);
+      const name = faker.random.words(2) + faker.random.number();
       const data = {
         name,
-        description: faker.random.words(5),
+        description: faker.random.words(4) + faker.random.number(),
         amount: faker.random.number(),
         currency: {
           symbol: '$',
@@ -98,8 +76,8 @@ describe("transactions routes basic query parameters", () => {
     const ledger = ledgers[0];
     for (let i = 0; i < 4; i++) {
       const data = {
-        name: faker.random.words(2),
-        description: faker.random.words(5),
+        name: faker.random.words(2) + faker.random.number(),
+        description: faker.random.words(4) + faker.random.number(),
       };
       const resp = await supertest(app).post('/categories/' + ledger.id)
         .send(data)
@@ -115,8 +93,8 @@ describe("transactions routes basic query parameters", () => {
     const ledger = ledgers[0];
     for (let i = 0; i < 4; i++) {
       const data = {
-        name: faker.random.words(2),
-        description: faker.random.words(5),
+        name: faker.random.words(2) + faker.random.number(),
+        description: faker.random.words(4) + faker.random.number(),
       };
       const resp = await supertest(app).post('/payees/' + ledger.id)
         .send(data)
@@ -133,7 +111,7 @@ describe("transactions routes basic query parameters", () => {
     for (let i = 0; i < 4; i++) {
       const data = {
         amount: Math.abs(faker.random.number()),
-        description: faker.random.words(2),
+        description: faker.random.words(2) + faker.random.number(),
         transferType: 0,
         accountID: accounts[0].id,
         toAccountID: accounts[1].id,
@@ -153,7 +131,7 @@ describe("transactions routes basic query parameters", () => {
     for (let i = 0; i < 4; i++) {
       const data = {
         amount: Math.abs(faker.random.number()),
-        description: faker.random.words(2),
+        description: faker.random.words(2) + faker.random.number(),
         transferType: -1,
         accountID: accounts[0].id,
         categoryID: categories[0].id,
@@ -174,7 +152,7 @@ describe("transactions routes basic query parameters", () => {
     for (let i = 0; i < 4; i++) {
       const data = {
         amount: Math.abs(faker.random.number()),
-        description: faker.random.words(2),
+        description: faker.random.words(2) + faker.random.number(),
         transferType: 1,
         accountID: accounts[0].id,
         categoryID: categories[0].id,
@@ -307,6 +285,16 @@ describe("transactions routes basic query parameters", () => {
     expect(resp.body.data?.length).toEqual(8);
   });
 
+  it('get one ledger', async () => {
+    const ledger = ledgers[0];
+    const resp = await supertest(app).get('/ledgers/' + ledger.id)
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    expect(resp.body.accounts.length).toEqual(4);
+    expect(resp.body.categories.length).toEqual(4);
+    expect(resp.body.payees.length).toEqual(4);
+  });
 
   it('get init for ledger 1', async () => {
     const ledger = ledgers[0];
@@ -321,15 +309,25 @@ describe("transactions routes basic query parameters", () => {
     expect(resp.body.data.transactions.length).toEqual(12);
   });
 
-  it('get one ledger', async () => {
-    const ledger = ledgers[0];
-    const resp = await supertest(app).get('/ledgers/' + ledger.id)
+  it('get init for ledger 2', async () => {
+    const ledger = ledgers[1];
+    const resp = await supertest(app).get('/init/' + ledger.id)
       .set({'Authorization': token}
       );
     expect(resp.status).toEqual(200);
-    expect(resp.body.accounts.length).toEqual(4);
-    expect(resp.body.categories.length).toEqual(4);
-    expect(resp.body.payees.length).toEqual(4);
+    expect(resp.body.data.ledger.accounts.length).toEqual(0);
+    expect(resp.body.data.ledger.categories.length).toEqual(0);
+    expect(resp.body.data.ledger.payees.length).toEqual(0);
+    expect(resp.body.count).toEqual(0);
+    expect(resp.body.data.transactions.length).toEqual(0);
+  });
+
+  it('get init for ledger 102 (not exist)', async () => {
+    const ledger = ledgers[1];
+    const resp = await supertest(app).get('/init/' + ledger.id+100)
+      .set({'Authorization': token}
+      );
+    expect(resp.status !== 200);
   });
 
 });
