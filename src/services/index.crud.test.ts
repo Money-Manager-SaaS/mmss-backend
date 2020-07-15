@@ -292,6 +292,7 @@ describe("transactions routes basic query parameters", () => {
       );
     expect(resp.status).toEqual(200);
     expect(resp.body.count).toEqual(8);
+    expect(resp.body.total).toEqual(12);
     expect(resp.body.data?.length).toEqual(8);
   });
 
@@ -302,6 +303,7 @@ describe("transactions routes basic query parameters", () => {
       );
     expect(resp.status).toEqual(200);
     expect(resp.body.count).toEqual(8);
+    expect(resp.body.total).toEqual(12);
     expect(resp.body.data?.length).toEqual(8);
   });
 

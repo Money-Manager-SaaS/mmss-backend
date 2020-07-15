@@ -17,9 +17,9 @@ export const getAll = async (query, accounts: Account[]) => {
   logger.debug(option);
 
   // do not use find and count, not work with skip and limit
-  const items = await entityRepo.find(
+  const result = await entityRepo.findAndCount(
     option
   );
 
-  return items;
+  return result;
 }

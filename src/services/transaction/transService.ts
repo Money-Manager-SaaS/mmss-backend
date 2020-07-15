@@ -13,14 +13,14 @@ import * as transProvider from './transProvider';
  */
 export const getAll = async (req: any, res: Response) => {
   try {
-    const items = await transProvider.getAll(req.query, req.accounts);
-    const count = items.length;
+    const [items, count] = await transProvider.getAll(req.query, req.accounts); //count when skip, limit, the count is total count
     logger.debug([count, req.toAccount, req.account, req.category, req.payee]);
-    if (items?.length && count>0) {
+    if (items?.length && count > 0) {
       // logger.debug(items);
       res.status(200).send({
         data: items,
-        count: count,
+        count: items.length, //todo remove count
+        total: count,
       });
     } else {
       logger.debug('cannot find transactions');

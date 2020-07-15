@@ -11,13 +11,14 @@ export const getAll = async (req: any, res: Response) => {
     });
     if (ledger && ledger.userId === req.user.id) {
       try {
-        const items = await transProvider.getAll(req.query, req.accounts);
+        const [items, count] = await transProvider.getAll(req.query, req.accounts);
         res.status(200).send({
           data: {
             ledger,
             transactions: items
           },
-          count: items.length,
+          count: items.length, //todo remove count
+          total: count,
         });
       } catch (e) {
         res.status(500).end();
