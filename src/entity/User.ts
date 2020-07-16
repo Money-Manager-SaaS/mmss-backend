@@ -57,7 +57,7 @@ export class User extends BaseClass {
   active: boolean;
 
   @Column({
-    type: 'datetime'
+    type: 'date'
   })
   lastLogin: Date;
 
