@@ -1,10 +1,12 @@
 # https://devcenter.heroku.com/articles/build-docker-images-heroku-yml
-#setup:
-#  addons:
-#    - plan: heroku-postgresql
-#      as: DATABASE
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
 build:
   docker:
     web: Dockerfile
+  config:
+    NODE_ENV: production
 run:
   web: node dist/server.js
