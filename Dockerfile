@@ -11,8 +11,10 @@ RUN npm ci
 
 ADD . .
 
+RUN npm i -g ts-node typescript
 RUN npm run migrate
 RUN npm run build
+
 
 CMD ["node", "dist/server.js"]
 
