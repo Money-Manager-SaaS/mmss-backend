@@ -7,5 +7,6 @@ temp/
 /coverage/
 /test.sqlite
 /database.sqlite
-/database.backup.sqlite
-/test.sqlite.backup1
+/database.sqlite.backup*
+/test.sqlite.backup*
+

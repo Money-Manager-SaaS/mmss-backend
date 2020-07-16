@@ -1,17 +1,18 @@
 const ormconfig =  require('./ormconfig-json');
+const dotenv = require('dotenv');
+dotenv.config();
 
 if (process.env.JEST_TESTING === 'true') {
   // only run when testing
-  console.log('using test db');
   Object.assign(ormconfig, {
     type: "sqlite",
     database: "test.sqlite",
     synchronize: false,
     logging: false,
   });
+  console.log('using test db ', ormconfig.database);
 } else if (process.env.NODE_ENV === 'production') {
   // in production
-  console.log('using psql db');
   Object.assign(ormconfig, {
     type: "postgres",
     host: "localhost",
@@ -22,8 +23,10 @@ if (process.env.JEST_TESTING === 'true') {
     synchronize: true,
     logging: false,
   });
+  // do not use psql db for runing unit testing, it will get a lot duplication error
+  console.log('using psql db ', ormconfig.database );
 } else {
-  console.log('using local dev db');
+  console.log('using local dev db ', ormconfig.database);
 }
 
 module.exports = ormconfig;
