@@ -10,6 +10,9 @@ build:
     web: Dockerfile
   config:
     NODE_ENV: production
-    DATABASE_URL: $DATABASE_URL
 run:
-  web: node dist/server.js
+  web: npm start
+  asset-syncer:
+    command:
+      - npm run migrate
+    image: web
