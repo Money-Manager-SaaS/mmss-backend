@@ -1,6 +1,6 @@
 import { getConnection } from 'typeorm';
 import { User } from './src/entity/User';
-import { getDBPath, getOrmManager, prepareConnection } from './src/db/ormManager';
+import { getDBPath, prepareConnection, getDBConfig } from './src/db/ormManager';
 import logger from './src/logger';
 import * as fs from 'fs';
 
@@ -12,12 +12,16 @@ const user2Data = {
 
 
 beforeAll(async () => {
-  await fs.copyFile(
-    'test.sqlite.backup', getDBPath(),
-    (e) => {
-      !!e && logger.error(e);
-    }
-  )
+
+  if (getDBConfig().type==='sqlite') {
+    await fs.copyFile(
+      'test.sqlite.backup', getDBPath(),
+      (e) => {
+        !!e && logger.error(e);
+      }
+    )
+  }
+
   logger.info('before all');
   await prepareConnection();
   logger.info('get test connection done');
@@ -27,7 +31,7 @@ beforeAll(async () => {
   await UserRepo.save(user);
 
 
-  logger.info(user2Data.userName, 'test user and ledger created');
+  logger.info(user2Data.userName, 'test user created');
 });
 
 afterAll(async () => {
