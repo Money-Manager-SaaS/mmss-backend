@@ -1,6 +1,5 @@
 FROM node:13.10.1-alpine
 EXPOSE 3000
-ENV NODE_ENV production
 
 RUN mkdir /mm
 WORKDIR /mm
@@ -11,7 +10,7 @@ RUN npm ci
 
 ADD . .
 
-#RUN npm i -g ts-node typescript
+RUN npm i -g ts-node typescript
 #RUN npm run migrate
 RUN npm run build
 
