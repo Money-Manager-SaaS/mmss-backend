@@ -10,8 +10,8 @@ RUN npm ci
 
 ADD . .
 
+RUN npm run db:migrate
 RUN npm run build
-RUN npm db:migrate
 
 CMD ["node", "dist/server.js"]
 
