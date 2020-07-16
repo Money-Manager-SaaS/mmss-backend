@@ -5,7 +5,8 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "cross-env BYPATH_ACCESS_TOKEN=true tsc-watch --onSuccess \"ts-node src/server.ts\"",
-    "start": "ts-node src/index.ts",
+    "start:dev": "ts-node src/index.ts",
+    "start": "node dist/server.js",
     "start:heroku": "cross-env BYPATH_ACCESS_TOKEN=false npm run postinstall && node dist/server.js",
     "seed": "ts-node src/db/seeding/index.ts",
     "postinstall": "npx tsc",
