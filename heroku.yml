@@ -3,6 +3,10 @@ setup:
   addons:
     - plan: heroku-postgresql
       as: DATABASE
+  config:
+    NODE_ENV: production
+    DB_NAME: DB_NAME
+
 build:
   docker:
     web: Dockerfile
