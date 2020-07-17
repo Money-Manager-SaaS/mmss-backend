@@ -7,9 +7,9 @@ RUN npm ci
 
 ADD . .
 
-RUN npm i -g ts-node typescript
+RUN npm i -g ts-node typescript pm2
 RUN npm run build
 
 
-CMD npm run migrate && npm start
+CMD npm run migrate && npm run start:pm2
 

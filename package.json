@@ -7,7 +7,7 @@
     "dev": "cross-env BYPATH_ACCESS_TOKEN=true tsc-watch --onSuccess \"ts-node src/server.ts\"",
     "start:dev": "ts-node src/index.ts",
     "start": "node dist/server.js",
-    "start:heroku": "cross-env BYPATH_ACCESS_TOKEN=false npm run postinstall && node dist/server.js",
+    "start:pm2": "pm2 start dist/server.js -i 4",
     "migrate": "export NODE_ENV=production && npm run db:migrate",
     "build": "npx tsc",
     "test": "cross-env JEST_TESTING=true BYPATH_ACCESS_TOKEN=false jest --testTimeout=10000 --runInBand",
