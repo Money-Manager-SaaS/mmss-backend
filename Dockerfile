@@ -11,5 +11,5 @@ RUN npm i -g ts-node typescript pm2
 RUN npm run build
 
 
-CMD npm run migrate && npm run start:pm2
+CMD npm run migrate && npm run start
 
