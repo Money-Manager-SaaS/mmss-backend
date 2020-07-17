@@ -18,7 +18,18 @@ if (process.env.JEST_TESTING === 'true') {
     url: process.env.DATABASE_URL,
     synchronize: true,
     logging: false,
-    ssl: true
+    ssl: true,
+
+    // for building server, the entities under dist are required
+    entities: [
+      "dist/entity/**/*.{ts,js}"
+    ],
+    migrations: [
+      "dist/migration/**/*.{ts,js}"
+    ],
+    subscribers: [
+      "dist/subscriber/**/*.{ts,js}"
+    ]
   });
   // do not use psql db for runing unit testing, it will get a lot duplication error
   console.log('using psql db ', ormconfig.url );
