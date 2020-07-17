@@ -11,8 +11,4 @@ build:
   config:
     NODE_ENV: production
 run:
-  web: npm start
-  asset-syncer:
-    command:
-      - npm run migrate
-    image: web
+  web: npm run migrate && npm start
