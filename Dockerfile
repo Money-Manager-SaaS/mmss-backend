@@ -11,5 +11,5 @@ RUN npm i -g ts-node typescript
 RUN npm run build
 
 
-#CMD ["node", "dist/server.js"]
+CMD npm run migrate && npm start
 

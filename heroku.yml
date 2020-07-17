@@ -11,4 +11,5 @@ build:
   config:
     NODE_ENV: production
 run:
+#  migration has to be after build, because db env cannot be accessed when build
   web: npm run migrate && npm start
