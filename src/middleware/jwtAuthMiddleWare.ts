@@ -24,19 +24,20 @@ export const authenticateJWT = async (req, res, next) => {
       try {
         const payload = await verifyAccessToken(token);
         if (payload.exp <= new Date().getTime()) {
-          res.sendStatus(401);
+          res.send(401).end();
+        } else {
+          const user:User = await User.getRepo().findOne(payload.userID);
+          delete user.password;
+          req.user = user;
+          req.userID = payload.userID;
+          req.email = payload.email;
+          next();
         }
-        const user:User = await User.getRepo().findOne(payload.userID);
-        delete user.password;
-        req.user = user;
-        req.userID = payload.userID;
-        req.email = payload.email;
-        next();
       } catch (e) {
-        res.sendStatus(401);
+        res.send(401).end();
       }
     } else {
-      res.sendStatus(401);
+      res.send(401).end();
     }
   }
 };

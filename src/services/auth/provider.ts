@@ -83,7 +83,7 @@ const signJWT = (userID: number, email?:string, tokenType = TokenType.Access, mi
       userID: userID,
       email: email,
       iat: currentTimeStamp,
-      exp: currentTimeStamp + 60 * minutes,
+      exp: currentTimeStamp + 1000 * 60 * minutes,
     },
     secret,
     {
