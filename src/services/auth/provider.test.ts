@@ -48,7 +48,7 @@ describe(' test auth provider', () => {
     expect(result.email).toEqual(user.email);
     expect(result.iat).toBeLessThanOrEqual(new Date().getTime());
     expect(result.exp).toBeGreaterThan(new Date().getTime());
-    expect(result.exp).toBeLessThanOrEqual(new Date().getTime()+60 * 60);
+    expect(result.exp).toBeLessThanOrEqual(new Date().getTime()+ 1000* 60 * 60);
   });
 
   it('get refresh jwt token and verify', async ()=>{
@@ -59,7 +59,7 @@ describe(' test auth provider', () => {
     expect(result.email).toEqual(user.email);
     expect(result.iat).toBeLessThanOrEqual(new Date().getTime());
     expect(result.exp).toBeGreaterThan(new Date().getTime());
-    expect(result.exp).toBeLessThanOrEqual(new Date().getTime()+60 * 60 * 24 * 14);
+    expect(result.exp).toBeLessThanOrEqual(new Date().getTime()+ 1000* 60 * 60 * 24 * 14);
   });
 
   it('disable it and enable it', async () => {

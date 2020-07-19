@@ -1,5 +1,4 @@
 import { User } from "../../entity/User";
-import { getOrmManager } from '../../db/ormManager';
 import * as jwt from 'jsonwebtoken';
 
 
@@ -113,13 +112,18 @@ export const signRefreshToken = (userID: number, email?:string) => {
 
 const verifyJWT = async (token: string, tokenType = TokenType.Access): Promise<IJWTPayload> => {
   const secret = tokenType === TokenType.Access ? process.env.JWT_SECRET : process.env.JWT_REFRESH_SECRET;
-  const payload: IJWTPayload = await jwt.verify(
-    token,
-    secret,
-    {
-      algorithms: ['HS256']
-    }) as unknown as IJWTPayload;
-  return payload;
+  try {
+    const payload: IJWTPayload = await jwt.verify(
+      token,
+      secret,
+      {
+        algorithms: ['HS256']
+      }) as unknown as IJWTPayload;
+    return payload;
+  } catch (e) {
+    throw e;
+  }
+
 };
 
 export const verifyAccessToken = (token: string): Promise<IJWTPayload> => {

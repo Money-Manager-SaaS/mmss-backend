@@ -21,23 +21,32 @@ export const authenticateJWT = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader;
+      let payload;
       try {
-        const payload = await verifyAccessToken(token);
-        if (payload.exp <= new Date().getTime()) {
-          res.send(401).end();
-        } else {
-          const user:User = await User.getRepo().findOne(payload.userID);
-          delete user.password;
-          req.user = user;
-          req.userID = payload.userID;
-          req.email = payload.email;
-          next();
-        }
+        payload = await verifyAccessToken(token);
       } catch (e) {
-        res.send(401).end();
+        logger.error(['cannot verify payload' , e]);
+        res.status(401).send('wrong token 30');
+      }
+
+      if (payload && payload?.exp && payload?.userID && payload.exp > new Date().getTime()) {
+        let user:User;
+        try {
+          user = await User.getRepo().findOne(payload.userID);
+          delete user.password;
+        } catch (e) {
+          logger.error(['cannot verify payload' , e]);
+          res.status(401).send('wrong token 40');
+        }
+        req.user = user;
+        req.userID = payload.userID;
+        req.email = payload.email;
+        next();
+      } else {
+        res.status(401).send('cannot verify token 48');
       }
     } else {
-      res.send(401).end();
+      res.status(400).send('authorization header is required');
     }
   }
 };
