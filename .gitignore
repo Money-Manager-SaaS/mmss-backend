@@ -9,4 +9,5 @@ temp/
 /database.sqlite
 /database.sqlite.backup*
 /test.sqlite.backup*
+dist/
 

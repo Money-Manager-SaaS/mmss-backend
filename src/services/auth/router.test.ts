@@ -87,4 +87,9 @@ describe("routes", () => {
     const resp = await supertest(app).post('/auth/refresh').send({refreshToken: '123'});
     expect(resp.status).toEqual(401);
   });
+
+  it('ping hidden endpoint without token', async () => {
+    const resp = await supertest(app).get('/auth/hidden');
+    expect(resp.status).toEqual(400);
+  });
 });

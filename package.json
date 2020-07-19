@@ -4,7 +4,7 @@
   "description": "Money Manager Cloud back-end, to handle CRUD and Authentication and keep the compatibility to the Money Manager EX",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "cross-env BYPATH_ACCESS_TOKEN=true tsc-watch --onSuccess \"ts-node src/server.ts\"",
+    "dev": "tsc-watch --onSuccess \"ts-node src/server.ts\"",
     "start:dev": "ts-node src/index.ts",
     "start": "node dist/server.js",
     "start:pm2": "pm2 start dist/server.js -i 4",

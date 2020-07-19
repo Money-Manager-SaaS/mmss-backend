@@ -58,10 +58,10 @@ export const refreshToken = async (req: Request, res: Response) => {
         res.status(200).json(body);
       }
     } catch (e) {
-      res.sendStatus(401);
+      res.status(401).end();
     }
   } else {
-    res.sendStatus(401);
+    res.status(401).end();
   }
 };
 
