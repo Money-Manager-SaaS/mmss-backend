@@ -15,16 +15,24 @@ if (process.env.JEST_TESTING === 'true') {
   // in production
   Object.assign(ormconfig, {
     type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: process.env.DB_USER,
-    password: process.env.DB_PWD,
-    database: process.env.DB_NAME,
+    url: process.env.DATABASE_URL,
     synchronize: true,
     logging: false,
+    ssl: true,
+
+    // for building server, the entities under dist are required
+    entities: [
+      "dist/entity/**/*.{ts,js}"
+    ],
+    migrations: [
+      "dist/migration/**/*.{ts,js}"
+    ],
+    subscribers: [
+      "dist/subscriber/**/*.{ts,js}"
+    ]
   });
   // do not use psql db for runing unit testing, it will get a lot duplication error
-  console.log('using psql db ', ormconfig.database );
+  console.log('using psql db ', ormconfig.url );
 } else {
   console.log('using local dev db ', ormconfig.database);
 }

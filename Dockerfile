@@ -1,19 +1,15 @@
 FROM node:13.10.1-alpine
-
 EXPOSE 3000
-ENV DB_PATH /mm/demo.db
-
-RUN mkdir /mm
-WORKDIR /mm
 
 ADD package.json .
 ADD package-lock.json .
 RUN npm ci
 
 ADD . .
-RUN chmod 777 /mm/demo.db
 
-RUN npm run postinstall
+RUN npm i -g ts-node typescript pm2
+RUN npm run build
 
-CMD ["node", "dist/server.js"]
+
+CMD npm run migrate && npm run start
 

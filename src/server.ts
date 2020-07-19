@@ -30,7 +30,8 @@ prepareConnection().then(async (connection) => {
   // cors and compression middleware
   applyMiddleware(coreMiddleware, app);
 
-  const version = process.env.npm_package_version.split('.')[0];
+  const npm_version = process.env.npm_package_version;
+  const version = npm_version ? npm_version.split('.')[0] : '1';
   logger.info('running api version', parseInt(version));
 
   app.use('/auth', authRouter);
