@@ -1,20 +1,21 @@
-**never rush to merge!!!!**
-
 # mmss-backend
 [![CodeFactor](https://www.codefactor.io/repository/github/money-manager-saas/mmss-backend/badge)](https://www.codefactor.io/repository/github/money-manager-saas/mmss-backend)
+![test](https://github.com/Money-Manager-SaaS/mmss-backend/workflows/Node.js%20CI/badge.svg)
+[![codecov](https://codecov.io/gh/Money-Manager-SaaS/mmss-backend/branch/master/graph/badge.svg)](https://codecov.io/gh/Money-Manager-SaaS/mmss-backend)
 
-- Handle CRUD on the Money Manager  Sqlite3 db.
+
+This is an express api for [the front-end app](https://github.com/Money-Manager-SaaS/mmss-frontend), we are trying building 
+a money manager SaaS for users.
 
 
-## todo
-- [x] `create` endpoint for account, category..
-- [x] build payee
-- [x] build ledger
-- [ ] use psql
-- [ ] jwt/auth
-- [ ] set CORS whitelist now it is avalible for all
-- [ ] filter
-- [ ] figure out a better way for sequelize migration before build the final production
+Contributing is welcome, including
+- code review
+- issues
+- bug hunting
+- document update
 
-## Ref
-- [Contributing](CONTRIBUTING.md)
+Before any contributing, please read through the  [Contributing Guide](CONTRIBUTING.md) firstly.
+
+
+![code coverage](https://codecov.io/gh/Money-Manager-SaaS/mmss-backend/commit/e22a8702155acdfe739298831b2bb7e391eedcc3/graphs/tree.svg)
+

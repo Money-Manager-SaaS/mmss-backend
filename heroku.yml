@@ -1,10 +1,15 @@
 # https://devcenter.heroku.com/articles/build-docker-images-heroku-yml
-#setup:
-#  addons:
-#    - plan: heroku-postgresql
-#      as: DATABASE
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+  config:
+    NODE_ENV: production
 build:
   docker:
     web: Dockerfile
+  config:
+    NODE_ENV: production
 run:
-  web: node dist/server.js
+#  migration has to be after build, because db env cannot be accessed when build
+  web: npm run migrate && npm run start

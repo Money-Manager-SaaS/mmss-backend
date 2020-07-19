@@ -1,37 +1,19 @@
-import transRoutes from "./transaction/routes"
-import accountRoutes from "./account/routes";
-import categoryRoutes from "./category/routes";
-import userRoutes from "./user/routes";
-import payeeRoutes from "./payee/routes";
-import ledgerRoutes from "./ledger/routes";
-import { Request, Response } from 'express';
+import * as express from 'express';
+import ledgerRouter from './ledger/ledgerRouter';
+import accountRouter from './account/accountRouter';
+import categoryRouter from './category/categoryRouter';
+import payeeRouter from './payee/payeeRouter';
+import transRouter from './transaction/transRouter';
+import initRouter from './init/initRouter';
 
+const router = express.Router();
+// middleware are used on each router seperately
 
-export default [
-  // ...searchRoutes,
-  ...transRoutes,
-  ...accountRoutes,
-  ...categoryRoutes,
-  ...userRoutes,
-  ...payeeRoutes,
-  ...ledgerRoutes,
+router.use('/ledgers', ledgerRouter);
+router.use('/accounts', accountRouter);
+router.use('/categories', categoryRouter);
+router.use('/payees', payeeRouter);
+router.use('/transactions', transRouter);
+router.use('/init', initRouter);
 
-  {
-    path: "/",
-    method: "get",
-    handler: [
-      async ({query}: Request, res: Response) => {
-        res.status(200).send({
-          message: `please remember data will be deleted after deployment at demo`,
-          endpoints: [
-            '/api/v1/transactions',
-            '/api/v1/accounts',
-            '/api/v1/categories',
-            '/api/v1/users',
-            '/api/v1/payees',
-            '/api/v1/ledgers',
-          ]
-        });
-      }
-    ]
-  }];
+export default router;
