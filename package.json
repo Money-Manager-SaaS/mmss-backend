@@ -11,10 +11,10 @@
     "migrate": "export NODE_ENV=production && npm run db:migrate",
     "build": "npx tsc",
     "test": "cross-env JEST_TESTING=true BYPATH_ACCESS_TOKEN=false jest --testTimeout=10000 --runInBand",
-    "test:db:migrate": "cross-env JEST_TESTING=true npm run db:migrate",
-    "db:migration": " ts-node ./node_modules/typeorm/cli.js  migration:generate",
-    "db:gen-migration": "npm run db:migration -- -n auto",
-    "db:migrate": "ts-node ./node_modules/typeorm/cli.js  migration:run",
+    "test:db:migrate": "cross-env JEST_TESTING=true npm run build && npm run db:migrate",
+    "db:migration": "npm run build && ts-node ./node_modules/typeorm/cli.js  migration:generate",
+    "db:gen-migration": "npm run build && npm run db:migration -- -n auto",
+    "db:migrate": "npm run build && ts-node ./node_modules/typeorm/cli.js  migration:run",
     "db:revert": " ts-node ./node_modules/typeorm/cli.js  migration:revert"
   },
   "dependencies": {
