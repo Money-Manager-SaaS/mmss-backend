@@ -17,7 +17,6 @@
    "exclude": [
       "**/*.test.ts",
       "**/*.spec.ts",
-      "jest.setup.ts",
-      "src/migration"
+      "jest.setup.ts"
    ]
 }

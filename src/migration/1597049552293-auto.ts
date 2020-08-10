@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class auto1594978065754 implements MigrationInterface {
-    name = 'auto1594978065754'
+export class auto1597049552293 implements MigrationInterface {
+    name = 'auto1597049552293'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "user" ("id" SERIAL NOT NULL, "uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "description" text, "deletedAt" TIMESTAMP, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "version" integer NOT NULL, "email" character varying(128) NOT NULL, "password" character varying(128) NOT NULL, "role" character varying NOT NULL DEFAULT 'basic', "userName" character varying(64) NOT NULL, "active" boolean NOT NULL DEFAULT true, "lastLogin" date NOT NULL, "profile" text, "firstName" character varying(64), "lastName" character varying(64), CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "UQ_da5934070b5f2726ebfd3122c80" UNIQUE ("userName"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
@@ -29,8 +29,8 @@ export class auto1594978065754 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "ledger" ("id" SERIAL NOT NULL, "uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "description" text, "deletedAt" TIMESTAMP, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "version" integer NOT NULL, "name" character varying(256) NOT NULL, "userId" integer, CONSTRAINT "UQ_c19f04f83dfe9cb88f959188445" UNIQUE ("name", "userId", "deletedAt"), CONSTRAINT "PK_7a322e9157e5f42a16750ba2a20" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_10f36cf762167a0b4ba11783c2" ON "ledger" ("uuid") `);
         await queryRunner.query(`CREATE INDEX "IDX_5cd94fff677acfd7f4cd97cacf" ON "ledger" ("createdAt") `);
+        await queryRunner.query(`CREATE INDEX "IDX_46a672210083f21abc60d2866b" ON "ledger" ("name") `);
         await queryRunner.query(`CREATE INDEX "IDX_a21c3af32b2379186183e0c71b" ON "ledger" ("userId") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "IDX_46a672210083f21abc60d2866b" ON "ledger" ("name") `);
         await queryRunner.query(`CREATE TABLE "account" ("id" SERIAL NOT NULL, "uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "description" text, "deletedAt" TIMESTAMP, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "version" integer NOT NULL, "name" character varying(256) NOT NULL, "ledgerId" integer, "amount" integer NOT NULL, "currency" text, CONSTRAINT "UQ_1aaa9c6e960421d088610e487cd" UNIQUE ("name", "ledgerId", "deletedAt"), CONSTRAINT "PK_54115ee388cdb6d86bb4bf5b2ea" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_31e2fd7720a2da3af586f17778" ON "account" ("uuid") `);
         await queryRunner.query(`CREATE INDEX "IDX_f50e152d11f027ee500dbad6c9" ON "account" ("createdAt") `);
@@ -60,8 +60,8 @@ export class auto1594978065754 implements MigrationInterface {
         await queryRunner.query(`DROP INDEX "IDX_f50e152d11f027ee500dbad6c9"`);
         await queryRunner.query(`DROP INDEX "IDX_31e2fd7720a2da3af586f17778"`);
         await queryRunner.query(`DROP TABLE "account"`);
-        await queryRunner.query(`DROP INDEX "IDX_46a672210083f21abc60d2866b"`);
         await queryRunner.query(`DROP INDEX "IDX_a21c3af32b2379186183e0c71b"`);
+        await queryRunner.query(`DROP INDEX "IDX_46a672210083f21abc60d2866b"`);
         await queryRunner.query(`DROP INDEX "IDX_5cd94fff677acfd7f4cd97cacf"`);
         await queryRunner.query(`DROP INDEX "IDX_10f36cf762167a0b4ba11783c2"`);
         await queryRunner.query(`DROP TABLE "ledger"`);
