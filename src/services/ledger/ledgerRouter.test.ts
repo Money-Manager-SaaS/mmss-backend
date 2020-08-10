@@ -140,9 +140,18 @@ describe("ledger routes", () => {
       .send({})
       .set({'Authorization': token}
       );
-    expect(resp.status).toEqual(200);
+    expect(resp.status).toEqual(201);
     // todo better test asserting
     expect(resp.body.accounts.length).toEqual(defaultLedger.accounts.length)
   });
 
+  it('get default one once more', async () => {
+    const resp = await supertest(app).post('/default')
+      .send({})
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    // todo better test asserting
+    expect(resp.body.accounts.length).toEqual(defaultLedger.accounts.length)
+  });
 });
