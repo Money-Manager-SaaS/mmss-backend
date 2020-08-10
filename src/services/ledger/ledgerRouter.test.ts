@@ -5,6 +5,7 @@ import { getOrmManager } from '../../db/ormManager';
 import { User } from '../../entity/User';
 import { signAccessToken } from '../auth/provider';
 import logger from '../../logger';
+import defaultLedger from './defaultLedger';
 
 const app = express();
 app.use('/', theRouter);
@@ -132,6 +133,16 @@ describe("ledger routes", () => {
       .set({'Authorization': token}
       );
     expect(resp.status).toEqual(204);
+  });
+
+  it('get default one', async () => {
+    const resp = await supertest(app).post('/default')
+      .send({})
+      .set({'Authorization': token}
+      );
+    expect(resp.status).toEqual(200);
+    // todo better test asserting
+    expect(resp.body.accounts.length).toEqual(defaultLedger.accounts.length)
   });
 
 });

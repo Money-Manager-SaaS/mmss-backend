@@ -1,6 +1,10 @@
 import { Response } from 'express';
 import { Ledger } from '../../entity/Ledger';
+import { Account } from '../../entity/Account';
+import { Payee } from '../../entity/Payee';
+import { Category } from '../../entity/Category';
 import { getFindOption } from './ledgerUtils';
+import defaultLedgerData from './defaultLedger';
 
 export const getAll = async (req: any, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
@@ -74,13 +78,81 @@ export const deleteOne = async (req, res: Response) => {
   const ledgerID = req.params?.ledgerID;
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger =  await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
+    const ledger = await ledgerRepo.findOne(ledgerID, getFindOption(req.user.id));
     if (ledger && ledger.userId === req.user.id) {
       await ledgerRepo.softDelete(ledger.id);
       res.status(200).json({});
     } else {
       res.status(400).end();
     }
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
+  }
+};
+
+export const createDefault = async (req, res: Response) => {
+  const ledgerRepo = Ledger.getRepo();
+  try {
+    let ledger = await ledgerRepo.create(defaultLedgerData.ledger) as unknown as Ledger;
+    ledger.user = req.user;
+    await ledgerRepo.save(ledger);
+
+
+    const calls = [];
+
+    const createAccount = async (data) => {
+      const repo = Account.getRepo();
+      const item = (await repo.create(data)) as unknown as Account;
+      item.ledgerId = ledger.id;
+      await repo.save(item)
+    }
+    defaultLedgerData.accounts.forEach(
+      data => {
+        calls.push(
+          createAccount(data)
+        )
+      }
+    )
+
+    const createCategory = async (data) => {
+      const repo = Category.getRepo();
+      const item = (await repo.create(data)) as unknown as Category;
+      item.ledgerId = ledger.id;
+      await repo.save(item)
+    }
+    defaultLedgerData.categories.forEach(
+      data => {
+        calls.push(
+          createCategory(data)
+        )
+      }
+    )
+
+    const createPayee = async (data) => {
+      const repo = Payee.getRepo();
+      const item = (await repo.create(data)) as unknown as Payee;
+      item.ledgerId = ledger.id;
+      await repo.save(item)
+    }
+    defaultLedgerData.payees.forEach(
+      data => {
+        calls.push(
+          createPayee(data)
+        )
+      }
+    )
+
+    await Promise.all(calls)
+
+    // todo save this one db hit
+    ledger = await ledgerRepo.findOne(ledger.id,
+      Object.assign({}, getFindOption(req.user.id), {
+        relations: ["accounts", "categories", "payees"],
+      })
+    );
+
+    res.status(200).send(ledger);
   } catch (e) {
     console.error(e);
     res.status(500).end();

@@ -10,6 +10,7 @@ router.use(authenticateJWT);
 
 router.post('/', services.createOne);
 router.get('/', services.getAll);
+router.post('/default/', services.createDefault);
 router.put('/:ledgerID', services.updateOne);
 router.get('/:ledgerID', services.getOne);
 router.delete('/:ledgerID', services.deleteOne);
