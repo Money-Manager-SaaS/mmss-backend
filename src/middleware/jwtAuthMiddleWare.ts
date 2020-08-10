@@ -43,7 +43,7 @@ export const authenticateJWT = async (req, res, next) => {
         req.email = payload.email;
         next();
       } else {
-        res.status(401).send('cannot verify token 48');
+        res.status(401).send('cannot verify token');
       }
     } else {
       res.status(400).send('authorization header is required');

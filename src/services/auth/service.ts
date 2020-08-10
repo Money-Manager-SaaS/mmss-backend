@@ -50,7 +50,7 @@ export const refreshToken = async (req: Request, res: Response) => {
     const token = refreshToken as string;
     try {
       const payload = await verifyRefreshToken(token);
-      if (payload) {
+      if (payload && payload?.exp && payload?.userID && payload.exp > new Date().getTime()) {
         const token = await provider.signAccessToken(payload.sub, payload.email);
         const body = {
           accessToken: token
