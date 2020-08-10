@@ -93,58 +93,71 @@ export const deleteOne = async (req, res: Response) => {
 
 export const createDefault = async (req, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
+  let ledger;
+  let code = 200;
   try {
-    let ledger = await ledgerRepo.create(defaultLedgerData.ledger) as unknown as Ledger;
-    ledger.user = req.user;
-    await ledgerRepo.save(ledger);
+    const ledgers = await ledgerRepo.find(
+      Object.assign({},
+        getFindOption(req.user.id), {
+          name: 'Default'
+        },
+      )
+    );
+    if (ledgers.length) {
+      ledger = ledgers[0];
+      code = 200;
+    } else {
+      code = 201;
+      ledger = await ledgerRepo.create(defaultLedgerData.ledger) as unknown as Ledger;
+      ledger.user = req.user;
+      await ledgerRepo.save(ledger);
 
+      const calls = [];
 
-    const calls = [];
-
-    const createAccount = async (data) => {
-      const repo = Account.getRepo();
-      const item = (await repo.create(data)) as unknown as Account;
-      item.ledgerId = ledger.id;
-      await repo.save(item)
-    }
-    defaultLedgerData.accounts.forEach(
-      data => {
-        calls.push(
-          createAccount(data)
-        )
+      const createAccount = async (data) => {
+        const repo = Account.getRepo();
+        const item = (await repo.create(data)) as unknown as Account;
+        item.ledgerId = ledger.id;
+        await repo.save(item)
       }
-    )
+      defaultLedgerData.accounts.forEach(
+        data => {
+          calls.push(
+            createAccount(data)
+          )
+        }
+      )
 
-    const createCategory = async (data) => {
-      const repo = Category.getRepo();
-      const item = (await repo.create(data)) as unknown as Category;
-      item.ledgerId = ledger.id;
-      await repo.save(item)
-    }
-    defaultLedgerData.categories.forEach(
-      data => {
-        calls.push(
-          createCategory(data)
-        )
+      const createCategory = async (data) => {
+        const repo = Category.getRepo();
+        const item = (await repo.create(data)) as unknown as Category;
+        item.ledgerId = ledger.id;
+        await repo.save(item)
       }
-    )
+      defaultLedgerData.categories.forEach(
+        data => {
+          calls.push(
+            createCategory(data)
+          )
+        }
+      )
 
-    const createPayee = async (data) => {
-      const repo = Payee.getRepo();
-      const item = (await repo.create(data)) as unknown as Payee;
-      item.ledgerId = ledger.id;
-      await repo.save(item)
-    }
-    defaultLedgerData.payees.forEach(
-      data => {
-        calls.push(
-          createPayee(data)
-        )
+      const createPayee = async (data) => {
+        const repo = Payee.getRepo();
+        const item = (await repo.create(data)) as unknown as Payee;
+        item.ledgerId = ledger.id;
+        await repo.save(item)
       }
-    )
+      defaultLedgerData.payees.forEach(
+        data => {
+          calls.push(
+            createPayee(data)
+          )
+        }
+      )
 
-    await Promise.all(calls)
-
+      await Promise.all(calls)
+    }
     // todo save this one db hit
     ledger = await ledgerRepo.findOne(ledger.id,
       Object.assign({}, getFindOption(req.user.id), {
@@ -152,7 +165,7 @@ export const createDefault = async (req, res: Response) => {
       })
     );
 
-    res.status(200).send(ledger);
+    res.status(code).send(ledger);
   } catch (e) {
     console.error(e);
     res.status(500).end();
