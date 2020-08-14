@@ -4,14 +4,12 @@ import { Account } from '../../entity/Account';
 import { Payee } from '../../entity/Payee';
 import { Category } from '../../entity/Category';
 import { getFindOption } from './ledgerUtils';
-import defaultLedgerData from './defaultLedger';
+import { defaultLedgerData } from './defaultLedger';
 
 export const getAll = async (req: any, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledgers = await ledgerRepo.find(
-      getFindOption(req.user.id)
-    );
+    const ledgers = await ledgerRepo.find(getFindOption(req.user.id));
     if (ledgers?.length) {
       res.status(200).send(ledgers);
     } else {
@@ -23,14 +21,14 @@ export const getAll = async (req: any, res: Response) => {
   }
 };
 
-
 export const getOne = async (req: any, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   const ledgerID = req.params?.ledgerID;
   try {
-    const ledger = await ledgerRepo.findOne(ledgerID,
+    const ledger = await ledgerRepo.findOne(
+      ledgerID,
       Object.assign({}, getFindOption(req.user.id), {
-        relations: ["accounts", "categories", "payees"],
+        relations: ['accounts', 'categories', 'payees'],
       })
     );
     if (ledger && ledger.userId === req.user.id) {
@@ -47,7 +45,7 @@ export const getOne = async (req: any, res: Response) => {
 export const createOne = async (req, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   try {
-    const ledger = await ledgerRepo.create(req.body) as unknown as Ledger;
+    const ledger = ((await ledgerRepo.create(req.body)) as unknown) as Ledger;
     ledger.user = req.user;
     await ledgerRepo.save(ledger);
     delete ledger.user.password;
@@ -94,61 +92,49 @@ export const deleteOne = async (req, res: Response) => {
 export const createDefault = async (req, res: Response) => {
   const ledgerRepo = Ledger.getRepo();
   try {
-    let ledger = await ledgerRepo.create(defaultLedgerData.ledger) as unknown as Ledger;
+    let ledger = ((await ledgerRepo.create(defaultLedgerData.ledger)) as unknown) as Ledger;
     ledger.user = req.user;
     await ledgerRepo.save(ledger);
-
 
     const calls = [];
 
     const createAccount = async (data) => {
       const repo = Account.getRepo();
-      const item = (await repo.create(data)) as unknown as Account;
+      const item = ((await repo.create(data)) as unknown) as Account;
       item.ledgerId = ledger.id;
-      await repo.save(item)
-    }
-    defaultLedgerData.accounts.forEach(
-      data => {
-        calls.push(
-          createAccount(data)
-        )
-      }
-    )
+      await repo.save(item);
+    };
+    defaultLedgerData.accounts.forEach((data) => {
+      calls.push(createAccount(data));
+    });
 
     const createCategory = async (data) => {
       const repo = Category.getRepo();
-      const item = (await repo.create(data)) as unknown as Category;
+      const item = ((await repo.create(data)) as unknown) as Category;
       item.ledgerId = ledger.id;
-      await repo.save(item)
-    }
-    defaultLedgerData.categories.forEach(
-      data => {
-        calls.push(
-          createCategory(data)
-        )
-      }
-    )
+      await repo.save(item);
+    };
+    defaultLedgerData.categories.forEach((data) => {
+      calls.push(createCategory(data));
+    });
 
     const createPayee = async (data) => {
       const repo = Payee.getRepo();
-      const item = (await repo.create(data)) as unknown as Payee;
+      const item = ((await repo.create(data)) as unknown) as Payee;
       item.ledgerId = ledger.id;
-      await repo.save(item)
-    }
-    defaultLedgerData.payees.forEach(
-      data => {
-        calls.push(
-          createPayee(data)
-        )
-      }
-    )
+      await repo.save(item);
+    };
+    defaultLedgerData.payees.forEach((data) => {
+      calls.push(createPayee(data));
+    });
 
-    await Promise.all(calls)
+    await Promise.all(calls);
 
     // todo save this one db hit
-    ledger = await ledgerRepo.findOne(ledger.id,
+    ledger = await ledgerRepo.findOne(
+      ledger.id,
       Object.assign({}, getFindOption(req.user.id), {
-        relations: ["accounts", "categories", "payees"],
+        relations: ['accounts', 'categories', 'payees'],
       })
     );
 

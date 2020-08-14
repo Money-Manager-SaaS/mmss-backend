@@ -2,21 +2,16 @@ import { Response } from 'express';
 import { Account as Entity } from '../../entity/Account';
 import logger from '../../logger';
 
-
-const getFindOption = (ledgerId) => (
-  {
-    where: {
-      ledgerId: ledgerId
-    }
-  }
-);
+const getFindOption = (ledgerId) => ({
+  where: {
+    ledgerId: ledgerId,
+  },
+});
 
 export const getAll = async (req: any, res: Response) => {
   const entityRepo = Entity.getRepo();
   try {
-    const items = await entityRepo.find(
-      getFindOption(req.ledgerID)
-    );
+    const items = await entityRepo.find(getFindOption(req.ledgerID));
     if (items?.length) {
       res.status(200).send(items);
     } else {
@@ -27,7 +22,6 @@ export const getAll = async (req: any, res: Response) => {
     res.status(500).end();
   }
 };
-
 
 export const getOne = async (req: any, res: Response) => {
   const entityRepo = Entity.getRepo();
@@ -51,7 +45,7 @@ export const getOne = async (req: any, res: Response) => {
 export const createOne = async (req, res: Response) => {
   const entityRepo = Entity.getRepo();
   try {
-    const item = await entityRepo.create(req.body) as unknown as Entity;
+    const item = ((await entityRepo.create(req.body)) as unknown) as Entity;
     item.ledgerId = req.ledgerID;
     logger.debug('account created is ');
     logger.debug(item);
@@ -93,6 +87,7 @@ export const deleteOne = async (req, res: Response) => {
     logger.debug(item);
     if (item) {
       await entityRepo.softDelete(item.id);
+      await entityRepo.delete(item.id);
       res.status(200).json({});
     } else {
       res.status(400).end();
