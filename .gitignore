@@ -10,4 +10,4 @@ temp/
 /database.sqlite.backup*
 /test.sqlite.backup*
 dist/
-
+.env
