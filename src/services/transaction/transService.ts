@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Transaction as Entity } from '../../entity/Transaction';
 import logger from '../../logger';
-import { getFindOption, getQueryOptions } from './utils';
+import { getFindOption } from './utils';
 import * as transProvider from './transProvider';
 
 /**

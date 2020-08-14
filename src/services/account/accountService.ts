@@ -1,12 +1,14 @@
 import { Response } from 'express';
 import { Account as Entity } from '../../entity/Account';
 import logger from '../../logger';
+import { IsNull } from 'typeorm';
 
 
 const getFindOption = (ledgerId) => (
   {
     where: {
-      ledgerId: ledgerId
+      ledgerId: ledgerId,
+      deletedAt: IsNull()
     }
   }
 );

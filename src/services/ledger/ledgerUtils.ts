@@ -1,8 +1,10 @@
+import { IsNull } from 'typeorm';
 
 export const getFindOption = (userID) => (
   {
     where: {
-      userId: userID
+      userId: userID,
+      deletedAt: IsNull()
     }
   }
 );

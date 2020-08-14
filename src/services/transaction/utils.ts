@@ -1,6 +1,6 @@
 import { Account } from '../../entity/Account';
 import logger from '../../logger';
-import { In, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
+import { In, IsNull, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 
 export const DEFAULT_LIMIT = 500
 
@@ -8,6 +8,8 @@ export const getFindOption = (ledgerAccounts: Account[]) => {
   logger.debug('the ledger accounts in req count ' + ledgerAccounts.length);
   const conditions = [{
     accountId: In(ledgerAccounts.map(acc=>acc.id))
+  }, {
+    deletedAt: IsNull(),
   }];
 
   return {
