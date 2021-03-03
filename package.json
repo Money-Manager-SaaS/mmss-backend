@@ -31,7 +31,7 @@
     "pino": "^6.3.2",
     "pino-pretty": "^4.0.1",
     "pm2": "4.4.0",
-    "pug": "3.0.0",
+    "pug": "3.0.1",
     "reflect-metadata": "0.1.13",
     "request": "2.88.2",
     "sqlite3": "5.0.0",
