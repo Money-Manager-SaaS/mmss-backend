@@ -35,7 +35,7 @@
     "reflect-metadata": "0.1.13",
     "request": "2.88.2",
     "sqlite3": "5.0.0",
-    "swagger-ui-express": "4.1.4",
+    "swagger-ui-express": "4.6.3",
     "typeorm": "0.2.25"
   },
   "devDependencies": {
@@ -51,7 +51,7 @@
     "@types/node": "13.7.7",
     "@types/pino": "6.3.0",
     "@types/supertest": "2.0.10",
-    "@types/swagger-ui-express": "4.1.1",
+    "@types/swagger-ui-express": "4.1.6",
     "@types/validator": "13.1.0",
     "cross-env": "7.0.2",
     "jest": "26.1.0",
